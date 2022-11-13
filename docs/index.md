@@ -9,3 +9,4 @@ This suite of tutorials will go through:
 ## Resources
 
 - Slides will be provided soon
+- Links to resources on http://lyon2.streamlit.app
