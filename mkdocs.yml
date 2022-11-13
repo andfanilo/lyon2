@@ -1,0 +1,15 @@
+site_name: Lyon 2 SISE Tutorials
+theme:
+  name: material
+  palette:
+    primary: indigo
+markdown_extensions:
+  - admonition
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - def_list
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
