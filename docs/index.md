@@ -9,4 +9,4 @@ This suite of tutorials will go through:
 ## Resources
 
 - Slides will be provided soon
-- Links to resources on http://lyon-sise.streamlit.app
+- Links to resources on [https://lyon-sise.streamlit.app](https://lyon-sise.streamlit.app) (ask me for password)
