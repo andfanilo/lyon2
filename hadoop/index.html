@@ -308,6 +308,81 @@
     5. Structuring Apache logs with Hive and Regex
   </a>
   
+    <nav class="md-nav" aria-label="5. Structuring Apache logs with Hive and Regex">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-upload-data-to-hdfs" class="md-nav__link">
+    5.1 Upload data to HDFS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-build-a-hive-table-over-the-log-file" class="md-nav__link">
+    5.2 Build a Hive table over the log file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-visualize-the-data-with-zeppelin-the-big-data-notebook" class="md-nav__link">
+    5.3 Visualize the data with Zeppelin, the Big Data Notebook
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-generating-logs-with-python" class="md-nav__link">
+    6. Generating logs with Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-ingesting-data-in-hdfs-with-flume" class="md-nav__link">
+    7. Ingesting data in HDFS with Flume
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Ingesting data in HDFS with Flume">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-test-flume-with-a-simple-logging-of-telnet-info" class="md-nav__link">
+    7.1 Test Flume with a simple logging of telnet info
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-route-apache-logs-to-hdfs-with-flume" class="md-nav__link">
+    7.2  Route Apache logs to HDFS with Flume
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-improving-your-zeppelin-dashboard" class="md-nav__link">
+    8. Improving your Zeppelin Dashboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    Conclusion
+  </a>
+  
 </li>
       
     </ul>
@@ -464,6 +539,81 @@
     5. Structuring Apache logs with Hive and Regex
   </a>
   
+    <nav class="md-nav" aria-label="5. Structuring Apache logs with Hive and Regex">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-upload-data-to-hdfs" class="md-nav__link">
+    5.1 Upload data to HDFS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-build-a-hive-table-over-the-log-file" class="md-nav__link">
+    5.2 Build a Hive table over the log file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-visualize-the-data-with-zeppelin-the-big-data-notebook" class="md-nav__link">
+    5.3 Visualize the data with Zeppelin, the Big Data Notebook
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-generating-logs-with-python" class="md-nav__link">
+    6. Generating logs with Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-ingesting-data-in-hdfs-with-flume" class="md-nav__link">
+    7. Ingesting data in HDFS with Flume
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Ingesting data in HDFS with Flume">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-test-flume-with-a-simple-logging-of-telnet-info" class="md-nav__link">
+    7.1 Test Flume with a simple logging of telnet info
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-route-apache-logs-to-hdfs-with-flume" class="md-nav__link">
+    7.2  Route Apache logs to HDFS with Flume
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-improving-your-zeppelin-dashboard" class="md-nav__link">
+    8. Improving your Zeppelin Dashboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    Conclusion
+  </a>
+  
 </li>
       
     </ul>
@@ -541,8 +691,8 @@
 <p>There are two ways to upload data to HDFS: from the Ambari Files View and from a terminal.</p>
 <p>In this section we will:</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Upload the <code>data</code> folder of the project (which you can find <a href="https://github.com/andfanilo/lyon2/tree/main/data">here</a>) into HDFS through the Ambari Files View</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> SSH into the virtual machine, download the files and then upload the <a href="https://github.com/andfanilo/lyon2/blob/main/data/titanic.csv">titanic.csv</a> file in HDFS using the command line.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Upload the <code>data</code> folder of the project (which you can find <a href="https://github.com/andfanilo/lyon2/tree/master/data">here</a>) into HDFS through the Ambari Files View</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> SSH into the virtual machine, download the files and then upload the <a href="https://github.com/andfanilo/lyon2/blob/master/data/titanic.csv">titanic.csv</a> file in HDFS using the command line.</li>
 </ul>
 <h3 id="21-using-the-ambari-files-view">2.1 Using the Ambari Files View</h3>
 <div class="admonition question">
@@ -577,11 +727,11 @@
 </div>
 <p><strong>Recap</strong>: </p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Upload the <code>data</code> folder of the project (which you can find <a href="https://github.com/andfanilo/lyon2/tree/main/data">here</a>) into HDFS through the Ambari Files View</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> SSH into the virtual machine, download the files and then upload the <a href="https://github.com/andfanilo/lyon2/blob/main/data/titanic.csv">titanic.csv</a> file in HDFS using the command line.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Upload the <code>data</code> folder of the project (which you can find <a href="https://github.com/andfanilo/lyon2/tree/master/data">here</a>) into HDFS through the Ambari Files View</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> SSH into the virtual machine, download the files and then upload the <a href="https://github.com/andfanilo/lyon2/blob/master/data/titanic.csv">titanic.csv</a> file in HDFS using the command line.</li>
 </ul>
 <h3 id="22-using-the-command-line">2.2 Using the Command-line</h3>
-<p>In this section, we will use the command-line to check that HDFS indeed has our data files in <code>hdfs:///user/root</code>, then we will upload the <a href="https://github.com/andfanilo/hdp-tutorial/blob/main/data/titanic.csv">titanic.csv</a>.</p>
+<p>In this section, we will use the command-line to check that HDFS indeed has our data files in <code>hdfs:///user/root</code>, then we will upload the <a href="https://github.com/andfanilo/lyon2/blob/master/data/titanic.csv">titanic.csv</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Exercise - Connect into the VM with Putty</p>
 <ul>
@@ -687,7 +837,7 @@ This command was run using /usr/hdp/2.5.0.0-1245/hadoop/hadoop-common-2.7.3.2.5.
 <div class="admonition note">
 <p class="admonition-title">Exercise - Download the Titanic dataset into HDFS</p>
 <ul>
-<li>Use the <code>wget</code> command to download the <a href="https://raw.githubusercontent.com/andfanilo/hdp-tutorial/main/data/titanic.csv">Titanic dataset</a> in the filesystem of your virtual machine. </li>
+<li>Use the <code>wget</code> command to download the <a href="https://raw.githubusercontent.com/andfanilo/lyon2/master/data/titanic.csv">Titanic dataset</a> in the filesystem of your virtual machine. </li>
 <li>Verify the file is present with <code>ls</code> and with <code>head -n 5 titanic.csv</code>.</li>
 </ul>
 <p>To copy files from your local machine to HDFS, the command is <code>hdfs dfs -copyFromLocal &lt;local_file&gt; &lt;path_in_HDFS&gt;</code>.</p>
@@ -714,10 +864,10 @@ hdfs dfs -chmod -R <span class="m">777</span> /tmp
 </div>
 <p><strong>Recap</strong></p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Upload the <code>data</code> folder of the project (which you can find <a href="https://github.com/andfanilo/lyon2/tree/main/data">here</a>) into HDFS through the Ambari Files View</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> SSH into the virtual machine, download the files and then upload the <a href="https://github.com/andfanilo/lyon2/blob/main/data/titanic.csv">titanic.csv</a> file in HDFS using the command line.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Upload the <code>data</code> folder of the project (which you can find <a href="https://github.com/andfanilo/lyon2/tree/master/data">here</a>) into HDFS through the Ambari Files View</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> SSH into the virtual machine, download the files and then upload the <a href="https://github.com/andfanilo/lyon2/blob/master/data/titanic.csv">titanic.csv</a> file in HDFS using the command line.</li>
 </ul>
-<details class="note">
+<details class="abstract">
 <summary>Output</summary>
 <div class="highlight"><pre><span></span><code>[root@sandbox ~]# hdfs dfs -ls /user/root/geoloc
 Found 2 items
@@ -870,7 +1020,282 @@ Examine the <code>output2</code> folder. Can you note a difference with the prev
 </div>
 <p><img alt="" src="../images/result_distinct_city.PNG" /></p>
 <h2 id="5-structuring-apache-logs-with-hive-and-regex">5. Structuring Apache logs with Hive and Regex</h2>
-<p><img alt="Under construction" src="https://strategicdiscipline.positioningsystems.com/hs-fs/hubfs/images/Under%20construction.jpg?width=157&amp;name=Under%20construction.jpg" /></p>
+<h3 id="51-upload-data-to-hdfs">5.1 Upload data to HDFS</h3>
+<p>Before building the whole pipeline, let's have a look at a sample of Apache logs.</p>
+<div class="highlight"><pre><span></span><code>164.29.239.18 - - [01/Aug/2014:11:48:59 -0400] &quot;GET /department/apparel/products HTTP/1.1&quot; 200 991 &quot;-&quot; &quot;Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36&quot;
+</code></pre></div>
+<p>A sample of Apache logs is available <a href="https://github.com/andfanilo/lyon2/tree/master/data">here</a> in the <code>access.log.2.zip</code> file. We will upload this data into HDFS, parse it using an external Hive table over it and run some SQL queries.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Upload logs to HDFS</p>
+<ul>
+<li>Download and unzip the folder, locally or in your virtual machine depending on how you want to upload the data in HDFS.</li>
+<li>Upload the data in HDFS, at the location <code>/user/root/access</code>. You should end with <code>/user/root/access/access.log.2</code>.</li>
+</ul>
+</div>
+<p><img alt="" src="../images/td2-logs-ambari.PNG" /></p>
+<details class="abstract">
+<summary>Take a look at the end of the file in HDFS, using the <code>tail</code> command in HDFS in the terminal.</summary>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@sandbox ~<span class="o">]</span><span class="c1"># hdfs dfs -tail access/access.log.2</span>
+<span class="m">6</span>.1<span class="p">;</span> WOW64<span class="p">;</span> rv:30.0<span class="o">)</span> Gecko/20100101 Firefox/30.0<span class="s2">&quot;</span>
+<span class="s2">64.232.194.248 - - [14/Jun/2014:23:43:32 -0400] &quot;</span>GET /support HTTP/1.1<span class="s2">&quot; 200 887 &quot;</span>-<span class="s2">&quot; &quot;</span>Mozilla/5.0 <span class="o">(</span>Windows NT <span class="m">6</span>.1<span class="p">;</span> rv:30.0<span class="o">)</span> Gecko/20100101 Firefox/30.0<span class="s2">&quot;</span>
+<span class="s2">138.9.185.141 - - [14/Jun/2014:23:43:32 -0400] &quot;</span>GET /department/golf HTTP/1.1<span class="s2">&quot; 200 1075 &quot;</span>-<span class="s2">&quot; &quot;</span>Mozilla/5.0 <span class="o">(</span>Windows NT <span class="m">6</span>.3<span class="p">;</span> WOW64<span class="o">)</span> AppleWebKit/537.36 <span class="o">(</span>KHTML, like Gecko<span class="o">)</span> Chrome/35.0.1916.153 Safari/537.36<span class="s2">&quot;</span>
+<span class="s2">152.208.225.65 - - [14/Jun/2014:23:43:32 -0400] &quot;</span>GET /department/golf HTTP/1.1<span class="s2">&quot; 200 1358 &quot;</span>-<span class="s2">&quot; &quot;</span>Mozilla/5.0 <span class="o">(</span>Windows NT <span class="m">6</span>.1<span class="o">)</span> AppleWebKit/537.36 <span class="o">(</span>KHTML, like Gecko<span class="o">)</span> Chrome/35.0.1916.153 Safari/537.36<span class="s2">&quot;</span>
+<span class="s2">84.246.94.164 - - [14/Jun/2014:23:43:32 -0400] &quot;</span>GET /department/fitness/category/tennis%20<span class="p">&amp;</span>%20racquet HTTP/1.1<span class="s2">&quot; 200 907 &quot;</span>-<span class="s2">&quot; &quot;</span>Mozilla/5.0 <span class="o">(</span>Windows NT <span class="m">6</span>.1<span class="p">;</span> WOW64<span class="p">;</span> rv:30.0<span class="o">)</span> Gecko/20100101 Firefox/30.0<span class="s2">&quot;</span>
+<span class="s2">167.228.157.189 - - [14/Jun/2014:23:43:32 -0400] &quot;</span>GET /department/outdoors HTTP/1.1<span class="s2">&quot; 200 2166 &quot;</span>-<span class="s2">&quot; &quot;</span>Mozilla/5.0 <span class="o">(</span>Macintosh<span class="p">;</span> Intel Mac OS X 10_9_3<span class="o">)</span> AppleWebKit/537.36 <span class="o">(</span>KHTML, like Gecko<span class="o">)</span> Chrome/35.0.1916.153 Safari/537.36<span class="s2">&quot;</span>
+</code></pre></div>
+</details>
+<h3 id="52-build-a-hive-table-over-the-log-file">5.2 Build a Hive table over the log file</h3>
+<p>In the previous tutorial, we created a Hive table over CSV files using the keywords <code>ROW FORMAT DELIMITED FIELDS TERMINATED BY ','</code>. The format of the file in HDFS, which Hive will parse on-demand, must be specified at table creation.</p>
+<p>Here we will use a <code>regex</code> to extract all the information we need from the log files. To enable parsing files in HDFS using regex with Hive, we use a specific SerDe (for serializer/deserializer) <code>ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'</code>. </p>
+<p>This SERDE is not provided by default, we will need to register a <code>hive-contrib.jar</code> plugin which contains the class. Otherwise you will get <code>Caused by: org.apache.hadoop.hive.ql.metadata.HiveException: java.lang.ClassNotFoundException: Class org.apache.hadoop.hive.contrib.serde2.RegexSerDe not found</code> exceptions.</p>
+<p>Let's try this:</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Configuring Hive</p>
+<ul>
+<li>Open a terminal to your Virtual Machine.</li>
+<li>Open a Hive command line: <code>hive</code>.</li>
+<li>Add the <code>hive-contrib.jar</code> JAR:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">ADD</span><span class="w"> </span><span class="n">JAR</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">hdp</span><span class="o">/</span><span class="k">current</span><span class="o">/</span><span class="n">hive</span><span class="o">-</span><span class="n">client</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">hive</span><span class="o">-</span><span class="n">contrib</span><span class="p">.</span><span class="n">jar</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Creating an external Hive table</p>
+<ul>
+<li>Create an external Hive table <code>intermediate_access_logs</code> (copy-paste the following command):
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">EXTERNAL</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">intermediate_access_logs</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">ip</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">log_date</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">method</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">url_site</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">http_version</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">code1</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">code2</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">dash</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">user_agent</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span><span class="w"></span>
+<span class="k">ROW</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">SERDE</span><span class="w"> </span><span class="s1">&#39;org.apache.hadoop.hive.contrib.serde2.RegexSerDe&#39;</span><span class="w"></span>
+<span class="k">WITH</span><span class="w"> </span><span class="n">SERDEPROPERTIES</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s1">&#39;input.regex&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;([^ ]*) - - \\[([^\\]]*)\\] &quot;([^\ ]*) ([^\ ]*) ([^\ ]*)&quot; (\\d*) (\\d*) &quot;([^&quot;]*)&quot; &quot;([^&quot;]*)&quot;&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s1">&#39;output.format.string&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;%1$$s %2$$s %3$$s %4$$s %5$$s %6$$s %7$$s %8$$s %9$$s&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="k">LOCATION</span><span class="w"> </span><span class="s1">&#39;/user/root/access&#39;</span><span class="p">;</span><span class="w"></span>
+</code></pre></div></li>
+</ul>
+</div>
+<p>Now whenever you run a SQL query on <code>intermediate_access_logs</code>, Hive will run a MapReduce job by first parsing all files in the <code>/user/root/access</code> with the provided regex, then run your query. </p>
+<details class="abstract">
+<summary>Output</summary>
+<div class="highlight"><pre><span></span><code>hive&gt; DESCRIBE intermediate_access_logs;
+OK
+ip                      string                  from deserializer
+log_date                string                  from deserializer
+method                  string                  from deserializer
+url_site                string                  from deserializer
+http_version            string                  from deserializer
+code1                   string                  from deserializer
+code2                   string                  from deserializer
+dash                    string                  from deserializer
+user_agent              string                  from deserializer
+Time taken: 0.997 seconds, Fetched: 9 row(s)
+hive&gt; SELECT ip, log_date, user_agent from intermediate_access_logs LIMIT 5;
+OK
+79.133.215.123  14/Jun/2014:10:30:13 -0400      Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36
+162.235.161.200 14/Jun/2014:10:30:13 -0400      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.76.4 (KHTML, like Gecko) Version/7.0.4 Safari/537.76.4
+39.244.91.133   14/Jun/2014:10:30:14 -0400      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36
+150.47.54.136   14/Jun/2014:10:30:14 -0400      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36
+217.89.36.129   14/Jun/2014:10:30:14 -0400      Mozilla/5.0 (Windows NT 6.1; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0
+Time taken: 0.29 seconds, Fetched: 5 row(s)
+hive&gt;
+</code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Transforming the raw Hive table</p>
+<ul>
+<li>Running a query on <code>intermediate_access_logs</code> will parse files with regex every time, which is time consuming. Create a new <code>clean_access_logs</code> table with the output for <code>intermediate_access_logs</code> as content.<ul>
+<li>We also optimize the table storage with the <a href="https://orc.apache.org/docs/">ORC format</a>. Using ORC files improves performance when Hive is reading, writing, and processing data.</li>
+</ul>
+</li>
+<li>Then build a smaller table so you can experiment on it before running on the full dataset:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">clean_access_logs</span><span class="w"> </span><span class="n">STORED</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ORC</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">intermediate_access_logs</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">sample_access_logs</span><span class="w"> </span><span class="n">STORED</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ORC</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">clean_access_logs</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<p>You're now free to work on the <code>clean_access_logs</code> or <code>sample_access_logs</code> tables <img alt="😄" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f604.svg" title=":smile:" /></p>
+<div class="admonition question">
+<p class="admonition-title">SQL questions</p>
+<p>Choose 1-2 questions to answer:</p>
+<ul>
+<li>Can you count the number of occurences for each IP address ?</li>
+<li>Display how many times each product has been bought</li>
+<li>What percentage of IP addresses went to checkout their basket ?</li>
+<li>If you case the date as a Date you should be able to build a web journey of an IP address on the website. For all IP adresses that went to checkout, compute the number of products each has bought before.</li>
+</ul>
+</div>
+<h3 id="53-visualize-the-data-with-zeppelin-the-big-data-notebook">5.3 Visualize the data with Zeppelin, the Big Data Notebook</h3>
+<p>Apache Zeppelin is a Web-based notebook for interactive data analytics and collaborative documents. You can plugin multiple interpreters to run different Big Data engine inside, by default Hive JDBC and Spark are already configured to run. </p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Zeppelin usage</p>
+<ul>
+<li>Open <code>http://localhost:9995</code> for a first peek at Zeppelin.</li>
+<li>Create a new note, write some <a href="https://www.markdownguide.org/">Markdown</a> in the first cell with <code>%md</code> as a first line to choose the Markdown interpreter, and run the cell:</li>
+<li>See what happens when you toggle the <code>default</code> view to <code>simple</code> and <code>report</code>.</li>
+<li>Each cell has its own set of settings too. For example, change the width of the first cell to 6:</li>
+<li>Create a new cell, set the interpreter to <code>Hive JDBC</code> with <code>%jdbc(hive)</code> and run a SQL query against <code>clean_access_logs</code> again.</li>
+<li>Do you see that the <code>Hive JDBC</code> cell results have a toolbar for displaying graphs? Play with it a bit then try to replicate the following notebook in <code>report</code> view, with a cell for counting the number of occurences for a few ip addresses.</li>
+</ul>
+</div>
+<details class="abstract">
+<summary>All Zeppelin screenshots</summary>
+<p><img alt="" src="../images/td2-zeppelin-start.PNG" />
+<img alt="" src="../images/td2-zeppelin-hello.PNG" />
+<img alt="" src="../images/td2-zeppelin-layout.PNG" />
+<img alt="" src="../images/td2-zeppelin-cell-settings.PNG" />
+<img alt="" src="../images/td2-zeppelin-hive.PNG" />
+<img alt="" src="../images/td2-zeppelin-report.PNG" /></p>
+</details>
+<h2 id="6-generating-logs-with-python">6. Generating logs with Python</h2>
+<p>Instead of installing an Apache server and hitting it with HTTP requests for new logs, we use a Python script to randomly generate logs into a log file.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Run Python codeto generate logs in realtime</p>
+<ul>
+<li>Copy the <code>gen_logs</code> folder to the virtual machine and browse inside <code>cd gen_logs</code>.<ul>
+<li>Since <code>git</code> is installed in the machine, you can directly clone the full project with <code>https://github.com/andfanilo/lyon2.git</code></li>
+</ul>
+</li>
+<li>Add execution permissions to the Python and Shell files inside <code>gen_logs</code>: <code>chmod +x *.sh</code> <code>chmod +x */*.py</code></li>
+<li>Run Python simulation: <code>./start_logs.sh</code><ul>
+<li>Logs are tailed into <code>logs/access.log</code>. In the following sections we should send lines appended to this file into HDFS.</li>
+<li>You can follow the produced logs with <code>./tail_logs.sh</code>.</li>
+</ul>
+</li>
+<li>Kill the log generation with <code>./stop_logs.sh</code>.</li>
+</ul>
+</div>
+<h2 id="7-ingesting-data-in-hdfs-with-flume">7. Ingesting data in HDFS with Flume</h2>
+<p><a href="https://flume.apache.org/index.html">Apache Flume</a> is a distributed, reliable, and available system for efficiently collecting, aggregating and moving large amounts of log data from many different sources to a centralized data store.</p>
+<p>It follows a simple yet extensible model of <code>source &gt; channel &gt; sink</code> configured through a configuration file.</p>
+<p><img alt="" src="../images/flume_overview.png" /></p>
+<p>Using Flume, we will capture generated logs from Python, simulating customer interaction with the ecommerce website, and aggregate them into HDFS for consolidated analysis through Hive/Zeppelin. This is a very common scenario you can read more about <a href="https://flume.apache.org/releases/content/1.9.0/FlumeUserGuide.html#consolidation">here</a>.</p>
+<h3 id="71-test-flume-with-a-simple-logging-of-telnet-info">7.1 Test Flume with a simple logging of telnet info</h3>
+<p>In this first section, we follow the <a href="https://flume.apache.org/releases/content/1.9.0/FlumeUserGuide.html#a-simple-example">Flume quickstart</a> and build a Flume agent which routes any network information sent over the wire in port 44444, into a Java logger.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Configure Flume</p>
+<ul>
+<li>Configure Flume by copying <a href="https://github.com/andfanilo/lyon2/tree/master/flume">flume/example.conf</a> into the virtual machine.</li>
+</ul>
+<details class="tip">
+<summary>Help me!</summary>
+<p>Here's a command to copy-paste multiline content directly into <code>example.conf</code> in a terminal:
+<div class="highlight"><pre><span></span><code>cat &gt; example.conf <span class="s">&lt;&lt; EOF</span>
+<span class="s"># example.conf: A single-node Flume configuration</span>
+
+<span class="s"># Name the components on this agent</span>
+<span class="s">a1.sources = r1</span>
+<span class="s">a1.sinks = k1</span>
+<span class="s">a1.channels = c1</span>
+
+<span class="s"># Describe/configure the source</span>
+<span class="s">a1.sources.r1.type = netcat</span>
+<span class="s">a1.sources.r1.bind = localhost</span>
+<span class="s">a1.sources.r1.port = 44444</span>
+
+<span class="s"># Describe the sink</span>
+<span class="s">a1.sinks.k1.type = logger</span>
+
+<span class="s"># Use a channel which buffers events in memory</span>
+<span class="s">a1.channels.c1.type = memory</span>
+<span class="s">a1.channels.c1.capacity = 1000</span>
+<span class="s">a1.channels.c1.transactionCapacity = 100</span>
+
+<span class="s"># Bind the source and sink to the channel</span>
+<span class="s">a1.sources.r1.channels = c1</span>
+<span class="s">a1.sinks.k1.channel = c1</span>
+<span class="s">EOF</span>
+</code></pre></div></p>
+</details>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Run Flume</p>
+<ul>
+<li>Run the Flume agent:
+<div class="highlight"><pre><span></span><code>flume-ng agent --conf conf --conf-file example.conf --name a1 -Dflume.root.logger<span class="o">=</span>INFO,console
+</code></pre></div></li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Test Flume is running</p>
+<ul>
+<li>Connect another terminal to your Virtual Machine, so you have one terminal with the Flume agent running and this second terminal to send network commands. Connect to localhost on port 44444 with <code>telnet localhost 44444</code>. Then send some text.</li>
+</ul>
+<details class="abstract">
+<summary>Output</summary>
+<p>Your telnet terminal should have:
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@sandbox ~<span class="o">]</span><span class="c1"># telnet localhost 44444</span>
+Trying ::1...
+telnet: connect to address ::1: Connection refused
+Trying <span class="m">127</span>.0.0.1...
+Connected to localhost.
+Escape character is <span class="s1">&#39;^]&#39;</span>.
+coucou
+OK
+hadoop
+OK
+</code></pre></div>
+And your Flume terminal should log the messages from port 44444:
+<div class="highlight"><pre><span></span><code><span class="o">[</span>root@sandbox ~<span class="o">]</span><span class="c1"># flume-ng agent --conf conf --conf-file example.conf --name a1 -Dflume.root.logger=INFO,console</span>
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.PollingPropertiesFileConfigurationProvider: Configuration provider starting
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.PollingPropertiesFileConfigurationProvider: Reloading configuration file:example.conf
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO conf.FlumeConfiguration: Added sinks: k1 Agent: a1
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO conf.FlumeConfiguration: Processing:k1
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO conf.FlumeConfiguration: Processing:k1
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO conf.FlumeConfiguration: Post-validation flume configuration contains configuration <span class="k">for</span> agents: <span class="o">[</span>a1<span class="o">]</span>
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.AbstractConfigurationProvider: Creating channels
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO channel.DefaultChannelFactory: Creating instance of channel c1 <span class="nb">type</span> memory
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.AbstractConfigurationProvider: Created channel c1
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO source.DefaultSourceFactory: Creating instance of <span class="nb">source</span> r1, <span class="nb">type</span> netcat
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO sink.DefaultSinkFactory: Creating instance of sink: k1, type: logger
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.AbstractConfigurationProvider: Channel c1 connected to <span class="o">[</span>r1, k1<span class="o">]</span>
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.Application: Starting new configuration:<span class="o">{</span> sourceRunners:<span class="o">{</span><span class="nv">r1</span><span class="o">=</span>EventDrivenSourceRunner: <span class="o">{</span> source:org.apache.flume.source.NetcatSource<span class="o">{</span>name:r1,state:IDLE<span class="o">}</span> <span class="o">}}</span> sinkRunners:<span class="o">{</span><span class="nv">k1</span><span class="o">=</span>SinkRunner: <span class="o">{</span> policy:org.apache.flume.sink.DefaultSinkProcessor@11d97d51 counterGroup:<span class="o">{</span> name:null counters:<span class="o">{}</span> <span class="o">}</span> <span class="o">}}</span> channels:<span class="o">{</span><span class="nv">c1</span><span class="o">=</span>org.apache.flume.channel.MemoryChannel<span class="o">{</span>name: c1<span class="o">}}</span> <span class="o">}</span>
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.Application: Starting Channel c1
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO instrumentation.MonitoredCounterGroup: Monitored counter group <span class="k">for</span> type: CHANNEL, name: c1: Successfully registered new MBean.
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: c1 started
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.Application: Starting Sink k1
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO node.Application: Starting Source r1
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO source.NetcatSource: Source starting
+<span class="m">20</span>/12/06 <span class="m">11</span>:02:40 INFO source.NetcatSource: Created serverSocket:sun.nio.ch.ServerSocketChannelImpl<span class="o">[</span>/127.0.0.1:44444<span class="o">]</span>
+<span class="m">20</span>/12/06 <span class="m">11</span>:04:54 INFO sink.LoggerSink: Event: <span class="o">{</span> headers:<span class="o">{}</span> body: <span class="m">63</span> 6F <span class="m">75</span> <span class="m">63</span> 6F <span class="m">75</span> 0D                            coucou. <span class="o">}</span>
+<span class="m">20</span>/12/06 <span class="m">11</span>:05:09 INFO sink.LoggerSink: Event: <span class="o">{</span> headers:<span class="o">{}</span> body: <span class="m">68</span> <span class="m">61</span> <span class="m">64</span> 6F 6F                                                                                         <span class="m">70</span> 0D                            hadoop. <span class="o">}</span>
+</code></pre></div></p>
+<p>The two last lines are the most important, they are logged by the Flume sink.</p>
+</details>
+</div>
+<ul>
+<li>Close the Flume agent and telnet. </li>
+</ul>
+<div class="admonition question">
+<p class="admonition-title">Question: go futher by replacing the logger sink with a HDFS sink</p>
+<p>Using <a href="https://www.tutorialspoint.com/unix/unix-vi-editor.htm">vi</a> to edit the <code>example.conf</code> file (<code>vi example.conf</code> to enter edit mode, <code>a</code> to enter append mode and edit the text, <code>ESC</code> to exit edit mode, <code>:wq &lt;ENTER&gt;</code> to save and exit, <code>:q! &lt;ENTER&gt;</code> to exit without saving), look how to change the sink to <a href="https://flume.apache.org/releases/content/1.9.0/FlumeUserGuide.html#hdfs-sink">HDFS sink</a> and save the netcat commands into <code>/user/root/netcat</code> in HDFS for example.</p>
+<p>Absolutely look for the answer on Google!</p>
+</div>
+<p>This example presented how to use Flume configuration to configure a Flume pipeline. In the next section we will build a configuration to tail the logs into HDFS.</p>
+<h3 id="72-route-apache-logs-to-hdfs-with-flume">7.2  Route Apache logs to HDFS with Flume</h3>
+<p>Time to build <a href="https://flume.apache.org/releases/content/1.9.0/FlumeUserGuide.html#configuration">a configuration file</a> to route Apache logs into HDFS. </p>
+<p>We will use the following components:</p>
+<ul>
+<li>Source: exec</li>
+<li>Channel: memory</li>
+<li>Sink: HDFS (Hive should be possible too)</li>
+<li>Output in external Hive table</li>
+</ul>
+<h2 id="8-improving-your-zeppelin-dashboard">8. Improving your Zeppelin Dashboard</h2>
+<ul>
+<li>You can add <a href="https://zeppelin.apache.org/docs/0.6.2/manual/dynamicform.html#text-input-form">forms</a> to a Zeppelin cell, so you can dynamically manipulate your Hive query.</li>
+<li>Build a graph to showcase the quantity of bought articles every 5 minutes, based on the Apache logs generated by the previous section.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this tutorial, you deployed a full Big Data pipeline for ingesting simulation data from ecommerce activity into HDFS, ready for data analysis. This pipeline is fully scalable and distributed, so can be used from small to very large activity.</p>
+<p>Take a break now, you deserve it <img alt="😄" class="twemoji" src="https://twemoji.maxcdn.com/v/latest/svg/1f604.svg" title=":smile:" /></p>
 
 
 
