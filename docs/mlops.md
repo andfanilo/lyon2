@@ -132,7 +132,7 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
     ```
 
 !!! note "Exercise - Build a Python REST API"
-    - In `server/app.py`, create a REST API with [FastAPI](https://fastapi.tiangolo.com/tutorial/first-steps/) so that, when you run `uvicorn --host 0.0.0.0 app:app` locally, you can connect to `http://localhost:8000` and get back `Hello World`.
+    - In `server/app.py`, create a REST API with [FastAPI](https://fastapi.tiangolo.com/tutorial/first-steps/) so that, when you run `uvicorn --host 0.0.0.0 app:app` locally, you can connect to `http://localhost:8000` and get back `{"message": "Hello World"}`.
 
     ??? abstract "Solution ONLY if you feel stuck"
         Content of `server/app.py`:
@@ -183,7 +183,9 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
             - 8000:8000
     ```
 
-    - Run the cluster with `docker-compose up`, from the root folder (where `docker-compose.yml` is). Do you recognize the Mongo logs? Close the cluster with `CTRL+C`, and destroy it with `docker-compose down`. A `docker ps -a` should show no containers remaining.
+    - Run the cluster with `docker-compose up`, from the root folder (where `docker-compose.yml` is). 
+        - Do you recognize the Mongo logs? 
+    - Close the cluster with `CTRL+C`, and destroy it with `docker-compose down`. A `docker ps -a` should show no containers remaining.
     - Let's add some code into `server/app.py` to push data into Mongo. You know how to do this right :D ? So create a new `GET` method so that if you connect to `/add/mango` it adds `{fruit: mango}` to mongodb, and another `GET` method `/list` that returns all fruits in mongodb.
         - Use [the Path params doc](https://fastapi.tiangolo.com/tutorial/path-params/) to get started
         - Don't forget to install pymongo both in your local environment and Dockerfile. And don't forget to rebuild your image.
@@ -217,11 +219,24 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
         ```
 
 !!! danger "Challenge"
-    - Build a Streamlit or Gradio or Dash or Whatever app in `client/app.py` with a text input and a button to request the `http://server:8000/add/<fruit>` and then a list of all fruits currently Mongo by hitting `http://server:8000/list`. Add the correct `client/Dockerfile`, build it as `mlops:client` and add the correct information to `docker-compose.yml`.
+    - Build a Streamlit or Gradio or Dash or Shiny or whatever app in `client/app.py` with a text input to write down a fruit and a button to request the `http://server:8000/add/<fruit>`.
+    - Then get back the list of all fruits currently in Mongo by hitting `http://server:8000/list`. 
+    - Implement `client/Dockerfile`, build it as `mlops:client`. Make sure you can run it without `docker-compose`. 
+    - Add the client app into `docker-compose.yml`.
         - If all is well, in your 3-tier architecture, Streamlit/Gradio/Dash/... is only hitting FastAPI and only FastAPI is hitting MongoDB. That way you can add authentication or security measures at FastAPI level, which would be harder to do if the client immediately hit MongoDB.
 
 ## 2. A full-stack Dockerized ML project
 
+Pick up a classification training dataset (with as few columns as possible, it'll be easier for the UI). The goal is to build a fully functional `docker-compose` app that provides an UI to me so I can do predictions on a pretrained ML model.
+
+![](./images/architecture.png)
+
+!!! warning "Challenge"
+    - Use the previous challenge as template to create the above architecture, removing the `mongo` part and keeping `client` + `server` folders.
+    - The client should be a Streamlit or Gradio or Dash or Shiny or whatever, exposing all feature columns of the dataset we want to use to make a prediction.
+    - The server should be an API, like FastAPI or Flask, which exposes a POST verb `predict`. If you send `POST /predict` with a body containing the values of the features, like `{"sepal_length": 42, "petal_length": 34...}` it should return the predicted class from a pretrained model.
+    - The client should request the `http://server/predict` with the features in the body to get back a class to display.
+    - The `model.pkl` is a model you will train on the dataset and saved (as pickl or using joblib) before building the Docker image, and then copy it inside the Docker image. When the Docker image runs, the model should be loaded back in the API before any request.
 
 ## 3. Adding MLFlow
 
