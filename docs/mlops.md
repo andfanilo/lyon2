@@ -72,6 +72,7 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
     ```
     td
      ├── app.py             <- A python script
+     ├── requirements.txt   <- Python packages (feel free to install something...like `rich`)
      └── Dockerfile         <- Has the Docker commands to build our custom image
     ```
 
@@ -81,20 +82,21 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
     - Open the `Dockerfile` file with your favorite editor.
     - Write down the following lines:
         - `FROM` specifies the parent image
-        - `COPY` copies files or directories from the folder you ran docker from, into the image
-        - `WORKDIR` puts the image location to the desired folder. Here, all future commands will be run inside the `/app` folder, like if you did a `cd /app`.
-        - `RUN` runs a classic command
+        - `COPY` copies files or directories from the folder you ran docker from, into the image (at the current selected `WORKDIR`)
+        - `WORKDIR` puts the image location to the desired folder. In this example, all future commands will be run inside the `/app` folder, like if you did a `cd /app`.
+        - `RUN` runs a classic UNIX command. Use them to install stuff.
         - `CMD` defines the command the Docker container will run.
-        - There are some more [here](https://docs.docker.com/engine/reference/builder/)
+        - There are some more [here](https://docs.docker.com/engine/reference/builder/) but those are the most essential
 
     ```Dockerfile
     FROM python:3.8-slim
 
-    COPY app.py /app/app.py
+    COPY requirements.txt /app/requirements.txt
 
     WORKDIR /app 
+    RUN pip install -r requirements.txt
 
-    RUN pip install rich
+    COPY app.py app.py
 
     CMD ["python", "app.py"]
     ```
@@ -104,7 +106,7 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
         - the `./` specifies the folder which contains the `Dockerfile` to build. You should already be in the said folder.
     - Make sure the new `td` image was created. What is the size of the image? The command is similar to one used in a previous section.
     - Run your new image! The command is similar to one used in a previous section.
-    - Docker build work in layers. Edit or duplicate the `RUN pip install rich` line to add some more dependencies (like, install `pandas` or `numpy` or something cool). When you rerun the same `build` command, do you notice something in the print output? You should see ` ---> Using cache` appear in particular places, telling you it didn't start the build from scratch.
+    - Docker build work in layers. Try to add dependencies in the `requirements.txt` file. When you rerun the same `build` command, do you notice something in the print output? You should see ` ---> Using cache` appear in particular places, telling you it didn't start the build from scratch.
         - Useful when you have Dockerfiles with around 100 commands [like the Kaggle/python one](https://github.com/Kaggle/docker-python/blob/main/Dockerfile.tmpl)
 
 !!! danger "Challenge"
@@ -122,10 +124,12 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
     ```
     client
     ├── app.py             <- Streamlit/Gradio/Panel/Dash/Shiny to request a REST API
+    ├── requirements.txt   <- Python packages
     └── Dockerfile         <- Commands to build our custom image
     
     server
     ├── app.py             <- FastAPI to expose a REST API that will write to MongoDB
+    ├── requirements.txt   <- Python packages
     └── Dockerfile         <- Commands to build our custom image
 
     docker-compose.yml
@@ -147,7 +151,7 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
             return {"message": "Hello World"}
         ```
 
-    - In `server/Dockerfile`, install FastAPI+uvicorn and run the command that runs the server.
+    - In `server/Dockerfile`, install FastAPI+uvicorn and run the command that runs the server. Use the `Dockerfile` from the previous part as template.
     - Build your image. Give it a name like `mlops:server`. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser and get your `Hello world`.
 
     ??? abstract "Solution ONLY if you feel stuck"
@@ -155,11 +159,12 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
         ```Dockerfile
         FROM python:3.8-slim
 
-        COPY app.py /app/app.py
-
+        COPY requirements.txt /app/requirements.txt
         WORKDIR /app 
 
-        RUN pip install uvicorn fastapi
+        RUN pip install -r requirements.txt
+
+        COPY app.py app.py
 
         CMD ["uvicorn", "--host", "0.0.0.0", "app:app"]
         ```
@@ -168,29 +173,34 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
     - Add the following code in `docker-compose.yml`. This will start a Mongodb next to your server image:
     
     ```yaml
-    version: '3.1'
+    version: '3'
 
     services:
-
         mongo:
             image: mongo
-            restart: always
 
         server:
             image: mlops:server
-            restart: always
+            build:
+                context: ./server
+                dockerfile: Dockerfile
             ports:
             - 8000:8000
     ```
 
-    - Run the cluster with `docker-compose up`, from the root folder (where `docker-compose.yml` is). 
+    - Run the cluster with `docker-compose up`, from the root folder (where `docker-compose.yml` is).
+        - **BEWARE**! only works if your `mlops:server` image has already been built
         - Do you recognize the Mongo logs? 
     - Close the cluster with `CTRL+C`, and destroy it with `docker-compose down`. A `docker ps -a` should show no containers remaining.
-    - Let's add some code into `server/app.py` to push data into Mongo. You know how to do this right :D ? So create a new `GET` method so that if you connect to `/add/mango` it adds `{fruit: mango}` to mongodb, and another `GET` method `/list` that returns all fruits in mongodb.
+    - Because the image building info is in `docker-compose.yml`, you can rebuild the images immediately with `docker-compose up --build` instead. Try it out.
+
+!!! warning "Exercise - Building our first Dockerized Fullstack web service"
+    - Let's add some code into `server/app.py` to push data into Mongo. Create a new `GET` method so that if you connect to `/add/mango` it adds `{fruit: mango}` to mongodb, and another `GET` method `/list` that returns all fruits in mongodb.
+        - Test locally before building your Docker image. Like in the `NoSQL` TD, run a side `MongoDB` container with `docker run -it --rm --name some-mongo -p 27017:27017 mongo:4`, and `MongoClient("localhost", 27017)` should work. If you run locally with `uvicorn --host 0.0.0.0 app:app --reload`, every code change you make will be instantly built into FastAPI. 
         - Use [the Path params doc](https://fastapi.tiangolo.com/tutorial/path-params/) to get started
-        - Don't forget to install pymongo both in your local environment and Dockerfile. And don't forget to rebuild your image.
-        - When using `docker-compose`, the URL to connect to with your `MongoClient` is not `localhost` but `mongo`...the name of the service in the `docker-compose` file!
-        - Remember, ALWAYs return Python dictionaries in FastAPI. Not only strings. Wrap up your results in `{"data": res}` if needed.
+        - Remember, ALWAYS return Python dictionaries in FastAPI. Not only strings. Wrap up your results in `{"data": res}` if needed.
+        - Don't forget to install pymongo in Dockerfile.
+        - When running in `docker-compose`, the URL to connect to with your `MongoClient` is not `localhost` but `mongo`...the name of the service in the `docker-compose` file!
 
     ??? abstract "Solution ONLY if you feel stuck"
         My `server/app.py` content:
@@ -215,7 +225,7 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
 
         @app.get("/list")
         async def list():
-            return {"results": list(collection.find())}
+            return {"results": list(collection.find({}, {"_id": False}))}
         ```
 
 !!! danger "Challenge"
@@ -235,8 +245,10 @@ Pick up a classification training dataset (with as few columns as possible, it'l
     - Use the previous challenge as template to create the above architecture, removing the `mongo` part and keeping `client` + `server` folders.
     - The client should be a Streamlit or Gradio or Dash or Shiny or whatever, exposing all feature columns of the dataset we want to use to make a prediction.
     - The server should be an API, like FastAPI or Flask, which exposes a POST verb `predict`. If you send `POST /predict` with a body containing the values of the features, like `{"sepal_length": 42, "petal_length": 34...}` it should return the predicted class from a pretrained model.
-    - The client should request the `http://server/predict` with the features in the body to get back a class to display.
-    - The `model.pkl` is a model you will train on the dataset and saved (as pickl or using joblib) before building the Docker image, and then copy it inside the Docker image. When the Docker image runs, the model should be loaded back in the API before any request.
+    - The client should request the `http://server:8000/predict` with the features in the body to get back a class to display.
+    - The `model.pkl` is a model you will train on the dataset and saved (as pickle or using joblib) before building the Docker image, and then copy it inside the Docker image. When the Docker image runs, the model should be loaded back in the API before any request.
+
+Good Luck Have Fun
 
 ## 3. Adding MLFlow
 
