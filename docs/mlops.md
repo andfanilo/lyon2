@@ -246,15 +246,68 @@ Pick up a classification training dataset (with as few columns as possible, it'l
     - The client should be a Streamlit or Gradio or Dash or Shiny or whatever, exposing all feature columns of the dataset we want to use to make a prediction.
     - The server should be an API, like FastAPI or Flask, which exposes a POST verb `predict`. If you send `POST /predict` with a body containing the values of the features, like `{"sepal_length": 42, "petal_length": 34...}` it should return the predicted class from a pretrained model.
     - The client should request the `http://server:8000/predict` with the features in the body to get back a class to display.
-    - The `model.pkl` is a model you will train on the dataset and saved (as pickle or using joblib) before building the Docker image, and then copy it inside the Docker image. When the Docker image runs, the model should be loaded back in the API before any request.
+    - The `model.pkl` is a model you will train on the dataset and saved (as pickle or using joblib) before building the Docker image in a `train.py` script, and then copy it inside the Docker image. When the Docker image runs, the model should be loaded back in the API before any request.
 
-Good Luck Have Fun
+Good Luck, Have Fun
 
 ## 3. Adding MLFlow
 
-docker pull ghcr.io/mlflow/mlflow
-docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow bash
-mlflow ui -h 0.0.0.0
-mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite
+Using the `ghcr.io/mlflow/mlflow` Docker image, you can start a MLFlow Model Registry, and send Scikit-Learn models there with associated metrics, for example if you start a MLFlow Server with `docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite`:
+
+```python
+import numpy as np
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import mlflow
+import mlflow.sklearn
+
+def eval_metrics(actual, pred):
+    rmse = np.sqrt(mean_squared_error(actual, pred))
+    mae = mean_absolute_error(actual, pred)
+    r2 = r2_score(actual, pred)
+    return rmse, mae, r2
+
+with mlflow.start_run():
+    lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
+    lr.fit(train_x, train_y)
+
+    predicted_qualities = lr.predict(test_x)
+
+    (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
+
+    # send to MLFlow
+    mlflow.log_param("alpha", alpha)
+    mlflow.log_param("l1_ratio", l1_ratio)
+    mlflow.log_metric("rmse", rmse)
+    mlflow.log_metric("r2", r2)
+    mlflow.log_metric("mae", mae)
+
+    mlflow.sklearn.log_model(lr, "model", registered_model_name="ElasticnetWineModel") 
+```
+
+You should be able to visualize you model on `http://localhost:5000`.
+
+!!! danger "Challenge"
+    - Use the previous challenge as template to create the above architecture, adding a MLFlow service in `docker-compose`. You now have a `client` Streamlit, `FastAPI` server and `MLFlow` backend.
+    - Locally, in the `train.py` that trains your ML Model, log your model into MLFlow.
+    - In your `FastAPI` server, load the model from MLFlow 
+    ```python
+    model = mlflow.pyfunc.load_model(
+        model_uri=f"models:/{model_name}/{model_version}"
+    )
+    ```
+    - Add an API endpoint like `GET /update-model` that loads a new model from MLFlow.
+    - From the client, add a button to update a model.
+
+You can now decide to update models from the client, or detect data drift by storing the latest instances server side/in a database and using [whylabs](https://github.com/whylabs/whylogs) to detect a drift and train a new model.
+
 
 ## 4. Adding Prefect
+
+Instead of running `train.py` to retrain a model on demand, you can schedule the run using [Prefect](https://www.prefect.io/) or [Airflow](https://airflow.apache.org/)
+
+!!! danger "Challenge"
+    - Locally, use Prefect or Airflow to schedule a `train.py` run every 5 minuts.
+        - Visualize all runs in their respective UIs.
+    - Build a Docker image which will contain your Prefect/Airflow and add it to `docker-compose.yml`. In the end you should have the following architecture
+
+![](./images/final-mlops.png)
