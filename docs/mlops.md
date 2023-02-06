@@ -219,12 +219,12 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
             return {"message": "Hello World"}
 
         @app.get("/add/{fruit}")
-        async def add(fruit: str):
+        async def add_fruit(fruit: str):
             id = collection.insert_one({"fruit": fruit}).inserted_id 
             return {"id": str(id)}
 
         @app.get("/list")
-        async def list():
+        async def list_fruits():
             return {"results": list(collection.find({}, {"_id": False}))}
         ```
 
