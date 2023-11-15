@@ -2,22 +2,25 @@ site_name: Lyon 2 SISE Tutorials
 theme:
   name: material
   palette:
-    primary: indigo
+    primary: custom
+
+extra_css:
+  - stylesheets/extra.css
+
 markdown_extensions:
   - admonition
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - def_list
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tasklist:
       custom_checkbox: true
+
 nav:
   - Overview: index.md
   - 0 - Prerequisites: prerequisites.md
-  - 1 - Hadoop: hadoop.md
-  - 2 - Spark: spark.md
-  - 3 - NoSQL: nosql.md
-  - 4 - MLOps: mlops.md
-copyright: Copyright &copy; 2022 Fanilo ANDRIANASOLO
+  - 1 - MLOps: mlops.md
+
+copyright: Copyright &copy; 2023 Fanilo ANDRIANASOLO

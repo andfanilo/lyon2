@@ -1,48 +1,38 @@
-# TD0 - Prerequisites
+# TD0 - Tooling
 
-For this tutorial, you will be installing and configuring the tools used in the following tutorials
+For this tutorial, you will be installing and configuring tools used in the following tutorials:
+
+- Command line
+- Docker
+- Git
+- Conda
+- Python librairies: Streamlit & FastAPI
+
 
 ![](./images/cover-prerequisites.jpg)
 
 ## Objectives
 
-- [ ] Get the Hadoop ecosystem running inside a virtual machine
-- [ ] Build a new conda environment with some of the necessary packages installed
+- [ ] Get used to using your command prompt
+- [ ] Reinstall Docker to ensure a clean docker-compose environment
+- [ ] Git clone the NoSQL or Spark tutorial
+- [ ] Create a conda environment with Python 3.9, FastAPI and Streamlit
 
 ---
 
-## The Hortonworks Virtual Machine
-
-Before working on the Hadoop tutorial, we need a working Hadoop cluster. It won't be easy for us to get one on the Cloud without giving up an email or credit card details, so we are going to install one locally, using:
-
-- [VirtualBox](https://www.virtualbox.org/) to run the virtual machine.
-- [Hortonworks Sandbox 2.5.0](https://www.cloudera.com/downloads/hortonworks-sandbox.html). It is less demanding in terms of resources than version 3+ and sufficient for our needs.
-
-!!! warning
-    While it is technically possible to download and use a VMWare or Docker version of the virtual machine, it will be easier for your comrades and myself to help you if everybody uses the same Virtualbox version
-
-!!! note "Exercise - Installing Hortonworks VM"
-    1. Ensure you have VirtualBox installed on your workstation
-        - It should be, but if not, download and install VirtualBox [from this link](https://www.virtualbox.org/)
-    2. Download [Hortonworks Sandbox 2.5.0](https://www.cloudera.com/downloads/hortonworks-sandbox/hdp.html) and unzip the appliance for VirtualBox
-        - You don't have to enter your info in the form
-    3. Import the `.ova` file into VirtualBox. **Don't start it yet** if you want to configure it
-        - You may configure the VM to use more or less RAM depending on your machine, through the `Configuration > System` view. The recommended value is around 6-8 Go RAM, but you should get away with using 2-4 Go
-    4. Start the virtual machine with the `Start` green arrow. This may take a few minutes
-        - If the virtual machine stops during startup, it is generally because you don't have enough resources. Try to open a process manager and kill some RAM-consuming processes, or lower the RAM needed by the virtual machine using the above step
-    5. Open a web browser to [http://localhost:8888](http://localhost:8888) to be greeted with the Hortonworks Data Platform dashboard
-
-![](./images/hdp-dashboard.png)
-
-!!! tip 
-    When you're done, you're free to stop the virtual machine from the Virtualbox dashboard.
-
-!!! question
-    With 1 or 2 neighbors, brainstorm and **write down** use cases for using a virtual machine in a company. Yes I may be passing in the ranks to see your solutions.
+## Test your command line skills
 
 ---
 
-## Anaconda to configure our Python environment 
+## Repair your Docker environment
+
+---
+
+## Git clone a project
+
+---
+
+## Create a complete Python environment
 
 While you usually install and use [Anaconda](https://docs.anaconda.com/) as a Python distribution with a lot of Data Science packages preinstalled, Anaconda comes with a package and environment manager called `conda`. You may have seen the list of environments managed by your current conda installation when browsing the Anaconda Navigator.
 
@@ -67,8 +57,10 @@ In the following, we won't be using the Anaconda Navigator UI. Brush up your bas
 
 ## Recap
 
-!!! success "Check that you can teach your neighbor each point of the checklist below"
-    - [x] Get the Hadoop ecosystem running inside a virtual machine
-    - [x] Build a new conda environment with some of the necessary packages installed
+!!! success "Check that you can explain your neighbor each point of the checklist below"
+    - [x] Get used to using your command prompt
+    - [x] Reinstall Docker to ensure a clean docker-compose environment
+    - [x] Git clone the Spark tutorial
+    - [x] Create a conda environment with Python 3.9, FastAPI and Streamlit 
 
-In the next tutorial, we will build our own ETL-like solution in Hadoop. We will have a look at ingesting unstructured data live to HDFS, extracting and structuring the important information into a Hive table, and build simple graphs.
+In the next tutorial,
