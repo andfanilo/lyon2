@@ -64,7 +64,7 @@ In the following, we won't be using the Anaconda Navigator UI. Brush up your Uni
         
         a. Install non-Python pakages like `git` with the `conda install` command.
         
-        b. Install Python packages like `jupyter` with `pip`. Use the `pip install` command to install Jupyter Notebook and JupyterLab. Test the `jupyter lab` command to ensure it works    
+        b. Install Python packages like `streamlit`, `fastapi` and `jupyter` with `pip`. Use the `pip install` command to install Jupyter Notebook and JupyterLab. Test the `jupyter notebook` and `streamlit version` command to ensure it works    
 
 !!! question
     - Why should you get in the habit of installing every Python package with pip and every non-Python one with conda?
@@ -75,16 +75,38 @@ In the following, we won't be using the Anaconda Navigator UI. Brush up your Uni
 
 Depending on how Docker was installed, it may be that `docker compose` does not work correctly.
 
+Just like for Anaconda, try your best to not use the Docker dashboard, instead go through the command line. You won't have a dashboard when manipulating Docker in production.
 
+!!! note "Exercise - Testing Docker commands"
+    1. Open the Anaconda 3 (64-bit) prompt or Git Bash from the Start Menu.
+    2. Test the following commands:
+
+        a. `docker version` 
+
+        b. `docker compose version`
+
+        c. `docker images`
+
+        d. `docker pull hello-world`
+
+        e. `docker run hello-world`
+
+        f. `docker ps -a`
+
+    If one of these doesn't work, especially the `docker compose version`, you probably need to uninstall and reinstall [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 ---
 
-## 4. Git clone a project
+## 4. Git clone a Jupyter project
+
+!!! note "Exercise - Git cloning a project"
+    1. Open Git Bash the Start Menu.
+    2. Browse into your folder of choice for noew projects. This is a Unix terminal so commands will differ a little from the previous Windows prompt exercise
+    3. Clone the spark tutorial on https://github.com/andfanilo/pyspark-tutorial to your folder
+    4. Activate the conda environment you created some exercises above, which has Jupyter installed.
+    5. Run `jupyter notebook` and make sure you can read all Spark notebook exercises.
 
 ---
-
-
-
 
 ## Recap
 
@@ -94,4 +116,6 @@ Depending on how Docker was installed, it may be that `docker compose` does not 
     - [x] Reinstall Docker to ensure a clean docker-compose environment
     - [x] Git clone the Spark tutorial
 
-In the next tutorial,
+Take note of those 4 tools, they will be regularly reused throughout the tutorials.
+
+In the next tutorial, we will delve into dockerizing a ML Prediction service with FastAPI and Streamlit.
