@@ -12,7 +12,7 @@ Make sure you have the following commands working on your workstation:
 
 ### a. Your first Docker commands
 
-![](./images/docker-logo.png)
+![](./images/mlops-docker-logo.png)
 
 Before starting, make sure your command line has `docker` and `docker-compose` working.
 
@@ -22,26 +22,26 @@ Before starting, make sure your command line has `docker` and `docker-compose` w
     - Run the `docker ps -a` command. Do you see any previously running containers?
         - The `ps` command stands for `process`, you can imagine this like a running container. The `-a` flag stands for *all containers*, not only running ones. You should see containers that were stopped earlier.
 
-We want to test the new walrus operator in Python 3.8. You can download any Docker image from [the Docker Hub](https://hub.docker.com/).
+We want to test the new walrus operator in Python 3.9. You can download any Docker image from [the Docker Hub](https://hub.docker.com/).
 
 Go check the [Python image](https://hub.docker.com/_/python) for example.
 
-![](./images/docker-tags.PNG)
+![](./images/mlops-docker-tags.png)
 
-To run a Docker image, you'll need to specify its name and tag as `<label>:<tag>`. Let's run some code in the `python:3.8-slim` image, as you can guess a _small_ image with Python 3.8 installed.
+To run a Docker image, you'll need to specify its name and tag as `<label>:<tag>`. Let's run some code in the `python:3.9-slim` image, as you can guess a _small_ image with Python 3.9 installed.
 
 !!! note "Exercise - Run your first container"
-    - Find the [command](https://docs.docker.com/engine/reference/commandline/pull/) to download the `python:3.8-slim` image in your set of available images.
+    - Find the [command](https://docs.docker.com/engine/reference/commandline/pull/) to download the `python:3.9-slim` image in your set of available images.
         - Check the image is available with `docker images`
-    - Run a container from the image with `docker run -it --rm python:3.8-slim`.
+    - Run a container from the image with `docker run -it --rm python:3.9-slim`.
     - By default the `run` will put you in a Python shell. Try to run some Python code and play with the walrus operator.
         - Docker gives you an easy way to test new Python versions without installing it on your system.
     - Exit the container by typing `exit()` in the command. Make sure the container has disappeared with `docker ps -a`.
     - Using the [Docker run help](https://docs.docker.com/engine/reference/run/), find out the role of the `--rm` and `-it` (an abbreviation for `-i -t`) flag in the run command.
-    - Run `docker run -it --name test python:3.8-slim` and then exit the container. What displays this time in `docker ps -a` ?
+    - Run `docker run -it --name test python:3.9-slim` and then exit the container. What displays this time in `docker ps -a` ?
     - Since we gave a name to our container, let's restart it with `docker start test`. You can then reattach to it with `docker attach test`.
     - We had enough fun with that container, destroy it by using the `docker rm` command.
-    - Let's clean up our images a little bit, delete the `python:3.8-slim` image with the `docker rmi` command.
+    - Let's clean up our images a little bit, delete the `python:3.9-slim` image with the `docker rmi` command.
 
 Most of the open-source technologies have a dedicated Docker image maintained by the community. Do not hesitate to browse the Docker Hub to test the latest systems.
 
@@ -49,7 +49,7 @@ What if you want to use a Python image but don't want to use its Python shell?
 
 !!! note "Exercise - Changing the CMD of the image"
     - In an Anaconda prompt, run `python -m http.server 9999`. In a browser, connect to `localhost:9999`. What is the point of this command? Close the server afterwards.
-    - Let's run this command in a Docker container! Run `docker run -it --rm -p 9999:9999 python:3.8-slim python -m http.server 9999`. connect to `localhost:9999` in your browser.
+    - Let's run this command in a Docker container! Run `docker run -it --rm -p 9999:9999 python:3.9-slim python -m http.server 9999`. connect to `localhost:9999` in your browser.
     - What is the `-p 9999:9999` flag? What happens if you put `-p 7777:9999`?
 
 This way we now can download an image, run it with a custom command and expose some of the ports to us.
@@ -89,7 +89,7 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
         - There are some more [here](https://docs.docker.com/engine/reference/builder/) but those are the most essential
 
     ```Dockerfile
-    FROM python:3.8-slim
+    FROM python:3.9-slim
 
     COPY requirements.txt /app/requirements.txt
 
@@ -117,7 +117,7 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
 
 With `docker-compose`, you are able to run a group of containers altogether. In this tutorial, we will setup a 3-tier architecture with Docker compose.
 
-![](./images/three-tier-architecture.png)
+![](./images/mlops-three-tier-architecture.png)
 
 !!! note "Exercise - Architecture"
     - Build the following folder architecture
@@ -157,7 +157,7 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
     ??? abstract "Solution ONLY if you feel stuck"
         Build with `docker build -t mlops:server .` . Run with `docker run -p 8000:8000 --rm mlops:server`. 
         ```Dockerfile
-        FROM python:3.8-slim
+        FROM python:3.9-slim
 
         COPY requirements.txt /app/requirements.txt
         WORKDIR /app 
@@ -239,7 +239,7 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
 
 Pick up a classification training dataset (with as few columns as possible, it'll be easier for the UI). The goal is to build a fully functional `docker-compose` app that provides an UI to me so I can do predictions on a pretrained ML model.
 
-![](./images/architecture.png)
+![](./images/mlops-architecture.png)
 
 !!! warning "Challenge"
     - Use the previous challenge as template to create the above architecture, removing the `mongo` part and keeping `client` + `server` folders.
@@ -249,6 +249,10 @@ Pick up a classification training dataset (with as few columns as possible, it'l
     - The `model.pkl` is a model you will train on the dataset and saved (as pickle or using joblib) before building the Docker image in a `train.py` script, and then copy it inside the Docker image. When the Docker image runs, the model should be loaded back in the API before any request.
 
 Good Luck, Have Fun
+
+## === Bonus Challenges ===
+
+The following exercises are optional bonuses if you want to go the full MLOps route.
 
 ## 3. Adding MLFlow
 
@@ -310,4 +314,4 @@ Instead of running `train.py` to retrain a model on demand, you can schedule the
         - Visualize all runs in their respective UIs.
     - Build a Docker image which will contain your Prefect/Airflow and add it to `docker-compose.yml`. In the end you should have the following architecture
 
-![](./images/final-mlops.png)
+![](./images/mlops-final.png)
