@@ -56,7 +56,7 @@ This way we now can download an image, run it with a custom command and expose s
 
 !!! danger "Challenge"
     - In a folder with some Python notebooks you copied from some other projects you want to use, run the following command: `docker run -v $PWD:/tmp/working -w=/tmp/working --rm -it -p 8888:8888 kaggle/python jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token="" --notebook-dir=/tmp/working`.
-        - This is the notebook that is used by Kaggle notebooks, with all the necessary Data Science packages to work on your projects!
+        - This is the notebook that is used by Kaggle notebooks, with all the necessary Data Science packages to work on your projects! But it is very big, it might takes several minutes to download.
         - Carefully read each part of the command and prepare to be able to explain each part to me.
         - The only flag you currently don't know is `-v`. It mounts one of your local folders to a folder inside the running container, so that you can see your local Jupyter notebooks from inside the containers. You can edit a file in the Jupyter notebook and see the changes locally (though I don't recommend doing it like this because of line separator risks).
 
@@ -66,27 +66,26 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
 
 !!! note "Exercise - Folder architecture"
     - Put yourself in a brand new folder, like `mlops-td`. 
-    - In this `mlops-td` folder, create a new folder, name it however you like. For example `td`. The `mkdir <name>` will do the trick
+    - In this `mlops-td` folder, create a new folder, name it however you like. For example `td`.
     - Create the following empty files:
 
     ```
     td
      ├── app.py             <- A python script
-     ├── requirements.txt   <- Python packages (feel free to install something...like `rich`)
+     ├── requirements.txt   <- Python packages (feel free to install packages you like)
      └── Dockerfile         <- Has the Docker commands to build our custom image
     ```
 
-    - Write some Python code in `app.py`. Something like `print('Hello world')`.
+    - Write some Python code in `app.py`. A Hello World is good enough.
 
 !!! note "Exercise - Dockerfile"
     - Open the `Dockerfile` file with your favorite editor.
     - Write down the following lines:
-        - `FROM` specifies the parent image
-        - `COPY` copies files or directories from the folder you ran docker from, into the image (at the current selected `WORKDIR`)
-        - `WORKDIR` puts the image location to the desired folder. In this example, all future commands will be run inside the `/app` folder, like if you did a `cd /app`.
-        - `RUN` runs a classic UNIX command. Use them to install stuff.
-        - `CMD` defines the command the Docker container will run.
-        - There are some more [here](https://docs.docker.com/engine/reference/builder/) but those are the most essential
+        - `FROM` specifies the parent image [link](https://docs.docker.com/engine/reference/builder/#from)
+        - `COPY` copies files or directories from the folder you ran docker from, into the image (at the current selected `WORKDIR`). [link](https://docs.docker.com/engine/reference/builder/#copy)
+        - `WORKDIR` puts the image location to the desired folder. In this example, all future commands will be run inside the `/app` folder, like if you did a `cd /app`. [link](https://docs.docker.com/engine/reference/builder/#workdir)
+        - `RUN` runs a classic UNIX command. Use them to install stuff. [link](https://docs.docker.com/engine/reference/builder/#run)
+        - `CMD` defines the command the Docker image will run by default. [link](https://docs.docker.com/engine/reference/builder/#cmd)
 
     ```Dockerfile
     FROM python:3.9-slim
@@ -101,17 +100,18 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
     CMD ["python", "app.py"]
     ```
 
-    - To run the building of the image, run `docker build -t td ./`
-        - the `-t` is the label and tag of the image.
-        - the `./` specifies the folder which contains the `Dockerfile` to build. You should already be in the said folder.
-    - Make sure the new `td` image was created. What is the size of the image? The command is similar to one used in a previous section.
-    - Run your new image! The command is similar to one used in a previous section.
-    - Docker build work in layers. Try to add dependencies in the `requirements.txt` file. When you rerun the same `build` command, do you notice something in the print output? You should see ` ---> Using cache` appear in particular places, telling you it didn't start the build from scratch.
-        - Useful when you have Dockerfiles with around 100 commands [like the Kaggle/python one](https://github.com/Kaggle/docker-python/blob/main/Dockerfile.tmpl)
+    - To run the building of the image, run `docker build -t td:0.1 ./`
+        - the `-t` is the name (`td`) and tag (`0.1`) of the image.
+        - the `./` specifies the current folder which contains the `Dockerfile` to build. If you're not in the folder, point to the path accordingly.
+    - Make sure the new `td:0.1` image was created. What is the size of the image?
+    - Run your new image and verify the code in `app/app.py` runs correctly.
+    - Docker build work in layers. Try to add dependencies in the `requirements.txt` file. When you rerun the same `build` command, do you notice something in the print output? 
+        - You should see ` ---> Using cache` appear in particular places, telling you it didn't start the build from scratch.
 
 !!! danger "Challenge"
-    - Create a Docker image which copies your `Pyspark` Jupyter notebooks and the `pyspark` + `jupyter` dependencies. When opened, a Jupyter lab server should run, all your Pyspark projects at the root that I can immediately `Run All`. _In theory, all you need to do afterwards is send me the built image_
-        - NB: I tried using [this image](https://hub.docker.com/r/jupyter/pyspark-notebook) but couldn't get to work it out. I managed to install Java 8 in a Python image but it's a bit complicated...so feel free to jump the question if you spend more than 1h building the answer
+    - Create a Docker image which contains a copy of any of your Jupyter notebooks and installs the `jupyterlab` dependency. When the container runs, a Jupyter lab server should run. I should be able to access every notebook at the root.
+    - Mount a folder with Jupyter notebooks into a volume. Check any edit you do on a notebook in the container is stored on your disk.
+        - Instead of copying files into the image, you can bind a folder into a container as a volume. For example `-v $PWD:/tmp/working` will mount the current directory into the `/tmp/working` folder in the container. 
 
 ### c. Your first docker-compose
 
@@ -139,35 +139,37 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
     - In `server/app.py`, create a REST API with [FastAPI](https://fastapi.tiangolo.com/tutorial/first-steps/) so that, when you run `uvicorn --host 0.0.0.0 app:app` locally, you can connect to `http://localhost:8000` and get back `{"message": "Hello World"}`.
 
     ??? abstract "Solution ONLY if you feel stuck"
-        Content of `server/app.py`:
-        ```python
-        from fastapi import FastAPI
+        ??? abstract "Are you really stuck ??"
+            Content of `server/app.py`:
+            ```python
+            from fastapi import FastAPI
 
-        app = FastAPI()
+            app = FastAPI()
 
 
-        @app.get("/")
-        async def root():
-            return {"message": "Hello World"}
-        ```
+            @app.get("/")
+            async def root():
+                return {"message": "Hello World"}
+            ```
 
     - In `server/Dockerfile`, install FastAPI+uvicorn and run the command that runs the server. Use the `Dockerfile` from the previous part as template.
-    - Build your image. Give it a name like `mlops:server`. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser and get your `Hello world`.
+    - Build your image. Give it a name like `mlops-server`. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser and get your `Hello world`.
 
     ??? abstract "Solution ONLY if you feel stuck"
-        Build with `docker build -t mlops:server .` . Run with `docker run -p 8000:8000 --rm mlops:server`. 
-        ```Dockerfile
-        FROM python:3.9-slim
+        ??? abstract "Are you really stuck ??"
+            Build with `docker build -t mlops-server .` . Run with `docker run -p 8000:8000 --rm mlops-server`. 
+            ```Dockerfile
+            FROM python:3.9-slim
 
-        COPY requirements.txt /app/requirements.txt
-        WORKDIR /app 
+            COPY requirements.txt /app/requirements.txt
+            WORKDIR /app 
 
-        RUN pip install -r requirements.txt
+            RUN pip install -r requirements.txt
 
-        COPY app.py app.py
+            COPY app.py app.py
 
-        CMD ["uvicorn", "--host", "0.0.0.0", "app:app"]
-        ```
+            CMD ["uvicorn", "--host", "0.0.0.0", "app:app"]
+            ```
 
 !!! note "Exercise - Using Docker compose to run a server + Mongodb"
     - Add the following code in `docker-compose.yml`. This will start a Mongodb next to your server image:
@@ -180,7 +182,7 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
             image: mongo
 
         server:
-            image: mlops:server
+            image: mlops-server
             build:
                 context: ./server
                 dockerfile: Dockerfile
@@ -189,7 +191,7 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
     ```
 
     - Run the cluster with `docker-compose up`, from the root folder (where `docker-compose.yml` is).
-        - **BEWARE**! only works if your `mlops:server` image has already been built
+        - **BEWARE**! only works if your `mlops-server` image has already been built
         - Do you recognize the Mongo logs? 
     - Close the cluster with `CTRL+C`, and destroy it with `docker-compose down`. A `docker ps -a` should show no containers remaining.
     - Because the image building info is in `docker-compose.yml`, you can rebuild the images immediately with `docker-compose up --build` instead. Try it out.
@@ -203,35 +205,36 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
         - When running in `docker-compose`, the URL to connect to with your `MongoClient` is not `localhost` but `mongo`...the name of the service in the `docker-compose` file!
 
     ??? abstract "Solution ONLY if you feel stuck"
-        My `server/app.py` content:
-        ```python
-        from fastapi import FastAPI
-        from pymongo import MongoClient
+        ??? abstract "Are you really stuck ??"
+            My `server/app.py` content:
+            ```python
+            from fastapi import FastAPI
+            from pymongo import MongoClient
 
-        app = FastAPI()
-        client = MongoClient('mongo', 27017)
-        db = client.test_database
-        collection = db.test_collection
+            app = FastAPI()
+            client = MongoClient('mongo', 27017)
+            db = client.test_database
+            collection = db.test_collection
 
 
-        @app.get("/")
-        async def root():
-            return {"message": "Hello World"}
+            @app.get("/")
+            async def root():
+                return {"message": "Hello World"}
 
-        @app.get("/add/{fruit}")
-        async def add_fruit(fruit: str):
-            id = collection.insert_one({"fruit": fruit}).inserted_id 
-            return {"id": str(id)}
+            @app.get("/add/{fruit}")
+            async def add_fruit(fruit: str):
+                id = collection.insert_one({"fruit": fruit}).inserted_id 
+                return {"id": str(id)}
 
-        @app.get("/list")
-        async def list_fruits():
-            return {"results": list(collection.find({}, {"_id": False}))}
-        ```
+            @app.get("/list")
+            async def list_fruits():
+                return {"results": list(collection.find({}, {"_id": False}))}
+            ```
 
 !!! danger "Challenge"
     - Build a Streamlit or Gradio or Dash or Shiny or whatever app in `client/app.py` with a text input to write down a fruit and a button to request the `http://server:8000/add/<fruit>`.
     - Then get back the list of all fruits currently in Mongo by hitting `http://server:8000/list`. 
-    - Implement `client/Dockerfile`, build it as `mlops:client`. Make sure you can run it without `docker-compose`. 
+    - Implement `client/Dockerfile`, build it as `mlops-client`. Make sure you can run it without `docker-compose`. 
     - Add the client app into `docker-compose.yml`.
         - If all is well, in your 3-tier architecture, Streamlit/Gradio/Dash/... is only hitting FastAPI and only FastAPI is hitting MongoDB. That way you can add authentication or security measures at FastAPI level, which would be harder to do if the client immediately hit MongoDB.
 
