@@ -290,9 +290,10 @@ We are going to add a MongoDB database next to our API, which is used to store J
 
 ### e. Adding the User Interface layer with Streamlit
 
-!!! warning "Challenge - Building our first Dockerized Fullstack web service"
-    - Build a [local Streamlit](https://docs.streamlit.io/) _(or Gradio or Dash or Shiny or whatever)_ app in `client/app.py` with a text input to write down a fruit and a button to request the `http://server:8000/add/<fruit>`. 
-        - To run a Streamlit app, `streamlit run app.py`
+!!! note "Building a Streamlit UI connected to the API"
+    - Make sure your docker-compose FastAPI + MongoDB cluster from the previous section is running.
+    - Build a local [Streamlit](https://docs.streamlit.io/) _(or Gradio or Dash or Shiny or whatever)_ app in `client/app.py` with a text input to write down a fruit and a button to request the `http://server:8000/add/<fruit>`. 
+        - The command to run a Streamlit app from your conda environment is `streamlit run app.py`
         - Here is some code to put in `client/app.py` to react to a button click:
 
     ```python
@@ -302,13 +303,21 @@ We are going to add a MongoDB database next to our API, which is used to store J
     button_clicked = st.button("Click me")
     
     if button_clicked:
+        st.write("It worked")
         st.balloons()
     ```
 
-    - Get back the list of all fruits currently in Mongo by hitting `http://localhost:8000/list`.
-    - Implement `client/Dockerfile`, build it as `mlops-client`. Make sure you can run it without `docker-compose`. 
-    - Add the client app into `docker-compose.yml`.
-        - If all is well, in your 3-tier architecture, Streamlit/Gradio/Dash/... is only hitting FastAPI and only FastAPI is hitting MongoDB. That way you can add authentication or security measures at FastAPI level, which would be harder to do if the client immediately hit MongoDB.
+    - Get back the list of all fruits currently in Mongo from the API by hitting `http://localhost:8000/list` on clicking from another button.
+
+!!! warning "Challenge - Building our first Dockerized Fullstack web service"
+    - Implement `client/Dockerfile`, build it as `mlops-client`. Make sure you can properly run it without `docker compose`
+    - Add the Streamlit UI container run to `docker-compose.yml`.
+        - Don't forget to change the URL of your `MongoClient`
+    - Restart your `docker-compose` cluster.
+        - If all is well, in your 3-tier architecture, Streamlit is only hitting FastAPI and only FastAPI is hitting MongoDB. 
+        - That way you can add authentication or security measures at FastAPI level, which would be harder to do if the client immediately hit MongoDB.
+
+![](./images/mlops-three-tier-architecture.png)
 
 ## 2. A full-stack Dockerized ML project
 
@@ -319,11 +328,11 @@ Pick up a classification training dataset, like Iris or Penguins. The goal is to
 !!! warning "Challenge"
     - Use the previous challenge as template to create the above architecture, removing the `mongo` part and keeping `client` + `server` folders.
     - The client should be a Streamlit _(or Gradio or Dash or Shiny or whatever)_, exposing all feature columns of the dataset we want to use to make a prediction.
-    - The server should be an API, like FastAPI or Flask, which exposes a POST verb `predict`. If you send `POST /predict` with a body containing the values of the features, like `{"sepal_length": 42, "petal_length": 34...}` it should return the predicted class from a pretrained model.
+    - The server should be a FastAPI API, which exposes a POST verb `predict`. If you send `POST /predict` with a body containing the values of the features, like `{"sepal_length": 42, "petal_length": 34...}` it should return the predicted class from a pretrained model.
     - The client should request the `http://server:8000/predict` with the features in the body to get back a class to display.
     - The `model.pkl` is a model you will train on the dataset and saved (as pickle or using joblib) before building the Docker image in a `train.py` script, and then copy it inside the Docker image. When the Docker image runs, the model should be loaded back in the API before any request.
 
-Good Luck, Have Fun
+Good Luck, Have Fun!
 
 ## 3. Github & CI/CD
 
