@@ -6,9 +6,9 @@ Make sure you have the following commands working on your workstation:
 
 - conda
 - docker 
-- docker-compose
+- docker compose
 
-## 1. Docker & docker compose
+## 1. Docker quick start
 
 ### a. Your first Docker commands
 
@@ -121,12 +121,13 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
     - Mount a folder with Jupyter notebooks into a volume using the `-v <current directory>:/tmp/working` flag. Check any edit you do on a notebook in the container is stored on your disk.
         - The `<current directory>` should be replaced by `%cd%` in Windows Command line, `${PWD}` in Powershell and `$(pwd)` in WSL2.
 
+## 2. Running multiple microservices together with docker compose
 
 With `docker-compose`, you are able to run a group of containers altogether. In this tutorial, we will setup a 3-tier architecture with Docker compose, by running a Docker container for each tier.
 
 ![](./images/mlops-three-tier-architecture.png)
 
-### c. Building the FastAPI Docker image
+### a. Developing the FastAPI API locally
 
 !!! note "Exercise - Architecture"
     - In the `mlops-td` folder, build the following folder architecture
@@ -157,9 +158,10 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
 
 !!! note "Exercise - Build a Python REST API with FastAPI (a Flask alternative)"
     - In `server/app.py`, create a REST API with [FastAPI](https://fastapi.tiangolo.com/tutorial/first-steps/) so that:
-        - when you run `uvicorn --reload --host 0.0.0.0 app:app` locally, you can connect to `http://localhost:8000` and get back `{"message": "Hello World"}`. 
-            - Refer to the [Quick Start](https://fastapi.tiangolo.com/#example) to discover how to configure the API.
+        - when you run `uvicorn --reload --host 0.0.0.0 app:app` locally, from the `server` folder, you can connect to `http://localhost:8000` and get back `{"message": "Hello World"}`. 
         - when you connect to `http://localhost:8000/docs`, you can access the documentation page of your API like in the image below.
+    
+    Refer to the [Quick Start](https://fastapi.tiangolo.com/#example) to discover how to implement the API.
 
     ??? abstract "Solution ONLY if you feel stuck"
         ??? abstract "Are you really stuck :thinking: ?? Give it one last try :muscle:"
@@ -180,6 +182,8 @@ You should have the documentation of your FastAPI server running locally on `htt
 You can test any part of the API by clicking on the `Try it out button` on the top right of each resource:
 
 ![](./images/mlops-swagger-ui-simple.png)
+
+### b. Building the FastAPI Docker image
 
 !!! note "Exercise - Run the FastAPI API in a Docker container"
     - In `server/Dockerfile`, install the dependencies from the local Conda environment.
@@ -207,7 +211,7 @@ You can test any part of the API by clicking on the `Try it out button` on the t
 
 ---
 
-### d. Connecting the FastAPI Docker container to a Mongo container
+### c. Connecting the FastAPI Docker container to a Mongo container
 
 We are going to add a MongoDB database next to our API, which is used to store JSON objects.
 
@@ -224,8 +228,9 @@ We are going to add a MongoDB database next to our API, which is used to store J
     db = client.test_database
     collection = db.test_collection
 
-    id = collection.insert_one({"fruit": fruit}).inserted_id
-    list(collection.find({}, {"_id": False}))
+    def add_list_fruits(fruit):
+        id = collection.insert_one({"fruit": fruit}).inserted_id
+        return list(collection.find({}, {"_id": False}))
     ```
 
     - Create a new `GET` method so that if you connect to `/add/mango` it adds `{fruit: mango}` to mongodb, and another `GET` method `/list` that returns all fruits in MongoDB.
@@ -288,7 +293,11 @@ We are going to add a MongoDB database next to our API, which is used to store J
     - Because the image building info is in `docker-compose.yml`, you can rebuild the images immediately with `docker-compose up --build` instead. Try it out.
     - Connect to your API with `http://localhost:8000/docs` running in a container. Make sure you can still add and get objects from MongoDB through the API. 
 
-### e. Adding the User Interface layer with Streamlit
+### d. Adding the User Interface layer with Streamlit
+
+Instead of connecting to the FastAPI documentation page to interact with it, let's create a simple Streamlit UI to interact with the API.
+
+![](./images/mlops-three-tier-simple.png)
 
 !!! note "Building a Streamlit UI connected to the API"
     - Make sure your docker-compose FastAPI + MongoDB cluster from the previous section is running.
@@ -319,22 +328,41 @@ We are going to add a MongoDB database next to our API, which is used to store J
 
 ![](./images/mlops-three-tier-architecture.png)
 
-## 2. A full-stack Dockerized ML project
+## 3. A full-stack Dockerized ML project
 
 Pick up a classification training dataset, like Iris or Penguins. The goal is to build a fully functional `docker-compose` app that provides an UI to do predictions on a pretrained ML model.
 
 ![](./images/mlops-architecture.png)
 
 !!! warning "Challenge"
-    - Use the previous challenge as template to create the above architecture, removing the `mongo` part and keeping `client` + `server` folders.
+    - Create a `server/train.py` script, that trains a scikit-learn model over the [Iris](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html) or any other classification dataset (as long as it doesn't have too many features). When you run it locally with `python train.py`, it should create a `model.pkl` file (as pickle or using joblib). This pickled model should then later be copied into the FastAPI Docker image. 
     - The client should be a Streamlit _(or Gradio or Dash or Shiny or whatever)_, exposing all feature columns of the dataset we want to use to make a prediction.
-    - The server should be a FastAPI API, which exposes a POST verb `predict`. If you send `POST /predict` with a body containing the values of the features, like `{"sepal_length": 42, "petal_length": 34...}` it should return the predicted class from a pretrained model.
+    - The server should be a FastAPI API, which exposes a POST verb `predict`. If you send `POST /predict` with a body containing the values of the features, like `{"sepal_length": 42, "petal_length": 34...}` it should return the predicted class from a pretrained model. Following is an example of reacting to a POST request in FastAPI:
+
+    ```python
+    from fastapi import FastAPI
+    from fastapi.encoders import jsonable_encoder
+    from pydantic import BaseModel
+
+    class Item(BaseModel):
+        sepal_length: float
+        sepal_width: float
+        petal_length: float
+        petal_width: float
+
+    app = FastAPI()
+
+    @app.post("/predict")
+    def predict(item: Item):
+        item_data = jsonable_encoder(item)
+        return item_data
+    ```
+
     - The client should request the `http://server:8000/predict` with the features in the body to get back a class to display.
-    - The `model.pkl` is a model you will train on the dataset and saved (as pickle or using joblib) before building the Docker image in a `train.py` script, and then copy it inside the Docker image. When the Docker image runs, the model should be loaded back in the API before any request.
 
 Good Luck, Have Fun!
 
-## 3. Github & CI/CD
+## 4. Github & CI/CD
 
 TODO
 
@@ -342,7 +370,7 @@ TODO
 
 The following exercises are optional bonuses if you want to go the full MLOps route.
 
-## 4. Adding MLFlow
+## 5. Adding MLFlow
 
 Using the `ghcr.io/mlflow/mlflow` Docker image, you can start a MLFlow Model Registry, and send Scikit-Learn models there with associated metrics, for example if you start a MLFlow Server with `docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite`:
 
@@ -393,7 +421,7 @@ You should be able to visualize you model on `http://localhost:5000`.
 You can now decide to update models from the client, or detect data drift by storing the latest instances server side/in a database and using [whylabs](https://github.com/whylabs/whylogs) to detect a drift and train a new model.
 
 
-## 5. Adding Prefect
+## 6. Adding Prefect
 
 Instead of running `train.py` to retrain a model on demand, you can schedule the run using [Prefect](https://www.prefect.io/) or [Airflow](https://airflow.apache.org/)
 
