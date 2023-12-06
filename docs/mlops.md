@@ -237,6 +237,8 @@ We are going to add a MongoDB database next to our API, which is used to store J
         - Use [the Path params doc](https://fastapi.tiangolo.com/tutorial/path-params/) to get started
     - Run your FastAPI server locally. From `http://localhost:8000/docs`, you can try out the API examples and check that data is returned correctly.
 
+    ![](./images/mlops-mongo-fastapi-local.png)
+
     ??? abstract "Solution ONLY if you feel stuck"
         ??? abstract "Are you really stuck :thinking: ?? Give it one last try :muscle:"
             Run MongoDB with `docker run -it --rm --name some-mongo -p 27017:27017 mongo:4`.
@@ -291,7 +293,9 @@ We are going to add a MongoDB database next to our API, which is used to store J
     - In `server/app.py`, change `client = MongoClient('localhost', 27017)` into `client = MongoClient('mongo', 27017)`. 
         - It is docker-compose that redirects the `mongo` URL/service into the `mongo` container.
     - Because the image building info is in `docker-compose.yml`, you can rebuild the images immediately with `docker-compose up --build` instead. Try it out.
-    - Connect to your API with `http://localhost:8000/docs` running in a container. Make sure you can still add and get objects from MongoDB through the API. 
+    - Connect to your API with `http://localhost:8000/docs` running in a container. Make sure you can still add and get objects from MongoDB through the API.
+
+    ![](./images/mlops-mongo-fastapi-docker.png)
 
 ### d. Adding the User Interface layer with Streamlit
 
@@ -363,6 +367,133 @@ Pick up a classification training dataset, like Iris or Penguins. The goal is to
 Good Luck, Have Fun!
 
 ## 4. Github & CI/CD
+
+We will push the MLOps images to a Github project so anyone can download them.
+
+### a. Create a Github repository for your MLOps project
+
+!!! note "Exercise - Create a new Github repo"
+    - Create a new `mlops` repo with a `README.md` on your Github profile (or any random file). 
+        - You should see a new `Packages` in the bottom right of the project
+        - If you can't see it, head to the `Settings` gear icon next to the `About` section and check the `Packages` option.
+
+    ![](./images/mlops-gh-create-repo.png)
+
+    - Click on the `Publish your first package` option. We will be using the `Containers` option.
+
+    ![](./images/mlops-gh-get-started.png)
+
+    - Can you find the pricing for the Containers service?
+
+### b. Authenticating to Github using a personal access token
+
+To upload an image to the Github Packages, you will need to authenticate from Command line using a [personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) before you can push Docker images to the Github project. 
+
+!!! warning "Personal Access Token are secrets"
+    A personal access token is different than your Github password, and while you can revoke them if you leak them online, treat them with the same importance as a password so **handle it with care**.
+
+!!! note "Exercise - Create a personal access token"
+    * Follow all instructions in [this tutorial](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic).
+        * Scope of the token should have at least **write:packages** and **delete:packages** 
+        * Copy your token in a safe space, you'll have to copy it in the command line when required.
+        * Careful, anyone who gets this personal access token can access any of your public/private repositories, handle with care.
+
+    - In the following image, I have 2 personal token with different access properties. I can delete any whenever I want
+    ![](./images/mlops-gh-token-list.png)
+
+### c. Push a Docker image to the Github project
+
+To push a Docker image to Github, it needs to follow the following name convention: `ghcr.io/NAMESPACE/IMAGE_NAME:latest`. You will need to rename your images.
+
+For example, I would need to rename my image to `ghcr.io/andfanilo/mlops:latest`, because
+
+- `andfanilo` is my profile name, so it's the `NAMESPACE`
+- `mlops` is the name of my repo, so it's `IMAGE_NAME`
+- `latest` is the default tag. You can put any tag like `v0.1` but stick to `latest` for now.
+
+The following exercise involves the `git` command, make sure you use `git bash` or install `git` in a conda environment.
+
+!!! note "Exercise - Pushing an image to Github"
+    - Run `docker images`
+
+    ```sh
+    REPOSITORY     TAG       IMAGE ID       CREATED       SIZE
+    mlops-client   latest    855e076c7e32   6 days ago    583MB
+    mlops-server   latest    efac786ed274   6 days ago    464MB
+    mongo          latest    021b676f1558   3 weeks ago   757MB
+    ```
+
+    !!! warning "Github Packages free tier"
+        If you remember from the [pricing page](https://github.com/settings/billing/summary) you are limited to a monthly:
+
+        - 500Mb of Packages storage
+        - 1 Gb of transfer out
+
+        Our docker images are 500Mb, way too large for the current free tier. There are ways to [reduce the image size](https://pythonspeed.com/articles/smaller-docker-images/), but honestly we won't be  able to squeeze our Streamlit/FastAPI images to 500Mb, even if the price for hosting is actally [pretty low](https://github.com/pricing/calculator?feature=packages). Let's use a very small image to train for now.
+
+    - Pull the docker `hello-world` image, check out its size is around 10Kb.
+
+    ```sh
+    $ docker images
+    REPOSITORY     TAG       IMAGE ID       CREATED       SIZE
+    mlops-client   latest    855e076c7e32   6 days ago    583MB
+    mlops-server   latest    efac786ed274   6 days ago    464MB
+    mongo          latest    021b676f1558   3 weeks ago   757MB
+    hello-world    latest    9c7a54a9a43c   7 months ago    13.3kB
+    ```
+
+    - Rename the `hello-world` image to comply with the Github Packages URL: `docker image tag hello-world:latest ghcr.io/your-name/mlops:latest`
+
+    ```sh
+    $ docker images
+    REPOSITORY                TAG       IMAGE ID       CREATED          SIZE
+    mlops-client              latest    4f17fd22a93b   16 minutes ago   488MB
+    mlops-server              latest    efac786ed274   6 days ago       464MB
+    mongo                     latest    021b676f1558   3 weeks ago      757MB
+    hello-world               latest    9c7a54a9a43c   7 months ago     13.3kB
+    ghcr.io/andfanilo/mlops   latest    9c7a54a9a43c   7 months ago     13.3kB
+    ```
+
+    - Try to push the `ghcr.io/your-name/mlops:latest` image to Github: `docker push ghcr.io/your-name/mlops:latest`
+
+    ```sh
+    $ docker push ghcr.io/andfanilo/mlops:latest
+    The push refers to repository [ghcr.io/andfanilo/mlops]
+    01bb4fce3eb1: Preparing
+    unauthorized: unauthenticated: User cannot be authenticated with the token provided.
+    ```
+
+    - To authenticate with your personal access token in place of password: `docker login ghcr.io -u GITHUB_USERNAME`
+        - Take note that when you enter letters or paste in the `Password:` field, no stars will appear to show a character count. This is normal, proceed.
+
+    ```sh
+    $ docker login ghcr.io -u andfanilo
+    Password:
+    WARNING! Your password will be stored unencrypted in /home/docker/.docker/config.json.
+    Configure a credential helper to remove this warning. See
+    https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+    Login Succeeded
+    ```
+
+    - Try to push again
+
+    ```sh
+    $ docker push ghcr.io/andfanilo/mlops:latest
+    The push refers to repository [ghcr.io/andfanilo/mlops]
+    01bb4fce3eb1: Pushed
+    latest: digest: sha256:7e9b6e7ba2842c91cf49f3e214d04a7a496f8214356f41d81a6e6dcad11f11e3 size: 525
+    ```
+
+    - Though the Docker image has been pushed to you Github project, it is still private and invisible. You can find it on your profile page: https://github.com/your-profile?tab=packages. Connect it to your `mlops` repository through [this tutorial](https://docs.github.com/en/packages/learn-github-packages/connecting-a-repository-to-a-package). A Docker package should finally appear on your repository.
+
+    ![](./images/mlops-gh-list-docker.png)
+
+    - Ask a friend to download your image!
+
+There are other Docker registries to push images to, like [Docker Hub (which has a better free tier)](https://hub.docker.com/), [Gitlab](https://gitlab.com/) and [Quay.io](https://quay.io/). Every Cloud Provider (AWS/Azure/GCP) also have their dedicated container registry per project, you'll be expected to push images there in customer projects.
+
+### d. Updating the image with Github Continuous integration
 
 TODO
 
