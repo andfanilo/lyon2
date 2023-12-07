@@ -526,7 +526,13 @@ You are now able to host up-to-date images on Github.
 
 ## 5. Deploying to Huggingface Spaces
 
-TODO
+The Hugging Face Hub is a platform with over 350k models, 75k datasets, and 150k demo apps (Spaces), all open source and publicly available, in an online platform where people can easily collaborate and build ML together. The Hub works as a central place where anyone can explore, experiment, collaborate, and build technology with Machine Learning.
+
+Hugging Face Spaces offer a simple way to host ML demo apps directly on your profile or your organization’s profile. It's the perfect platform to deploy small ML apps in Streamlit, Gradio or Docker. All CI/CD is preconfigured on Huggingface Spaces, any code change you push will automatically rebuild and redeploy the app online.
+
+!!! warning "Exercise - Deploy a Docker image on Huggingface Spaces"
+    - Create an account on [HuggingFace](https://huggingface.co/)
+    - Follow the Docker Spaces quick start: <https://huggingface.co/docs/hub/spaces-sdks-docker-first-demo>
 
 ## 6. Enhancing the Docker Compose for Continuous Deployment
 
