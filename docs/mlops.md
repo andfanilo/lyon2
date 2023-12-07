@@ -370,6 +370,10 @@ Good Luck, Have Fun :tada:!
 
 ## ===== Bonus Challenges =====
 
+The following exercises are optional bonuses if you want to go the full MLOps route. 
+
+You can do them in any order.
+
 ## 4. Github & CI/CD
 
 We can push the MLOps images to a Github project so anyone can download them.
@@ -519,10 +523,6 @@ In our MLOps tutorial, CI/CD refers to the continuous integration and delivery o
     - Push a new commit, wait for the image build, then redownload the Docker image locally an try running it.
 
 You are now able to host up-to-date images on Github.
-
----
-
-The following exercises are optional bonuses if you want to go the full MLOps route.
 
 ## 5. Deploying to Huggingface Spaces
 
