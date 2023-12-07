@@ -368,6 +368,8 @@ Pick up a classification training dataset, like Iris or Penguins. The goal is to
 
 Good Luck, Have Fun :tada:!
 
+## ===== Bonus Challenges =====
+
 ## 4. Github & CI/CD
 
 We can push the MLOps images to a Github project so anyone can download them.
@@ -509,20 +511,26 @@ In our MLOps tutorial, CI/CD refers to the continuous integration and delivery o
 !!! note "Exercise - Github Actions quick start"
     Run through the Github Actions quick start on your `mlops` Github project: <https://docs.github.com/en/actions/quickstart>
 
-!!! warning "Challenge - Rebuild the hello-world image at every commit"
+!!! warning "Challenge - Rebuild the `hello-world` image at every commit"
     - Create a new Dockerfile in the `mlops` project. This Dockerfile should use the `hello-world` base image but change the `CMD` to print something (like an environment variable)
-    - Edit the `.github/workgflows/github-actions-demo.yml` (or however you named it) to build the new image and push it to the project's container registry automatically at every commit push.
-    - Push a new commit, then redownload the Docker image locally an try running it.
+    - Edit the `.github/workgflows/github-actions-demo.yml` (or however you named it) to build the new image and push it to the project's container registry automatically at every commit push. 
+        - [This link should teach you how to push](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages) 
+        - and [this one will help you configure Docker login to your Github project](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository).
+    - Push a new commit, wait for the image build, then redownload the Docker image locally an try running it.
 
 You are now able to host up-to-date images on Github.
 
 ---
 
-## ===== Bonus Challenges =====
-
 The following exercises are optional bonuses if you want to go the full MLOps route.
 
-## 5. Adding MLFlow
+## 5. Deploying to Huggingface Spaces
+
+TODO
+
+## 6. Enhancing the Docker Compose for Continuous Deployment
+
+### a. Adding MLFlow
 
 Using the `ghcr.io/mlflow/mlflow` Docker image, you can start a MLFlow Model Registry, and send Scikit-Learn models there with associated metrics, for example if you start a MLFlow Server with `docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite`:
 
@@ -573,7 +581,7 @@ You should be able to visualize you model on `http://localhost:5000`.
 You can now decide to update models from the client, or detect data drift by storing the latest instances server side/in a database and using [whylabs](https://github.com/whylabs/whylogs) to detect a drift and train a new model.
 
 
-## 6. Adding Prefect
+### b. Adding Prefect
 
 Instead of running `train.py` to retrain a model on demand, you can schedule the run using [Prefect](https://www.prefect.io/) or [Airflow](https://airflow.apache.org/)
 
