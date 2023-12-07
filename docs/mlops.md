@@ -363,12 +363,14 @@ Pick up a classification training dataset, like Iris or Penguins. The goal is to
     ```
 
     - The client should request the `http://server:8000/predict` with the features in the body to get back a class to display.
+    - Add a `README.md` to your project to describe how to clone & run the project. 
+        - Normally, I should just need a `docker compose up --build` to build and run the Docker image.
 
-Good Luck, Have Fun!
+Good Luck, Have Fun :tada:!
 
 ## 4. Github & CI/CD
 
-We will push the MLOps images to a Github project so anyone can download them.
+We can push the MLOps images to a Github project so anyone can download them.
 
 ### a. Create a Github repository for your MLOps project
 
@@ -485,7 +487,7 @@ The following exercise involves the `git` command, make sure you use `git bash` 
     latest: digest: sha256:7e9b6e7ba2842c91cf49f3e214d04a7a496f8214356f41d81a6e6dcad11f11e3 size: 525
     ```
 
-    - Though the Docker image has been pushed to you Github project, it is still private and invisible. You can find it on your profile page: https://github.com/your-profile?tab=packages. Connect it to your `mlops` repository through [this tutorial](https://docs.github.com/en/packages/learn-github-packages/connecting-a-repository-to-a-package). A Docker package should finally appear on your repository.
+    - Though the Docker image has been pushed to you Github project, it is still private and invisible. You can find it on your profile page: <https://github.com/your-profile?tab=packages>. Connect it to your `mlops` repository through [this tutorial](https://docs.github.com/en/packages/learn-github-packages/connecting-a-repository-to-a-package). A Docker package should finally appear on your repository.
 
     ![](./images/mlops-gh-list-docker.png)
 
@@ -493,11 +495,30 @@ The following exercise involves the `git` command, make sure you use `git bash` 
 
 There are other Docker registries to push images to, like [Docker Hub (which has a better free tier)](https://hub.docker.com/), [Gitlab](https://gitlab.com/) and [Quay.io](https://quay.io/). Every Cloud Provider (AWS/Azure/GCP) also have their dedicated container registry per project, you'll be expected to push images there in customer projects.
 
-### d. Updating the image with Github Continuous integration
+### d. Continuous integration with Github Actions 
 
-TODO
+CI/CD is an acronym that stands for Continuous Integration (CI) and Continuous Deployment or Continuous Delivery (CD). It's a methodology that modern software development teams use to deliver code changes more frequently and reliably.
 
-## === Bonus Challenges ===
+![](./images/mlops-cicd.png)
+
+* CI: Each code change triggers an automated build and testing sequence. Any time to push commits to Github, a new Docker image with the changes should be built and stored in Github Packages
+* CD: After building a new image, automatically deploy every change that passes the build and test stages to a production environment
+
+In our MLOps tutorial, CI/CD refers to the continuous integration and delivery of up-to-date Machine Learning APIs.
+
+!!! note "Exercise - Github Actions quick start"
+    Run through the Github Actions quick start on your `mlops` Github project: <https://docs.github.com/en/actions/quickstart>
+
+!!! warning "Challenge - Rebuild the hello-world image at every commit"
+    - Create a new Dockerfile in the `mlops` project. This Dockerfile should use the `hello-world` base image but change the `CMD` to print something (like an environment variable)
+    - Edit the `.github/workgflows/github-actions-demo.yml` (or however you named it) to build the new image and push it to the project's container registry automatically at every commit push.
+    - Push a new commit, then redownload the Docker image locally an try running it.
+
+You are now able to host up-to-date images on Github.
+
+---
+
+## ===== Bonus Challenges =====
 
 The following exercises are optional bonuses if you want to go the full MLOps route.
 
