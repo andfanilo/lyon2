@@ -50,10 +50,10 @@ Most modern libraries have a dedicated Docker image maintained by the community.
 What if you want to use a Python image but don't want to use its Python shell?
 
 !!! note "Exercise - Changing the CMD of the image"
-    - In an Anaconda prompt, run `python -m http.server 9999`. In a browser, connect to `localhost:9999`. 
+    - In an Anaconda prompt, run `python -m http.server 9999`. In a browser, connect to <http://localhost:9999>. 
         - What is the `http.server` program in Python?
         - Close it with `CTRL + C`.
-    - Let's run this command in a Docker container! Run `docker run -it --rm -p 9999:9999 python:3.9-slim python -m http.server 9999`. connect to `localhost:9999` in your browser.
+    - Let's run this command in a Docker container! Run `docker run -it --rm -p 9999:9999 python:3.9-slim python -m http.server 9999`. connect to <http://localhost:9999> in your browser.
     - What is the `-p 9999:9999` flag? 
     - How do you connect to the http server if you run the command with `-p 7777:9999` instead?
 
@@ -158,8 +158,8 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
 
 !!! note "Exercise - Build a Python REST API with FastAPI (a Flask alternative)"
     - In `server/app.py`, create a REST API with [FastAPI](https://fastapi.tiangolo.com/tutorial/first-steps/) so that:
-        - when you run `uvicorn --reload --host 0.0.0.0 app:app` locally, from the `server` folder, you can connect to `http://localhost:8000` and get back `{"message": "Hello World"}`. 
-        - when you connect to `http://localhost:8000/docs`, you can access the documentation page of your API like in the image below.
+        - when you run `uvicorn --reload --host 0.0.0.0 app:app` locally, from the `server` folder, you can connect to <http://localhost:8000> and get back `{"message": "Hello World"}`. 
+        - when you connect to <http://localhost:8000/docs>, you can access the documentation page of your API like in the image below.
     
     Refer to the [Quick Start](https://fastapi.tiangolo.com/#example) to discover how to implement the API.
 
@@ -177,7 +177,7 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
                 return {"message": "Hello World"}
             ```
 
-You should have the documentation of your FastAPI server running locally on `http://localhost:8000/docs`.
+You should have the documentation of your FastAPI server running locally on <http://localhost:8000/docs>.
 
 You can test any part of the API by clicking on the `Try it out button` on the top right of each resource:
 
@@ -189,7 +189,7 @@ You can test any part of the API by clicking on the `Try it out button` on the t
     - In `server/Dockerfile`, install the dependencies from the local Conda environment.
     - In `server/Dockerfile`, run the command that runs the Uvicorn server through `CMD`. Use the `Dockerfile` from the previous part as template.
         - Do note that `"cmd --reload -h 127.0.0.1 app"` and [`"cmd"`, `"--reload"`, `"-h"`, `"127.0.0.1"`, `"app"`] are the same.
-    - Build your image. Give it a label like `mlops-server`. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser on `http://localhost:8000` and get your `Hello world`.
+    - Build your image. Give it a label like `mlops-server`. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser on <http://localhost:8000> and get your `Hello world`.
 
     ??? abstract "Solution ONLY if you feel stuck"
         ??? abstract "Are you really stuck :thinking: ?? Give it one last try :muscle:"
@@ -235,7 +235,7 @@ We are going to add a MongoDB database next to our API, which is used to store J
 
     - Create a new `GET` method so that if you connect to `/add/mango` it adds `{fruit: mango}` to mongodb, and another `GET` method `/list` that returns all fruits in MongoDB.
         - Use [the Path params doc](https://fastapi.tiangolo.com/tutorial/path-params/) to get started
-    - Run your FastAPI server locally. From `http://localhost:8000/docs`, you can try out the API examples and check that data is returned correctly.
+    - Run your FastAPI server locally. From <http://localhost:8000/docs>, you can try out the API examples and check that data is returned correctly.
 
     ![](./images/mlops-mongo-fastapi-local.png)
 
@@ -293,7 +293,7 @@ We are going to add a MongoDB database next to our API, which is used to store J
     - In `server/app.py`, change `client = MongoClient('localhost', 27017)` into `client = MongoClient('mongo', 27017)`. 
         - It is docker-compose that redirects the `mongo` URL/service into the `mongo` container.
     - Because the image building info is in `docker-compose.yml`, you can rebuild the images immediately with `docker-compose up --build` instead. Try it out.
-    - Connect to your API with `http://localhost:8000/docs` running in a container. Make sure you can still add and get objects from MongoDB through the API.
+    - Connect to your API with <http://localhost:8000/docs> running in a container. Make sure you can still add and get objects from MongoDB through the API.
 
     ![](./images/mlops-mongo-fastapi-docker.png)
 
@@ -320,7 +320,7 @@ Instead of connecting to the FastAPI documentation page to interact with it, let
         st.balloons()
     ```
 
-    - Get back the list of all fruits currently in Mongo from the API by hitting `http://localhost:8000/list` on clicking from another button.
+    - Get back the list of all fruits currently in Mongo from the API by hitting <http://localhost:8000/list> on clicking from another button.
 
 !!! warning "Challenge - Building our first Dockerized Fullstack web service"
     - Implement `client/Dockerfile`, build it as `mlops-client`. Make sure you can properly run it without `docker compose`
@@ -530,15 +530,28 @@ The Hugging Face Hub is a platform with over 350k models, 75k datasets, and 150k
 
 Hugging Face Spaces offer a simple way to host ML demo apps directly on your profile or your organization’s profile. It's the perfect platform to deploy small ML apps in Streamlit, Gradio or Docker. All CI/CD is preconfigured on Huggingface Spaces, any code change you push will automatically rebuild and redeploy the app online.
 
-!!! warning "Exercise - Deploy a Docker image on Huggingface Spaces"
+![](./images/mlops-hf-spaces.png)
+
+!!! danger "Challenge - Deploy a Docker image on Huggingface Spaces"
     - Create an account on [HuggingFace](https://huggingface.co/)
     - Follow the Docker Spaces quick start: <https://huggingface.co/docs/hub/spaces-sdks-docker-first-demo>
+    - Create a new project for your `mlops-server` FastAPI part and deploy it on Huggingface Spaces. Your local Streamlit app should be able to use it for predictions.
 
 ## 6. Enhancing the Docker Compose for Continuous Deployment
 
+We can use a MLOps platform to:
+
+- track training experiments
+- store and evaluate models in a registry for reuse
+- package models into APIs and Docker images
+
+Popular platforms are [MLFlow](https://mlflow.org/), [Neptune](https://neptune.ai/) and [Weights & Biases](https://wandb.ai/).
+
 ### a. Adding MLFlow
 
-Using the `ghcr.io/mlflow/mlflow` Docker image, you can start a MLFlow Model Registry, and send Scikit-Learn models there with associated metrics, for example if you start a MLFlow Server with `docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite`:
+Using the `ghcr.io/mlflow/mlflow` Docker image, you can start a MLFlow Model Registry, and send Scikit-Learn models there with associated metrics.
+
+For example if you start a MLFlow Server with `docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite`, you can use the following code to train a model and push it to the MLFlow Server with its evaluation metrics:
 
 ```python
 import numpy as np
@@ -570,7 +583,7 @@ with mlflow.start_run():
     mlflow.sklearn.log_model(lr, "model", registered_model_name="ElasticnetWineModel") 
 ```
 
-You should be able to visualize you model on `http://localhost:5000`.
+You should be able to visualize you model on the dashboard <http://localhost:5000>.
 
 !!! danger "Challenge"
     - Use the previous challenge as template to create the above architecture, adding a MLFlow service in `docker-compose`. You now have a `client` Streamlit, `FastAPI` server and `MLFlow` backend.
@@ -589,10 +602,10 @@ You can now decide to update models from the client, or detect data drift by sto
 
 ### b. Adding Prefect
 
-Instead of running `train.py` to retrain a model on demand, you can schedule the run using [Prefect](https://www.prefect.io/) or [Airflow](https://airflow.apache.org/)
+Instead of running `train.py` to retrain a model on demand, you can schedule the run using [Prefect](https://www.prefect.io/), [Dagster](https://dagster.io/) or [Airflow](https://airflow.apache.org/)
 
 !!! danger "Challenge"
-    - Locally, use Prefect or Airflow to schedule a `train.py` run every 5 minuts.
+    - Locally, use Prefect to schedule a `train.py` run every 5 minutes.
         - Visualize all runs in their respective UIs.
     - Build a Docker image which will contain your Prefect/Airflow and add it to `docker-compose.yml`. In the end you should have the following architecture
 
