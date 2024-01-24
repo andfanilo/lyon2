@@ -1,3 +1,5 @@
-# TD2 - Introduction to Spark
+# TD3 - Introduction to Spark
 
-Link: https://github.com/andfanilo/pyspark-tutorial
+Link to tutorial: <https://github.com/andfanilo/pyspark-tutorial>
+
+![](./images/spark-cover.jpg)
