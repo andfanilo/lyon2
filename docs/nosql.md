@@ -1,3 +1,5 @@
-# TD 3 - Exploring NoSQL
+# TD 2 - Exploring NoSQL
 
-Link: https://github.com/andfanilo/lyon2-nosql
+Link to tutorial: <https://github.com/andfanilo/lyon2-nosql>
+
+![](./images/nosql-cover.jpg)

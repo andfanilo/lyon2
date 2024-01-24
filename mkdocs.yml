@@ -22,5 +22,6 @@ nav:
   - Overview: index.md
   - 0 - Prerequisites: prerequisites.md
   - 1 - MLOps: mlops.md
+  - 2 - NoSQL: nosql.md
 
 copyright: Copyright &copy; 2023 Fanilo ANDRIANASOLO
