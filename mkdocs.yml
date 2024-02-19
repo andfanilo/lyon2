@@ -24,5 +24,6 @@ nav:
   - 1 - MLOps: mlops.md
   - 2 - NoSQL: nosql.md
   - 3 - Spark: spark.md
+  - 4 - GenAI: genai.md
 
-copyright: Copyright &copy; 2023 Fanilo ANDRIANASOLO
+copyright: Copyright &copy; 2024 Fanilo ANDRIANASOLO
