@@ -1,19 +1,19 @@
 ## Installation
 
 ```
-pip install mkdocs-material
+uv sync
 ```
 
 ## Dev
 
 ```
-mkdocs serve
+uv run mkdocs serve
 ```
 
 ## Build
 
 ```
-mkdocs build
+uv run mkdocs build
 cd site/
 python -m http.server
 ```
@@ -23,8 +23,8 @@ python -m http.server
 Because of 2FA, deploy with:
 
 ```
-mkdocs build
-mkdocs gh-deploy
+uv run mkdocs build
+uv run mkdocs gh-deploy
 ```
 
 ## Resources

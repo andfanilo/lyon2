@@ -31,5 +31,6 @@ nav:
   - 2 - NoSQL: nosql.md
   - 3 - Spark: spark.md
   - 4 - GenAI: genai.md
+  - 5 - Kubernetes: k8s.md
 
 copyright: Copyright &copy; 2024 Fanilo ANDRIANASOLO
