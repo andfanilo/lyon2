@@ -15,7 +15,7 @@ uv run mkdocs serve
 ```
 uv run mkdocs build
 cd site/
-python -m http.server
+uv run python -m http.server
 ```
 
 ## Deploy 
