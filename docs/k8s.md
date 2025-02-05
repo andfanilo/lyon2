@@ -230,25 +230,25 @@ Let's see how to convert our previous Pod specification into a Deployment.
     apiVersion: apps/v1 
     kind: Deployment
     metadata:
-    name: api-deploy
+      name: api-deploy
     spec:
-    replicas: 10
-    selector:
+      replicas: 10
+      selector:
         matchLabels:
-        app: api
-    minReadySeconds: 10
-    strategy:
+          app: api
+      minReadySeconds: 10
+      strategy:
         type: RollingUpdate
         rollingUpdate:
-        maxUnavailable: 1
-        maxSurge: 1
-    template:
+          maxUnavailable: 1
+          maxSurge: 1
+      template:
         metadata:
-        labels:
+          labels:
             app: api
         spec:
-        containers:
-        - name: api-pod
+          containers:
+          - name: api-pod
             image: api:0.1.0
             ports:
             - containerPort: 8000
@@ -261,6 +261,7 @@ Let's see how to convert our previous Pod specification into a Deployment.
         - In another Command line, run `kubectl get deploy api-deploy --watch` to watch deployment state in real time
         - Destroy one of the pods: `kubectl delete pod api-deploy-<id>`
         - Analyze the watch. Did it self-heal? Confirm by listing all pods.
+    - In the YAML file, change the number of replicas, then reapply the file `kubectl apply -f deployment.yaml`. Watch as the number of replicas grow or shrink depending on the number you entered.
 
     ??? abstract "Here's a breakdown of the YAML file"
         ```yaml
@@ -310,19 +311,91 @@ Let's see how to convert our previous Pod specification into a Deployment.
 
 ### e. Expose Pods in Deployment with a Service
 
-**TODO**
+In order to access the application from a stable name or IP address, we need a Kubernetes Service over a set of pods.
+
+![](./images/kubernetes-service.png)
+
+!!! note "Exercise - Expose pods with a service"
+    - Make sure your previous deployment of 10 pods with label `app=api` is still running: `kubectl get pods -l app=api`
+    - Create a new `service.yaml` file with the following content:
+
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: api-svc
+      labels:
+        app: api
+    spec:
+      type: NodePort
+      ports:
+      - port: 8000
+        nodePort: 30001
+        protocol: TCP
+      selector:
+        app: api
+    ```
+
+    - Open your browser on <http://localhost:30001/docs>. You will be redirected to one of the Pods at random.
+
+    ??? abstract "Here's a breakdown of the YAML file"
+        ```yaml
+        # Specifies the API version for Services
+        apiVersion: v1
+
+        # Defines this as a Service resource type
+        kind: Service
+
+        # Metadata section for naming and labeling the service
+        metadata:
+          # The name of the service, will be used for DNS within cluster
+          name: api-svc
+          # Labels attached to this service (for organization/selection)
+          labels:
+            app: api
+
+        # Main service specification
+        spec:
+          # Type of service (NodePort, ClusterIP, LoadBalancer, ExternalName)
+          type: NodePort
+
+          # Port configuration
+          ports:
+          # Can have multiple port mappings, this is an array
+          - port: 8000        # The port exposed internally in the cluster
+            nodePort: 30000   # The port exposed on each node (must be 30000-32767)
+            protocol: TCP     # Protocol for this port (TCP, UDP, or SCTP)
+
+          # Defines which pods this service will send traffic to
+          # Matches pods with label app: api
+          selector:
+            app: api         # Must match the labels in pod/deployment template
+        ```
+
+The Deployment -> Pod Replicas -> Service is the minimum viable knowledge you need to survive Kubernetes :smile:
+
+![](./images/kubernetes-mvp.png)
 
 ## 2. From Docker Compose to Kubernetes
 
-Remember this architecture from the [Docker tutorial](mlops.md#d-adding-the-user-interface-layer-with-streamlit)?
+Remember the Iris project architecture from the [Docker Compose tutorial](mlops.md#3-a-full-stack-dockerized-ml-project)? 
 
-![](./images/mlops-three-tier-simple.png)
+![](./images/mlops-architecture.png)
 
-!!! warning "Challenge - Building your first Kubernetes Fullstack web service"
-    - Rebuild the `mlops-client` and `mlops-server` Docker images
-    - Declare a frontend service over a `mlops-client` deployment
-    - Declare a middleware service over a `mlops-server` deployment of 3 replicas
-    - Declare a backend Mongo deployment
+It is time to replace Docker Compose by Kubernetes.
+
+![](./images/kubernetes-project.png)
+
+!!! warning "Challenge - Build a Fullstack web service on Kubernetes"
+    - Rebuild the `mlops-client:latest` Docker image
+    - Build 3 different ML models for Iris prediction into 3 different Docker images `mlops-server:0.1.0`, `mlops-server:0.2.0` and `mlops-server:0.3.0`. 
+        - Specify the version of the API in the `/version` endpoint
+    - Declare a frontend service over a `mlops-client:latest` deployment 
+    - Declare a backend service over a `mlops-server:0.1.0` deployment with 3 replicas
+    - Connect the frontend service to the backend service of Iris Predictor, by hittinh the name of the service from the Python code.
+        - If your service is called `mlops-api-service`, then `http://mlops-api-service:8000` should redirect to a pod behind the service.
+
+Keep your Iris deployment up. In the following section, you will upgrade and rollback the `mlops-server` Docker image to different versions, with 0 downtime over the API.
   
 ## 3. Deployment strategies
 
