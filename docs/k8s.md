@@ -140,17 +140,17 @@ Now that you have run your Docker image in a Pod on Kubernetes, let's start more
 !!! note "Exercise - Deploy more pooodddsss"
     - Edit `pod.yaml` to start 3 pods, 1 per version
 
-    ``` yaml
+    ```yaml
     apiVersion: v1
     kind: Pod
     metadata:
-    name: api-pod-1
-    labels:
+      name: api-pod-1
+      labels:
         app: api
         version: 0.1.0
     spec:
-    containers:
-    - name: api
+      containers:
+      - name: api
         image: api:0.1.0
         ports:
         - containerPort: 8000
@@ -158,13 +158,13 @@ Now that you have run your Docker image in a Pod on Kubernetes, let's start more
     apiVersion: v1
     kind: Pod
     metadata:
-    name: api-pod-2
-    labels:
+      name: api-pod-2
+      labels:
         app: api
         version: 0.2.0
     spec:
-    containers:
-    - name: api
+      containers:
+      - name: api
         image: api:0.2.0
         ports:
         - containerPort: 8000
@@ -172,13 +172,13 @@ Now that you have run your Docker image in a Pod on Kubernetes, let's start more
     apiVersion: v1
     kind: Pod
     metadata:
-    name: api-pod-3
-    labels:
+      name: api-pod-3
+      labels:
         app: api
         version: 0.3.0
     spec:
-    containers:
-    - name: api
+      containers:
+      - name: api
         image: api:0.3.0
         ports:
         - containerPort: 8000
@@ -399,10 +399,221 @@ Keep your Iris deployment up. In the following section, you will upgrade and rol
   
 ## 3. Deployment strategies
 
-**TODO**
-
 ### a. Rolling Update
+
+Rolling updates allow you to update your application with zero downtime by gradually replacing old pods with new ones.
+
+!!! note "Exercise - Rolling Update of Iris Predictor"
+    - Check your current deployment status:
+    ```bash
+    kubectl get deploy
+    kubectl get pods -l app=mlops-server
+    ```
+    
+    - Update the image in deployment.yaml to version 0.2.0:
+    ```yaml
+    spec:
+      containers:
+      - name: mlops-server
+        image: mlops-server:0.2.0
+        imagePullPolicy: Always  # Add this line to ensure latest image is pulled
+    ```
+    
+    - Apply the update:
+    ```bash
+    kubectl apply -f deployment.yaml
+    ```
+    
+    - Watch the rolling update:
+    ```bash
+    kubectl rollout status deployment/mlops-server
+    ```
+    
+    - If something goes wrong, rollback:
+    ```bash
+    kubectl rollout undo deployment/mlops-server
+    ```
+
+!!! tip "Important: ImagePullPolicy"
+    Always set `imagePullPolicy: Always` in your deployment specification when working with versioned images. This ensures that Kubernetes always pulls the latest version of your image with the specified tag, even if an image with the same tag exists locally. This is particularly important when:
+    
+    - You're rebuilding images with the same tag
+    - You're using rolling updates
+    - You want to ensure consistency across all nodes in your cluster
+
+    Without this policy, Kubernetes might use cached versions of your images, which could lead to inconsistent deployments.
+
+    Here's a complete deployment example with proper ImagePullPolicy. Just for fun I also specify some more best practices.
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mlops-server
+      labels:
+        app: mlops-server
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: mlops-server
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 1
+          maxSurge: 1
+      template:
+        metadata:
+          labels:
+            app: mlops-server
+        spec:
+          containers:
+          - name: mlops-server
+            image: mlops-server:0.2.0
+            imagePullPolicy: Always
+            ports:
+            - containerPort: 8000
+            resources:
+              requests:
+                memory: "64Mi"
+                cpu: "250m"
+              limits:
+                memory: "128Mi"
+                cpu: "500m"
+            readinessProbe:
+              httpGet:
+                path: /health
+                port: 8000
+              initialDelaySeconds: 5
+              periodSeconds: 5
+            livenessProbe:
+              httpGet:
+                path: /health
+                port: 8000
+              initialDelaySeconds: 15
+              periodSeconds: 20
+    ```
 
 ### b. Blue/Green Deployment 
 
+Blue/Green deployment involves running two identical environments: the current version (blue) and the new version (green). Traffic is switched from blue to green all at once.
+
+!!! note "Exercise - Blue/Green Deployment of Iris Predictor"
+    - Create two deployments (blue and green):
+    ```yaml
+    # blue-deployment.yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mlops-server-blue
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: mlops-server
+          version: blue
+      template:
+        metadata:
+          labels:
+            app: mlops-server
+            version: blue
+        spec:
+          containers:
+          - name: mlops-server
+            image: mlops-server:0.1.0
+    ---
+    # green-deployment.yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mlops-server-green
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          app: mlops-server
+          version: green
+      template:
+        metadata:
+          labels:
+            app: mlops-server
+            version: green
+        spec:
+          containers:
+          - name: mlops-server
+            image: mlops-server:0.2.0
+    ```
+
+    - Create a service pointing to blue:
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: mlops-server-svc
+    spec:
+      selector:
+        app: mlops-server
+        version: blue
+      ports:
+      - port: 8000
+    ```
+
+    - To switch to green, update service selector to version: green
+
 ### c. Canary Deployment
+
+Canary deployment involves gradually routing a small percentage of traffic to the new version while maintaining the majority of traffic to the stable version.
+
+!!! note "Exercise - Canary Deployment of Iris Predictor"
+    - Deploy both versions with different replica counts:
+    ```yaml
+    # stable deployment (90% of traffic)
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mlops-server-stable
+    spec:
+      replicas: 9
+      template:
+        metadata:
+          labels:
+            app: mlops-server
+            version: stable
+        spec:
+          containers:
+          - name: mlops-server
+            image: mlops-server:0.1.0
+    ---
+    # canary deployment (10% of traffic)
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mlops-server-canary
+    spec:
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: mlops-server
+            version: canary
+        spec:
+          containers:
+          - name: mlops-server
+            image: mlops-server:0.2.0
+    ```
+
+    - Create a service that selects both deployments:
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: mlops-server-svc
+    spec:
+      selector:
+        app: mlops-server  # matches both versions
+      ports:
+      - port: 8000
+    ```
+
+    - To increase canary traffic, gradually increase its replicas while decreasing stable replicas
+    - If canary is successful, gradually migrate all traffic to new version
+    - If issues occur, scale down canary deployment to 0
