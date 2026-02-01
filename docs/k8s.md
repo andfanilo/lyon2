@@ -736,3 +736,89 @@ Sometimes you need to run batch jobs (e.g., data processing, model retraining) o
     ```
     - Watch the jobs being created: `kubectl get jobs --watch`
     - Check the logs of a completed job to see the output.
+
+## 5. Deploying Modern AI Workloads
+
+In [GenAI Tutorial Section 6](genai.md#6-the-modern-ai-stack-agents--tools), we built a modern AI stack with **FastMCP** (Tool Server) and **PydanticAI** (Agent). Let's deploy this to Kubernetes.
+
+### a. Deploying the MCP Server
+
+We need a Deployment for the server and a Service to expose it to the Agent.
+
+!!! note "Exercise - MCP Server Deployment"
+    - Build your `mcp-server` image and tag it `mcp-math:latest`.
+    - Create `mcp-deployment.yaml`:
+
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mcp-math
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: mcp-math
+      template:
+        metadata:
+          labels:
+            app: mcp-math
+        spec:
+          containers:
+          - name: mcp-math
+            image: mcp-math:latest
+            imagePullPolicy: IfNotPresent
+            ports:
+            - containerPort: 8000
+    ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: mcp-math-svc
+    spec:
+      selector:
+        app: mcp-math
+      ports:
+      - port: 8000
+        targetPort: 8000
+    ```
+    - Apply it: `kubectl apply -f mcp-deployment.yaml`
+
+### b. Deploying the Agent
+
+The Agent needs to know where the MCP server is. In Kubernetes, we use the Service name (DNS) for discovery.
+
+!!! note "Exercise - Agent Deployment"
+    - Build your `agent` image and tag it `agent:latest`.
+    - Create `agent-deployment.yaml`. Notice how we pass the URL using the Service name `mcp-math-svc`.
+
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: agent
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: agent
+      template:
+        metadata:
+          labels:
+            app: agent
+        spec:
+          containers:
+          - name: agent
+            image: agent:latest
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: MCP_SERVER_URL
+              value: "http://mcp-math-svc:8000/sse"
+    ```
+    - Apply it and check logs to see if the Agent connects successfully.
+
+!!! danger "Challenge - Scaling Agents"
+    - Scale your Agent deployment to 5 replicas.
+    - Does your FastMCP server handle the concurrent connections?
+    - If not, scale the MCP server and ensure the Service balances the load.
+

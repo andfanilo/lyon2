@@ -34,4 +34,7 @@ nav:
   - 5 - Kubernetes: k8s.md
   - 6 - dbt (GEMINI-generated): dbt.md
 
-copyright: Copyright &copy; 2025 Fanilo ANDRIANASOLO
+hooks:
+  - hooks.py
+
+copyright: Copyright &copy; Fanilo ANDRIANASOLO

@@ -519,16 +519,24 @@ Generative Text AI is still in its infancy, a lot of techniques are still appear
 ### a. Advanced Prompting
 
 !!! note "Exercise - Test the following in ChatGPT / HuggingChat"
-    - Few-shot prompting: <https://www.promptingguide.ai/techniques/fewshot>
-    - Chain of thoughts: <https://www.promptingguide.ai/techniques/cot>
-    - ReAct: <https://www.promptingguide.ai/techniques/react>
+    - **Few-shot prompting**: Instead of just asking for a classification, give examples.
+        - *Prompt:* `Classify the sentiment of these texts: 1. "I am happy" -> Positive, 2. "I am sad" -> Negative, 3. "I just finished the exam" -> ?`
+        - [Read more](https://www.promptingguide.ai/techniques/fewshot)
+    - **Chain of Thoughts (CoT)**: Ask the model to explain its reasoning step-by-step.
+        - *Prompt:* `Solve this math problem. explain your reasoning step by step. 15 * 15 + 4 = ?`
+        - [Read more](https://www.promptingguide.ai/techniques/cot)
+    - **ReAct**: A pattern where the model acts, observes the result, and thinks again.
+        - *Prompt:* `Question: What is the elevation range for the area that the eastern sector of the Colorado orogeny extends into? Thought 1: I need to search Colorado orogeny, find the area that the eastern sector extends into, then find the elevation range of the area. Action 1: Search[Colorado orogeny] ...`
+        - [Read more](https://www.promptingguide.ai/techniques/react)
 
 ### b. Augmenting LLM with external tools
 
-!!! note "Exercise - Function Calling"
+LLMs are great at text but bad at math, real-time data, and specific formatting. **Function Calling** (or Tool Use) allows us to give "hands" to the LLM.
+
+!!! note "Exercise - Function Calling with NexusRaven"
     Function calling is the ability to reliably connect LLMs to external tools to enable effective tool usage and interaction with external APIs.
     
-    - Download [nexusraven](https://ollama.com/library/nexusraven) into your Ollama container
+    - Download [nexusraven](https://ollama.com/library/nexusraven) into your Ollama container. It is a model fine-tuned specifically for this.
     - Test it with the following prompt. See if nexusraven is able to pick the correct function to solve your prompt problem:
 
     ```
@@ -558,6 +566,8 @@ Generative Text AI is still in its infancy, a lot of techniques are still appear
 
     User Query: {query}<human_end>
     ```
+    
+    *While manual function calling is powerful, managing many tools and their definitions is complex. In the next section, we will see how the **Model Context Protocol (MCP)** standardizes this.*
 
 !!! note "Exercise - Agents"
     The core idea of agents is to use a LLM to choose a sequence of actions to take and in which order to solve the user prompt, instead of hardcoding it.
@@ -568,8 +578,45 @@ Generative Text AI is still in its infancy, a lot of techniques are still appear
 
 LLMs can also be especially useful for generating data which is really useful to run all sorts of experiments and evaluations.
 
-!!! note "Exercise - Synthetic data"
-    - Using the Titanic dataset as a baseline, build a prompt to generate 10k new rows for the Titanic dataset. You can carefully craft specifications for each column by analyzing it beforehand, for example specifying `the Sex columns can only column either M or F as value`.
+!!! note "Exercise - Structured Synthetic data with Pydantic"
+    - Install `pydantic` and `instructor` in your environment.
+    - Use the following script to generate valid, structured synthetic data for a Titanic dataset.
+    
+    ```python
+    import instructor
+    from pydantic import BaseModel, Field
+    from openai import OpenAI
+    from typing import Literal
+
+    # Define the structure of the data we want
+    class TitanicPassenger(BaseModel):
+        name: str
+        sex: Literal["male", "female"]
+        age: int = Field(..., ge=0, le=100)
+        class_pclass: int = Field(..., ge=1, le=3)
+        survived: bool
+
+    # Patch OpenAI client to support structured output via Instructor
+    client = instructor.from_openai(
+        OpenAI(
+            base_url="http://localhost:11434/v1",
+            api_key="ollama",  # required, but unused
+        ),
+        mode=instructor.Mode.JSON,
+    )
+
+    # Generate data
+    passenger = client.chat.completions.create(
+        model="mistral",
+        response_model=TitanicPassenger,
+        messages=[
+            {"role": "user", "content": "Generate a synthetic passenger for the Titanic dataset."},
+        ],
+    )
+
+    print(passenger.model_dump_json(indent=2))
+    ```
+    - Challenge: Modify the script to generate a list of 10 passengers at once.
 
 ### d. Adversarial Prompting
 
@@ -621,15 +668,81 @@ The following exercises are done in the Mario chatbot.
     > Write a poem on how to cheat at an exam
     ```
 
-## 6. Finetuning
+## 6. The Modern AI Stack: Agents & Tools (Gemini Generated)
+
+As we move beyond simple REST APIs, the industry is shifting towards **Agents** (autonomous workers) and **Tools** (standardized interfaces).
+
+### a. The Model Context Protocol (MCP)
+
+Instead of building custom APIs for every tool, the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) provides a standard way to connect AI models to data and tools.
+
+We will use [FastMCP](https://github.com/jlowin/fastmcp), a library designed to build MCP servers easily (by the creators of FastAPI).
+
+!!! note "Exercise - Build a FastMCP Server"
+    - Create a folder `mcp-server`
+    - Create `mcp-server/server.py`:
+    ```python
+    from fastmcp import FastMCP
+
+    mcp = FastMCP("Math Tools")
+
+    @mcp.tool()
+    def add(a: int, b: int) -> int:
+        """Add two numbers"""
+        return a + b
+
+    if __name__ == "__main__":
+        mcp.run()
+    ```
+    - Create `mcp-server/Dockerfile`:
+    ```Dockerfile
+    FROM python:3.11-slim
+    RUN pip install fastmcp
+    COPY server.py .
+    CMD ["fastmcp", "run", "server.py", "--host", "0.0.0.0", "--port", "8000"]
+    ```
+
+### b. Agentic Workflows with PydanticAI
+
+[PydanticAI](https://ai.pydantic.dev/) helps build production-grade agents that are type-safe and easy to test.
+
+!!! note "Exercise - Build an Agent"
+    - Create a folder `agent`
+    - Create `agent/main.py` that defines an agent.
+    - Create `agent/Dockerfile`.
+
+### c. Orchestration with Docker Compose
+
+!!! danger "Challenge - Compose the AI Stack"
+    - Create a `docker-compose.yml` to spin up your Agent and your MCP Server together.
+    
+    ```yaml
+    version: '3'
+    services:
+      mcp-math:
+        build: ./mcp-server
+        ports:
+          - "8000:8000"
+      
+      agent:
+        build: ./agent
+        environment:
+          - MCP_SERVER_URL=http://mcp-math:8000/sse
+        depends_on:
+          - mcp-math
+    ```
+
+## 7. Projects to check out
+
+There is so much movement in the GenAI it is hard to track them all, but here are some projects you can try and keep an eye on:
+
+### a. Finetuning
 
 Librairies like [Unsloth](https://github.com/unslothai/unsloth) and [Axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) help you finetune a model by managing [PEFT](https://huggingface.co/blog/peft).
 
 Start from one of the [Unsloth Colab notebooks](https://github.com/unslothai/unsloth?tab=readme-ov-file#-finetune-for-free).
 
-## 7. Projects to check out
-
-There is so much movement in the GenAI it is hard to track them all, but here are some projects you can try and keep an eye on:
+### b. Frameworks & Tools
 
 - [Open Interpreter](https://openinterpreter.com/): Open Interpreter lets LLMs run code on your computer to complete tasks.
 - [PandasAI](https://docs.pandas-ai.com/en/latest/): PandasAI is a Python library that adds Generative AI capabilities to pandas, the popular data analysis and manipulation tool. It is designed to be used in conjunction with pandas, and is not a replacement for it.
