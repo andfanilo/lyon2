@@ -120,14 +120,14 @@ The most common way to deploy on Kubernetes is by declaring what you want deploy
 
         # Metadata about the resource (name, labels, etc.)
         metadata:
-        name: api-pod          # The name of your pod
-        labels:                # Labels are key-value pairs used for organizing and selecting resources
+          name: api-pod          # The name of your pod
+          labels:                # Labels are key-value pairs used for organizing and selecting resources
             app: api            # Example label: app=api
 
         # The actual specification of what you want to create
         spec:
-        containers:           # List of containers in the pod
-        - name: api           # Name of the container
+          containers:           # List of containers in the pod
+          - name: api           # Name of the container
             image: api:0.1.0    # Docker image to use
             ports:              # Ports to expose
             - containerPort: 8080  # Port the container listens on
@@ -274,39 +274,39 @@ Let's see how to convert our previous Pod specification into a Deployment.
 
         # Basic information about our Deployment
         metadata:
-            name: api-deploy    # Name of the Deployment
+          name: api-deploy    # Name of the Deployment
 
         # The main configuration section
         spec:
-        # Number of Pod replicas to maintain
-            replicas: 10       # Kubernetes will ensure 10 Pods are always running
+          # Number of Pod replicas to maintain
+          replicas: 10       # Kubernetes will ensure 10 Pods are always running
 
-        # Tells Deployment which Pods to manage
-            selector:
-                matchLabels:
-                    app: api       # Will manage any Pod with label app: api
+          # Tells Deployment which Pods to manage
+          selector:
+            matchLabels:
+              app: api       # Will manage any Pod with label app: api
 
-        # Minimum time before a Pod is considered "ready"
-            minReadySeconds: 10  # Waits 10 seconds before considering Pod ready
+          # Minimum time before a Pod is considered "ready"
+          minReadySeconds: 10  # Waits 10 seconds before considering Pod ready
 
-        # Defines how updates should be performed
-            strategy:
-                type: RollingUpdate              # Update Pods one by one
-                rollingUpdate:
-                maxUnavailable: 1              # Max number of Pods that can be unavailable during update
-                maxSurge: 1                    # Max number of extra Pods during update
+          # Defines how updates should be performed
+          strategy:
+            type: RollingUpdate              # Update Pods one by one
+            rollingUpdate:
+              maxUnavailable: 1              # Max number of Pods that can be unavailable during update
+              maxSurge: 1                    # Max number of extra Pods during update
 
-        # Template for creating new Pods (similar to Pod YAML we saw earlier)
-            template:
-                metadata:
-                labels:
-                    app: api     # Each Pod gets this label (matches selector above)
-                spec:
-                containers:    # Container specifications (just like in Pod YAML)
-                - name: api-pod
-                    image: api:0.1.0
-                    ports:
-                    - containerPort: 8000
+          # Template for creating new Pods (similar to Pod YAML we saw earlier)
+          template:
+            metadata:
+              labels:
+                app: api     # Each Pod gets this label (matches selector above)
+            spec:
+              containers:    # Container specifications (just like in Pod YAML)
+              - name: api-pod
+                image: api:0.1.0
+                ports:
+                - containerPort: 8000
         ```
 
 ### e. Expose Pods in Deployment with a Service
@@ -392,7 +392,7 @@ It is time to replace Docker Compose by Kubernetes.
         - Specify the version of the API in the `/version` endpoint
     - Declare a frontend service over a `mlops-client:latest` deployment 
     - Declare a backend service over a `mlops-server:0.1.0` deployment with 3 replicas
-    - Connect the frontend service to the backend service of Iris Predictor, by hittinh the name of the service from the Python code.
+    - Connect the frontend service to the backend service of Iris Predictor, by hitting the name of the service from the Python code.
         - If your service is called `mlops-api-service`, then `http://mlops-api-service:8000` should redirect to a pod behind the service.
 
 Keep your Iris deployment up. In the following section, you will upgrade and rollback the `mlops-server` Docker image to different versions, with 0 downtime over the API.
@@ -481,13 +481,13 @@ Rolling updates allow you to update your application with zero downtime by gradu
                 cpu: "500m"
             readinessProbe:
               httpGet:
-                path: /health
+                path: /
                 port: 8000
               initialDelaySeconds: 5
               periodSeconds: 5
             livenessProbe:
               httpGet:
-                path: /health
+                path: /
                 port: 8000
               initialDelaySeconds: 15
               periodSeconds: 20
@@ -617,3 +617,122 @@ Canary deployment involves gradually routing a small percentage of traffic to th
     - To increase canary traffic, gradually increase its replicas while decreasing stable replicas
     - If canary is successful, gradually migrate all traffic to new version
     - If issues occur, scale down canary deployment to 0
+
+## 4. Advanced Practices
+
+### a. Configuration & Secrets
+
+Decoupling configuration from code is a core tenet of cloud-native development. 
+
+*   **ConfigMap:** Stores non-confidential data in key-value pairs.
+*   **Secret:** Stores confidential data (passwords, OAuth tokens, ssh keys).
+
+!!! note "Exercise - Externalize Configuration"
+    - Create a ConfigMap with your API version/name:
+    ```yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: api-config
+    data:
+      API_NAME: "Iris Predictor"
+    ```
+    - Create a Secret with a dummy API key (base64 encoded):
+    ```bash
+    # Create from literal (easiest for testing)
+    kubectl create secret generic api-secrets --from-literal=api-key=supersecretkey123
+    ```
+    - Update your `mlops-server` deployment to inject these as environment variables:
+    ```yaml
+    env:
+    - name: API_NAME
+      valueFrom:
+        configMapKeyRef:
+          name: api-config
+          key: API_NAME
+    - name: API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: api-secrets
+          key: api-key
+    ```
+    - Verify they are injected by exec-ing into a pod and running `env`.
+
+### b. Persistent Storage
+
+Pods are ephemeral; when they die, their filesystem is lost. For databases, we need data to survive pod restarts.
+
+!!! note "Exercise - Add Persistence to a Database"
+    - Define a PersistentVolumeClaim (PVC) to request storage:
+    ```yaml
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: db-pvc
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+    ```
+    - Deploy a Postgres database using this PVC:
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: postgres-db
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: db
+      template:
+        metadata:
+          labels:
+            app: db
+        spec:
+          containers:
+          - name: postgres
+            image: postgres:15
+            env:
+            - name: POSTGRES_PASSWORD
+              value: "mysecretpassword" # In prod, use a Secret!
+            volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pg-data
+          volumes:
+          - name: pg-data
+            persistentVolumeClaim:
+              claimName: db-pvc
+    ```
+    - Delete the Postgres pod and wait for a new one to start. The data inside `/var/lib/postgresql/data` should persist.
+
+### c. CronJobs
+
+Sometimes you need to run batch jobs (e.g., data processing, model retraining) on a schedule.
+
+!!! note "Exercise - Scheduled Tasks"
+    - Create a CronJob that runs every minute to retrain the model (simulated by a call to the API):
+    ```yaml
+    apiVersion: batch/v1
+    kind: CronJob
+    metadata:
+      name: model-retrainer
+    spec:
+      schedule: "*/1 * * * *" # Run every minute
+      jobTemplate:
+        spec:
+          template:
+            spec:
+              containers:
+              - name: retrainer
+                image: curlimages/curl
+                args:
+                - /bin/sh
+                - -c
+                - "curl -X POST http://mlops-server-svc:8000/predict -H 'Content-Type: application/json' -d '{\"sepal_length\": 5.1, \"sepal_width\": 3.5, \"petal_length\": 1.4, \"petal_width\": 0.2}'"
+              restartPolicy: OnFailure
+    ```
+    - Watch the jobs being created: `kubectl get jobs --watch`
+    - Check the logs of a completed job to see the output.
