@@ -23,16 +23,16 @@ Before starting, make sure your command line has `docker` and `docker-compose` w
     - Run the `docker ps -a` command. Do you see any previously running containers?
         - The `ps` command stands for `process`, you can imagine this like a running container. The `-a` flag stands for *all containers*, not only running ones. You should see containers that were stopped earlier.
 
-We want to test the new walrus operator in Python 3.9. You can download any Docker image from [the Docker Hub](https://hub.docker.com/).
+We want to test the new walrus operator in Python 3.12. You can download any Docker image from [the Docker Hub](https://hub.docker.com/).
 
 ![](./images/mlops-docker-tags.png)
 
-To run a Docker image, you'll need to specify its name and tag as `<label>:<tag>`. Let's run some code in the `python:3.9-slim` image, as you can guess a _small_ image with Python 3.9 installed.
+To run a Docker image, you'll need to specify its name and tag as `<label>:<tag>`. Let's run some code in the `python:3.12-slim` image, as you can guess a _small_ image with Python 3.12 installed.
 
 !!! note "Exercise - Run your first container"
-    - Find the [command](https://docs.docker.com/engine/reference/commandline/pull/) to download the `python:3.9-slim` image in your set of available images.
+    - Find the [command](https://docs.docker.com/engine/reference/commandline/pull/) to download the `python:3.12-slim` image in your set of available images.
         - Check the image is available with `docker images`
-    - Run a container from the image with `docker run -it --rm python:3.9-slim`.
+    - Run a container from the image with `docker run -it --rm python:3.12-slim`.
         - The `-it` flag is shorthand for `-i -t`, short for _interactive_ and _tty_. This opens a tty terminal to your container.
         - The `--rm` flag tells the Docker Daemon to clean up the container after exiting.
     - By default the `run` for the image will put you in a Python shell. Try to run some Python code and play with the walrus operator.
@@ -40,10 +40,10 @@ To run a Docker image, you'll need to specify its name and tag as `<label>:<tag>
     - Exit the container by typing `exit()` in the command. 
     - Make sure the container has disappeared with `docker ps -a`.
     - Run the docker run command again without the `--rm` flag. 
-        - Run `docker run -it --name test python:3.9-slim` and then exit the container. What displays this time in `docker ps -a` ?
+        - Run `docker run -it --name test python:3.12-slim` and then exit the container. What displays this time in `docker ps -a` ?
     - Since we gave a name to our container, let's restart it with `docker start test`. You can then reattach to it with `docker attach test`.
     - We had enough fun with that container, destroy it by using the `docker rm` command.
-    - Let's clean up our images a little bit, delete the `python:3.9-slim` image with the `docker rmi` command.
+    - Let's clean up our images a little bit, delete the `python:3.12-slim` image with the `docker rmi` command.
 
 Most modern libraries have a dedicated Docker image maintained by the community. Do not hesitate to browse [the Docker Hub](https://hub.docker.com/) to test the latest systems.
 
@@ -53,7 +53,7 @@ What if you want to use a Python image but don't want to use its Python shell?
     - In an Anaconda prompt, run `python -m http.server 9999`. In a browser, connect to <http://localhost:9999>. 
         - What is the `http.server` program in Python?
         - Close it with `CTRL + C`.
-    - Let's run this command in a Docker container! Run `docker run -it --rm -p 9999:9999 python:3.9-slim python -m http.server 9999`. connect to <http://localhost:9999> in your browser.
+    - Let's run this command in a Docker container! Run `docker run -it --rm -p 9999:9999 python:3.12-slim python -m http.server 9999`. connect to <http://localhost:9999> in your browser.
     - What is the `-p 9999:9999` flag? 
     - How do you connect to the http server if you run the command with `-p 7777:9999` instead?
 
@@ -89,7 +89,7 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
     - Write down the following lines into `Dockerfile`:
 
     ```Dockerfile
-    FROM python:3.9-slim
+    FROM python:3.12-slim
 
     COPY requirements.txt /app/requirements.txt
 
@@ -195,7 +195,7 @@ You can test any part of the API by clicking on the `Try it out button` on the t
         ??? abstract "Are you really stuck :thinking: ?? Give it one last try :muscle:"
             Build with `docker build -t mlops-server .` . Run with `docker run -p 8000:8000 --rm mlops-server`. 
             ```Dockerfile
-            FROM python:3.9-slim
+            FROM python:3.12-slim
 
             COPY requirements.txt /app/requirements.txt
             WORKDIR /app 

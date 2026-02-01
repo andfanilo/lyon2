@@ -14,7 +14,7 @@ For this tutorial, you will be installing and configuring tools used in the foll
 ## Objectives
 
 - [ ] Get used to using your command prompt
-- [ ] Create a conda environment with Python 3.9, FastAPI and Streamlit
+- [ ] Create a conda environment with Python 3.12, FastAPI and Streamlit
 - [ ] Reinstall Docker to ensure a clean docker-compose environment
 - [ ] Git clone the NoSQL or Spark tutorial
 
@@ -50,7 +50,7 @@ In the following, we won't be using the Anaconda Navigator UI. Brush up your Uni
 
 !!! note "Exercise - Installing a new Conda environment"
     1. Open the Anaconda 3 (64-bit) prompt from the Start Menu.
-    2. Create a new environment (with any name you'd like) with python 3.9 installed.
+    2. Create a new environment (with any name you'd like) with python 3.12 installed.
         - The command looks like `conda create -n <name_of_env> python:<version> <space_separated_packages>` 
     3. Ensure your environment is present by listing all current conda environments.
         - The [Conda Cheatsheet](https://docs.conda.io/projects/conda/en/latest/user-guide/cheatsheet.html) will definitely be of help to find the command. Or ChatGPT...
@@ -112,7 +112,7 @@ Just like for Anaconda, try your best to not use the Docker dashboard, instead g
 
 !!! success "Check that you can explain your neighbor each point of the checklist below"
     - [x] Get used to using your command prompt
-    - [x] Create a conda environment with Python 3.9, FastAPI and Streamlit 
+    - [x] Create a conda environment with Python 3.12, FastAPI and Streamlit 
     - [x] Reinstall Docker to ensure a clean docker-compose environment
     - [x] Git clone the Spark tutorial
 

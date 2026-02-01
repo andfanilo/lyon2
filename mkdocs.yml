@@ -28,8 +28,8 @@ nav:
   - Overview: index.md
   - 0 - Prerequisites: prerequisites.md
   - 1 - MLOps: mlops.md
-  - 2 - NoSQL: nosql.md
-  - 3 - Spark: spark.md
+  - 2 - Spark: spark.md
+  - 3 - NoSQL: nosql.md
   - 4 - GenAI: genai.md
   - 5 - Kubernetes: k8s.md
 
