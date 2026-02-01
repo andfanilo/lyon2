@@ -1,0 +1,819 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../mlops/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>0 - Prerequisites - Lyon 2 SISE Tutorials</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#td0-tooling" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Lyon 2 SISE Tutorials" class="md-header__button md-logo" aria-label="Lyon 2 SISE Tutorials" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lyon 2 SISE Tutorials
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              0 - Prerequisites
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Lyon 2 SISE Tutorials" class="md-nav__button md-logo" aria-label="Lyon 2 SISE Tutorials" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lyon 2 SISE Tutorials
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0 - Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0 - Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-test-your-command-line-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Test your command line skills
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-create-a-complete-python-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Create a complete Python environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-repair-your-docker-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Repair your Docker environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-git-clone-a-jupyter-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Git clone a Jupyter project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recap
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 - MLOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2 - Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nosql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3 - NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../genai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4 - GenAI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k8s/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5 - Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dbt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6 - dbt (GEMINI-generated)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-test-your-command-line-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Test your command line skills
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-create-a-complete-python-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Create a complete Python environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-repair-your-docker-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Repair your Docker environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-git-clone-a-jupyter-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Git clone a Jupyter project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recap
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="td0-tooling">TD0 - Tooling</h1>
+<p>For this tutorial, you will be installing and configuring tools used in the following tutorials:</p>
+<ul>
+<li>Command line</li>
+<li>Docker</li>
+<li>Git</li>
+<li>Conda</li>
+<li>Python librairies: Streamlit &amp; FastAPI</li>
+</ul>
+<p><img alt="" src="../images/prerequisites-cover.jpg" /></p>
+<h2 id="objectives">Objectives</h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Get used to using your command prompt</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Create a conda environment with Python 3.12, FastAPI and Streamlit</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Reinstall Docker to ensure a clean docker-compose environment</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Git clone the NoSQL or Spark tutorial</li>
+</ul>
+<hr />
+<h2 id="1-test-your-command-line-skills">1. Test your command line skills</h2>
+<div class="admonition warning">
+<p class="admonition-title">Try to do this without ChatGPT</p>
+<p>Those are skills you will want ingrained in your brain for the rest of your developer career <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f604.svg" title=":smile:" /></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Getting used to the Windows Prompt</p>
+<ol>
+<li>Open your Command Prompt Terminal from the Start Menu.</li>
+<li>Open your Explorer.</li>
+<li>Select a random folder that has files in your Explorer, and browse to this folder from the Command Prompt<ul>
+<li>You can either use multiple <code>cd</code> commands, by pressing <code>tab</code> to autocomplete the folder to browse into. You can also copy-paste the full link from the Explorer into the command line.</li>
+</ul>
+</li>
+<li>List all files in the folder in your Command Prompt.</li>
+</ol>
+</div>
+<p>The Windows and Unix command line terminals have different commands. </p>
+<p>In the following exercises, we will be using the Anaconda command-line, which comes with Unix commands.</p>
+<hr />
+<h2 id="2-create-a-complete-python-environment">2. Create a complete Python environment</h2>
+<p>While you usually install and use <a href="https://docs.anaconda.com/">Anaconda</a> as a Python distribution with a lot of Data Science packages preinstalled, Anaconda comes with a package and environment manager called <code>conda</code>. </p>
+<p>You may have seen the list of environments managed by your current conda installation when browsing the Anaconda Navigator.</p>
+<p><img alt="" src="../images/prerequisites-anaconda-navigator.png" /></p>
+<p>In the following, we won't be using the Anaconda Navigator UI. Brush up your Unix skills <img alt="😈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f608.svg" title=":smiling_imp:" />. </p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Installing a new Conda environment</p>
+<ol>
+<li>Open the Anaconda 3 (64-bit) prompt from the Start Menu.</li>
+<li>Create a new environment (with any name you'd like) with python 3.12 installed.<ul>
+<li>The command looks like <code>conda create -n &lt;name_of_env&gt; python:&lt;version&gt; &lt;space_separated_packages&gt;</code> </li>
+</ul>
+</li>
+<li>Ensure your environment is present by listing all current conda environments.<ul>
+<li>The <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/cheatsheet.html">Conda Cheatsheet</a> will definitely be of help to find the command. Or ChatGPT...</li>
+</ul>
+</li>
+<li>You need to <code>activate</code> your conda environment to access its <code>python</code>, <code>pip</code> and <code>conda</code> environment-specific commands. What command is responsible for this? When used, how do you know you're in the correct environment?</li>
+<li>
+<p>To ensure Python is properly installed:</p>
+<p>a. Run <code>python -v</code> to check the Python version</p>
+<p>b. run <code>python -m http.server</code> to have Python run an HTTP server on <code>http://localhost:8000</code>.</p>
+</li>
+<li>
+<p>We now install some packages in your newly created and activated environment:</p>
+<p>a. Install non-Python pakages like <code>git</code> with the <code>conda install</code> command.</p>
+<p>b. Install Python packages like <code>streamlit</code>, <code>fastapi</code> and <code>jupyter</code> with <code>pip</code>. Use the <code>pip install</code> command to install Jupyter Notebook and JupyterLab. Test the <code>jupyter notebook</code> and <code>streamlit version</code> command to ensure it works    </p>
+</li>
+</ol>
+</div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<ul>
+<li>Why should you get in the habit of installing every Python package with pip and every non-Python one with conda?</li>
+</ul>
+</div>
+<hr />
+<h2 id="3-repair-your-docker-environment">3. Repair your Docker environment</h2>
+<p>Depending on how Docker was installed, it may be that <code>docker compose</code> does not work correctly.</p>
+<p>Just like for Anaconda, try your best to not use the Docker dashboard, instead go through the command line. You won't have a dashboard when manipulating Docker in production.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Testing Docker commands</p>
+<ol>
+<li>Open the Anaconda 3 (64-bit) prompt or Git Bash from the Start Menu.</li>
+<li>
+<p>Test the following commands:</p>
+<p>a. <code>docker version</code> </p>
+<p>b. <code>docker compose version</code></p>
+<p>c. <code>docker images</code></p>
+<p>d. <code>docker pull hello-world</code></p>
+<p>e. <code>docker run hello-world</code></p>
+<p>f. <code>docker ps -a</code></p>
+</li>
+</ol>
+<p>If one of these doesn't work, especially the <code>docker compose version</code>, you probably need to uninstall and reinstall <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a>.</p>
+</div>
+<hr />
+<h2 id="4-git-clone-a-jupyter-project">4. Git clone a Jupyter project</h2>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Git cloning a project</p>
+<ol>
+<li>Open Git Bash the Start Menu.</li>
+<li>Browse into your folder of choice for noew projects. This is a Unix terminal so commands will differ a little from the previous Windows prompt exercise</li>
+<li>Clone the spark tutorial on https://github.com/andfanilo/pyspark-tutorial to your folder</li>
+<li>Activate the conda environment you created some exercises above, which has Jupyter installed.</li>
+<li>Run <code>jupyter notebook</code> and make sure you can read all Spark notebook exercises.</li>
+</ol>
+</div>
+<hr />
+<h2 id="recap">Recap</h2>
+<div class="admonition success">
+<p class="admonition-title">Check that you can explain your neighbor each point of the checklist below</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Get used to using your command prompt</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Create a conda environment with Python 3.12, FastAPI and Streamlit </li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Reinstall Docker to ensure a clean docker-compose environment</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Git clone the Spark tutorial</li>
+</ul>
+</div>
+<p>Take note of those 4 tools, they will be regularly reused throughout the tutorials.</p>
+<p>In the next tutorial, we will delve into dockerizing a ML Prediction service with FastAPI and Streamlit.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Fanilo ANDRIANASOLO
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

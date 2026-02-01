@@ -1,0 +1,1363 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../k8s/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>6 - dbt (GEMINI-generated) - Lyon 2 SISE Tutorials</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#td-6-analytics-engineering-with-dbt-gemini-generated" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Lyon 2 SISE Tutorials" class="md-header__button md-logo" aria-label="Lyon 2 SISE Tutorials" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lyon 2 SISE Tutorials
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              6 - dbt (GEMINI-generated)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Lyon 2 SISE Tutorials" class="md-nav__button md-logo" aria-label="Lyon 2 SISE Tutorials" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lyon 2 SISE Tutorials
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0 - Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mlops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 - MLOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2 - Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nosql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3 - NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../genai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4 - GenAI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k8s/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5 - Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6 - dbt (GEMINI-generated)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6 - dbt (GEMINI-generated)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-setup-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Setup &amp; Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Setup &amp; Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-project-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Project Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-dbt-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. dbt Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-the-profilesyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c. The profiles.yml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-scenario-e-commerce-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The Scenario: E-Commerce Traffic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Scenario: E-Commerce Traffic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-generate-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Generate Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ingestion-bronze-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Ingestion (Bronze Layer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Ingestion (Bronze Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-seeds-dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Seeds (Dimensions)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-external-sources-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. External Sources (Facts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-transformation-silver-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Transformation (Silver Layer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Transformation (Silver Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-staging-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Staging Models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-feature-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Feature Extraction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-business-logic-gold-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Business Logic (Gold Layer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Business Logic (Gold Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-potential-revenue-mart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Potential Revenue Mart
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-quality-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Quality &amp; Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Quality &amp; Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-setup-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Setup &amp; Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Setup &amp; Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-project-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Project Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-dbt-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. dbt Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-the-profilesyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c. The profiles.yml
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-scenario-e-commerce-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The Scenario: E-Commerce Traffic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Scenario: E-Commerce Traffic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-generate-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Generate Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ingestion-bronze-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Ingestion (Bronze Layer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Ingestion (Bronze Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-seeds-dimensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Seeds (Dimensions)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-external-sources-facts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. External Sources (Facts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-transformation-silver-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Transformation (Silver Layer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Transformation (Silver Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-staging-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Staging Models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-feature-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Feature Extraction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-business-logic-gold-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Business Logic (Gold Layer)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Business Logic (Gold Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-potential-revenue-mart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Potential Revenue Mart
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-quality-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Quality &amp; Documentation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Quality &amp; Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="td-6-analytics-engineering-with-dbt-gemini-generated">TD 6 - Analytics Engineering with dbt (GEMINI generated)</h1>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Make sure you have the following installed:</p>
+<ul>
+<li>Python 3.8+ (managed via <code>uv</code> or <code>conda</code>)</li>
+<li><a href="https://code.visualstudio.com/">Visual Studio Code</a> (highly recommended with the "dbt Power User" extension)</li>
+<li>A terminal</li>
+</ul>
+<h2 id="1-setup-installation">1. Setup &amp; Installation</h2>
+<p><em>Note: This tutorial was (GEMINI generated) to demonstrate dbt capabilities within this repository.</em></p>
+<p>In this tutorial, we will build a "Modern Data Stack" locally. instead of a cloud warehouse like Snowflake or BigQuery, we will use <strong>DuckDB</strong>, an in-process SQL OLAP database that is fast and easy to set up.</p>
+<h3 id="a-project-initialization">a. Project Initialization</h3>
+<p>We will create a specific directory for our analytics project to keep it separate from the documentation site.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Environment Setup</p>
+<ul>
+<li>Create a new folder named <code>dbt_project</code> at the root of your repository (sibling to <code>docs</code>, <code>gen_logs</code>, etc.).</li>
+<li>Open your terminal in this new folder.</li>
+<li>Initialize a new python environment: <code>uv venv</code> (or <code>python -m venv .venv</code>).</li>
+<li>Activate the environment:<ul>
+<li>Windows: <code>.venv\Scripts\activate</code></li>
+<li>Mac/Linux: <code>source .venv/bin/activate</code></li>
+</ul>
+</li>
+<li>Install dbt for DuckDB:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>dbt-duckdb
+</span></code></pre></div>
+    (or <code>pip install dbt-duckdb</code>)</li>
+</ul>
+</div>
+<h3 id="b-dbt-initialization">b. dbt Initialization</h3>
+<p>dbt (data build tool) comes with a CLI to scaffold projects.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Create the dbt project</p>
+<ul>
+<li>Run the initialization command:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>dbt<span class="w"> </span>init<span class="w"> </span>ecommerce_analytics
+</span></code></pre></div></li>
+<li>The wizard will ask you for configuration:<ul>
+<li><strong>Database</strong>: Select <code>duckdb</code>.</li>
+<li><strong>plugins</strong>: Press Enter.</li>
+<li><strong>threads</strong>: 1 or 4.</li>
+<li><strong>path</strong>: Type <code>dbt.duckdb</code> (This is crucial to save your data to a file!).</li>
+</ul>
+</li>
+<li>Once finished, you will have a <code>ecommerce_analytics</code> folder. Open it in VS Code.</li>
+</ul>
+</div>
+<h3 id="c-the-profilesyml">c. The profiles.yml</h3>
+<p>You might wonder: <em>Where is the database connection defined?</em>
+By default, <code>dbt init</code> creates a global configuration file in your home directory (<code>~/.dbt/profiles.yml</code>).</p>
+<p>For this project to be self-contained, we will create a local configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Local Configuration</p>
+<ul>
+<li>Inside your <code>ecommerce_analytics</code> folder, create a file named <code>profiles.yml</code>.</li>
+<li>Paste the following content:</li>
+</ul>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">ecommerce_analytics</span><span class="p">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">outputs</span><span class="p">:</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">dev</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duckdb</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;dbt.duckdb&#39;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="nt">extensions</span><span class="p">:</span><span class="w"> </span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpfs</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parquet</span>
+</span></code></pre></div>
+- <strong>Crucial</strong>: From now on, when you run dbt commands, you must tell dbt to look for the profile in the current directory.
+- You have two options:</p>
+<div class="language-text highlight"><pre><span></span><code>1.  Add the flag: `dbt debug --profiles-dir .`
+2.  (Recommended) Set an environment variable in your terminal:
+    - **Windows (PowerShell)**: `$env:DBT_PROFILES_DIR=&quot;.&quot;`
+    - **Mac/Linux**: `export DBT_PROFILES_DIR=.`
+</code></pre></div>
+<ul>
+<li>Run <code>dbt debug</code> to confirm the connection works.</li>
+</ul>
+<p><em>Note: The <code>extensions</code> list ensures DuckDB can read remote files and parquet, which is useful for advanced features.</em></p>
+</div>
+<h2 id="2-the-scenario-e-commerce-traffic">2. The Scenario: E-Commerce Traffic</h2>
+<p>You are the Analytics Engineer for a growing e-commerce site. The backend team has provided you with:</p>
+<ol>
+<li><strong>Raw Server Logs</strong>: A messy stream of HTTP requests containing valuable user behavior data.</li>
+<li><strong>Product Catalog</strong>: Static JSON files describing the products and categories.</li>
+</ol>
+<p>Your goal is to turn this mess into a clean "Daily Revenue" report.</p>
+<h3 id="a-generate-data">a. Generate Data</h3>
+<p>We will use the repository's existing tools to generate our raw data.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Data Generation</p>
+<ul>
+<li>Go back to the root of the repository (where <code>gen_logs</code> is located).</li>
+<li>Generate 50,000 log lines:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>gen_logs/lib/genhttplogs.py<span class="w"> </span>&gt;<span class="w"> </span>dbt_project/ecommerce_analytics/access.log
+</span></code></pre></div>
+    <em>Note: You might need to adjust the path depending on where you are running the command. The goal is to put <code>access.log</code> inside your dbt project root.</em></li>
+<li>Copy the dimension data into your dbt project's <code>seeds</code> folder.<ul>
+<li>Source: <code>gen_logs/data/products.json</code>, <code>departments.json</code>, <code>categories.json</code></li>
+<li>Destination: <code>dbt_project/ecommerce_analytics/seeds/</code></li>
+</ul>
+</li>
+</ul>
+<p>Your folder structure should look like this:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>dbt_project/
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>└── ecommerce_analytics/
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    ├── access.log
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    ├── dbt_project.yml
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    ├── seeds/
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    │   ├── products.json
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    │   ├── departments.json
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    │   └── categories.json
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    ├── models/
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    └── ...
+</span></code></pre></div></p>
+</div>
+<h2 id="3-ingestion-bronze-layer">3. Ingestion (Bronze Layer)</h2>
+<p>In the "Modern Data Stack", we often follow the ELT (Extract, Load, Transform) pattern. We load raw data first, then transform it in place.</p>
+<h3 id="a-seeds-dimensions">a. Seeds (Dimensions)</h3>
+<p>dbt "Seeds" are perfect for static data like our product catalogs.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Loading Seeds</p>
+<ul>
+<li>In your terminal (inside <code>ecommerce_analytics</code>), run:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>dbt<span class="w"> </span>seed
+</span></code></pre></div></li>
+<li>dbt will automatically infer schemas from the JSON files and create tables in your DuckDB database (by default, a file named <code>dbt.duckdb</code> will appear).</li>
+<li>You can verify the data using the DuckDB CLI or by installing the <code>duckdb</code> python package and querying it, but trusting dbt is usually enough!</li>
+</ul>
+</div>
+<h3 id="b-external-sources-facts">b. External Sources (Facts)</h3>
+<p>The <code>access.log</code> is a raw text file. We don't want to manually insert it. DuckDB is amazing because it can query files directly.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Configure the Source</p>
+<ul>
+<li>Create a new file <code>models/sources.yml</code>.</li>
+<li>We will define a source that points to our local file.</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">sources</span><span class="p">:</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">raw_data</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">tables</span><span class="p">:</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">access_logs</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Raw</span><span class="nv"> </span><span class="s">server</span><span class="nv"> </span><span class="s">logs</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">webserver&quot;</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="nt">meta</span><span class="p">:</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">          </span><span class="nt">external_location</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;read_text(&#39;access.log&#39;)&quot;</span>
+</span></code></pre></div>
+<p><em>Note: <code>read_text</code> is a DuckDB function that reads a file line by line into a single column named <code>content</code>.</em></p>
+</div>
+<h2 id="4-transformation-silver-layer">4. Transformation (Silver Layer)</h2>
+<p>Now that our data is "defined", we need to parse it. The logs are currently just unstructured text strings.</p>
+<h3 id="a-staging-models">a. Staging Models</h3>
+<p>We will create a "staging" model to clean up the raw data. This is where we apply Regex to extract columns.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Parsing Logs</p>
+<ul>
+<li>Create a new file <code>models/staging/stg_access_logs.sql</code>.</li>
+<li>We need to extract the <strong>IP</strong>, <strong>Timestamp</strong>, <strong>URL</strong>, and <strong>Status Code</strong>.</li>
+<li>Copy the following SQL (DuckDB dialect):</li>
+</ul>
+<p><div class="language-sql highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">with</span><span class="w"> </span><span class="k">source</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="err">{{</span><span class="w"> </span><span class="k">source</span><span class="p">(</span><span class="s1">&#39;raw_data&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;access_logs&#39;</span><span class="p">)</span><span class="w"> </span><span class="err">}}</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">),</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">parsed</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="k">select</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="c1">-- DuckDB regex extraction</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="n">regexp_extract</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;^(\S+)&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">ip_address</span><span class="p">,</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="n">strptime</span><span class="p">(</span><span class="n">regexp_extract</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;\[(.*?)\]&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;%d/%b/%Y:%H:%M:%S %z&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">log_timestamp</span><span class="p">,</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">        </span><span class="n">regexp_extract</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&quot;GET (.*?) HTTP&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">url</span><span class="p">,</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">        </span><span class="k">cast</span><span class="p">(</span><span class="n">regexp_extract</span><span class="p">(</span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;HTTP/1.1&quot; (\d{3})&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nb">int</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">status_code</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="k">from</span><span class="w"> </span><span class="k">source</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="p">)</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">parsed</span>
+</span></code></pre></div>
+- Run <code>dbt run</code> to build this model.
+- Inspect the view/table created in DuckDB (or use <code>dbt show --select stg_access_logs</code>).</p>
+</div>
+<h3 id="b-feature-extraction">b. Feature Extraction</h3>
+<p>We have a <code>url</code> column, but we need business context. The URLs look like <code>/product/105</code> or <code>/add_to_cart/105</code>.</p>
+<div class="admonition danger">
+<p class="admonition-title">Challenge - Extracting Context</p>
+<ul>
+<li>Modify <code>models/staging/stg_access_logs.sql</code>.</li>
+<li>Add logic to extract:<ul>
+<li><code>product_id</code>: The number at the end of <code>/product/...</code> or <code>/add_to_cart/...</code> URLs.</li>
+<li><code>action</code>: The type of action (e.g., 'view_product', 'add_to_cart', 'checkout').</li>
+</ul>
+</li>
+</ul>
+<p><em>Hint: You can use <code>case when</code> statements with <code>LIKE</code> operators or more regex.</em></p>
+<p><details>
+<summary>Click for Solution</summary></p>
+<p><div class="language-sql highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">select</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">ip_address</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">log_timestamp</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="n">status_code</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="n">url</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="c1">-- Extract Product ID if present</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">        </span><span class="k">when</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;/product/%&#39;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="n">split_part</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">        </span><span class="k">when</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;/add_to_cart/%&#39;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="n">split_part</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">null</span><span class="w"> </span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">product_id</span><span class="p">,</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="c1">-- Label the action</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="k">case</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">        </span><span class="k">when</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;/product/%&#39;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;view_product&#39;</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">        </span><span class="k">when</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;/add_to_cart/%&#39;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;add_to_cart&#39;</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">        </span><span class="k">when</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/checkout&#39;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s1">&#39;checkout&#39;</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;browse&#39;</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">action</span>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="k">from</span><span class="w"> </span><span class="n">parsed</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="k">where</span><span class="w"> </span><span class="n">status_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="c1">-- We only care about successful requests</span>
+</span></code></pre></div>
+</details></p>
+</div>
+<h2 id="5-business-logic-gold-layer">5. Business Logic (Gold Layer)</h2>
+<p>Now that we have clean events, we can join them with our dimension tables to calculate business metrics.</p>
+<h3 id="a-potential-revenue-mart">a. Potential Revenue Mart</h3>
+<p>We want to know how much money is being "added to cart" each day.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Daily Revenue Mart</p>
+<ul>
+<li>Create a new file <code>models/marts/mart_daily_revenue.sql</code>.</li>
+<li>We need to:<ol>
+<li>Select from <code>stg_access_logs</code>.</li>
+<li>Filter for <code>add_to_cart</code> actions.</li>
+<li>Join with the <code>products</code> seed to get the price.</li>
+<li>Group by day.</li>
+</ol>
+</li>
+</ul>
+<p><div class="language-sql highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">with</span><span class="w"> </span><span class="n">logs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="err">{{</span><span class="w"> </span><span class="k">ref</span><span class="p">(</span><span class="s1">&#39;stg_access_logs&#39;</span><span class="p">)</span><span class="w"> </span><span class="err">}}</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="p">),</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">products</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="err">{{</span><span class="w"> </span><span class="k">ref</span><span class="p">(</span><span class="s1">&#39;products&#39;</span><span class="p">)</span><span class="w"> </span><span class="err">}}</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="p">)</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="k">select</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="c1">-- Truncate timestamp to day</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="n">date_trunc</span><span class="p">(</span><span class="s1">&#39;day&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">logs</span><span class="p">.</span><span class="n">log_timestamp</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">report_date</span><span class="p">,</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="k">sum</span><span class="p">(</span><span class="n">products</span><span class="p">.</span><span class="n">product_price</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">potential_revenue</span><span class="p">,</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">    </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">items_added</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="k">from</span><span class="w"> </span><span class="n">logs</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="k">join</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="k">cast</span><span class="p">(</span><span class="n">logs</span><span class="p">.</span><span class="n">product_id</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nb">int</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">products</span><span class="p">.</span><span class="n">product_id</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="k">where</span><span class="w"> </span><span class="n">logs</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;add_to_cart&#39;</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">desc</span>
+</span></code></pre></div>
+- Run <code>dbt run</code>.</p>
+</div>
+<h2 id="6-quality-documentation">6. Quality &amp; Documentation</h2>
+<p>A huge advantage of dbt is that documentation and testing are code, living right next to your SQL.</p>
+<h3 id="a-testing">a. Testing</h3>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Add Tests</p>
+<ul>
+<li>Open <code>models/schema.yml</code> (create it if it doesn't exist).</li>
+<li>Add tests to ensure our data assumptions hold true.</li>
+</ul>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">models</span><span class="p">:</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stg_access_logs</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nt">columns</span><span class="p">:</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">log_timestamp</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">        </span><span class="nt">tests</span><span class="p">:</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">not_null</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">action</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="nt">tests</span><span class="p">:</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">accepted_values</span><span class="p">:</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">              </span><span class="nt">values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;view_product&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;add_to_cart&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;checkout&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;browse&#39;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mart_daily_revenue</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">    </span><span class="nt">columns</span><span class="p">:</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">report_date</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">        </span><span class="nt">tests</span><span class="p">:</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unique</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">not_null</span>
+</span></code></pre></div>
+- Run <code>dbt test</code>. If everything is correct, all tests should pass (green).</p>
+</div>
+<h3 id="b-documentation">b. Documentation</h3>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Generate Documentation</p>
+<ul>
+<li>Run the following command:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>dbt<span class="w"> </span>docs<span class="w"> </span>generate
+</span></code></pre></div></li>
+<li>Then launch the local documentation server:
+    <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>dbt<span class="w"> </span>docs<span class="w"> </span>serve
+</span></code></pre></div></li>
+<li>A browser tab will open. Explore the <strong>Lineage Graph</strong> (bottom right icon). You will see the full flow of your data from <code>access.log</code> to <code>mart_daily_revenue</code>.</li>
+</ul>
+</div>
+<h2 id="summary">Summary</h2>
+<p>You have built a complete ELT pipeline locally!</p>
+<ol>
+<li><strong>Extract</strong>: Read raw text logs.</li>
+<li><strong>Load</strong>: DuckDB accessed them directly.</li>
+<li><strong>Transform</strong>: Parsed Regex, joined with JSON seeds, and aggregated revenue.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Fanilo ANDRIANASOLO
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

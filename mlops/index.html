@@ -1,0 +1,1716 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../prerequisites/">
+      
+      
+        <link rel="next" href="../spark/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>1 - MLOps - Lyon 2 SISE Tutorials</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#td-1-mlops" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Lyon 2 SISE Tutorials" class="md-header__button md-logo" aria-label="Lyon 2 SISE Tutorials" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lyon 2 SISE Tutorials
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1 - MLOps
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Lyon 2 SISE Tutorials" class="md-nav__button md-logo" aria-label="Lyon 2 SISE Tutorials" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lyon 2 SISE Tutorials
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    0 - Prerequisites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 - MLOps
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1 - MLOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-docker-quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Docker quick start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Docker quick start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-your-first-docker-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Your first Docker commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-your-first-dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Your first Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-running-multiple-microservices-together-with-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Running multiple microservices together with docker compose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Running multiple microservices together with docker compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-developing-the-fastapi-api-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Developing the FastAPI API locally
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-building-the-fastapi-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Building the FastAPI Docker image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-connecting-the-fastapi-docker-container-to-a-mongo-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c. Connecting the FastAPI Docker container to a Mongo container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-adding-the-user-interface-layer-with-streamlit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        d. Adding the User Interface layer with Streamlit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-a-full-stack-dockerized-ml-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. A full-stack Dockerized ML project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonus-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ===== Bonus Challenges =====
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-github-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Github &amp; CI/CD
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Github &amp; CI/CD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-create-a-github-repository-for-your-mlops-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Create a Github repository for your MLOps project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-authenticating-to-github-using-a-personal-access-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Authenticating to Github using a personal access token
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-push-a-docker-image-to-the-github-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c. Push a Docker image to the Github project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-continuous-integration-with-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        d. Continuous integration with Github Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-deploying-to-huggingface-spaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Deploying to Huggingface Spaces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-enhancing-the-docker-compose-for-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Enhancing the Docker Compose for Continuous Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Enhancing the Docker Compose for Continuous Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-adding-mlflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Adding MLFlow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-adding-prefect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Adding Prefect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2 - Spark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nosql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3 - NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../genai/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4 - GenAI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k8s/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5 - Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dbt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6 - dbt (GEMINI-generated)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-docker-quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Docker quick start
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Docker quick start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-your-first-docker-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Your first Docker commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-your-first-dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Your first Dockerfile
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-running-multiple-microservices-together-with-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Running multiple microservices together with docker compose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Running multiple microservices together with docker compose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-developing-the-fastapi-api-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Developing the FastAPI API locally
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-building-the-fastapi-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Building the FastAPI Docker image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-connecting-the-fastapi-docker-container-to-a-mongo-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c. Connecting the FastAPI Docker container to a Mongo container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-adding-the-user-interface-layer-with-streamlit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        d. Adding the User Interface layer with Streamlit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-a-full-stack-dockerized-ml-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. A full-stack Dockerized ML project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bonus-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ===== Bonus Challenges =====
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-github-cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Github &amp; CI/CD
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Github &amp; CI/CD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-create-a-github-repository-for-your-mlops-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Create a Github repository for your MLOps project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-authenticating-to-github-using-a-personal-access-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Authenticating to Github using a personal access token
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-push-a-docker-image-to-the-github-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        c. Push a Docker image to the Github project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-continuous-integration-with-github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        d. Continuous integration with Github Actions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-deploying-to-huggingface-spaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Deploying to Huggingface Spaces
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-enhancing-the-docker-compose-for-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Enhancing the Docker Compose for Continuous Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Enhancing the Docker Compose for Continuous Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-adding-mlflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        a. Adding MLFlow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-adding-prefect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        b. Adding Prefect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="td-1-mlops">TD 1 - MLOps</h1>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Make sure you have the following commands working on your workstation:</p>
+<ul>
+<li>conda</li>
+<li>docker </li>
+<li>docker compose</li>
+</ul>
+<h2 id="1-docker-quick-start">1. Docker quick start</h2>
+<h3 id="a-your-first-docker-commands">a. Your first Docker commands</h3>
+<p><img alt="" src="../images/mlops-docker-logo.png" /></p>
+<p>Before starting, make sure your command line has <code>docker</code> and <code>docker-compose</code> working.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Your first Docker commands</p>
+<ul>
+<li>List the available docker commands by running <code>docker</code>.</li>
+<li>Run the <code>docker images</code> command. This should list all your existing Docker images you can use. Do you have any? <ul>
+<li>Compare them with the images in your <code>Docker Desktop</code> window.</li>
+</ul>
+</li>
+<li>Run the <code>docker ps -a</code> command. Do you see any previously running containers?<ul>
+<li>The <code>ps</code> command stands for <code>process</code>, you can imagine this like a running container. The <code>-a</code> flag stands for <em>all containers</em>, not only running ones. You should see containers that were stopped earlier.</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>We want to test the new walrus operator in Python 3.12. You can download any Docker image from <a href="https://hub.docker.com/">the Docker Hub</a>.</p>
+<p><img alt="" src="../images/mlops-docker-tags.png" /></p>
+<p>To run a Docker image, you'll need to specify its name and tag as <code>&lt;label&gt;:&lt;tag&gt;</code>. Let's run some code in the <code>python:3.12-slim</code> image, as you can guess a <em>small</em> image with Python 3.12 installed.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Run your first container</p>
+<ul>
+<li>Find the <a href="https://docs.docker.com/engine/reference/commandline/pull/">command</a> to download the <code>python:3.12-slim</code> image in your set of available images.<ul>
+<li>Check the image is available with <code>docker images</code></li>
+</ul>
+</li>
+<li>Run a container from the image with <code>docker run -it --rm python:3.12-slim</code>.<ul>
+<li>The <code>-it</code> flag is shorthand for <code>-i -t</code>, short for <em>interactive</em> and <em>tty</em>. This opens a tty terminal to your container.</li>
+<li>The <code>--rm</code> flag tells the Docker Daemon to clean up the container after exiting.</li>
+</ul>
+</li>
+<li>By default the <code>run</code> for the image will put you in a Python shell. Try to run some Python code and play with the walrus operator.<ul>
+<li>Docker gives you an easy way to test new Python versions without installing it on your system.</li>
+</ul>
+</li>
+<li>Exit the container by typing <code>exit()</code> in the command. </li>
+<li>Make sure the container has disappeared with <code>docker ps -a</code>.</li>
+<li>Run the docker run command again without the <code>--rm</code> flag. <ul>
+<li>Run <code>docker run -it --name test python:3.12-slim</code> and then exit the container. What displays this time in <code>docker ps -a</code> ?</li>
+</ul>
+</li>
+<li>Since we gave a name to our container, let's restart it with <code>docker start test</code>. You can then reattach to it with <code>docker attach test</code>.</li>
+<li>We had enough fun with that container, destroy it by using the <code>docker rm</code> command.</li>
+<li>Let's clean up our images a little bit, delete the <code>python:3.12-slim</code> image with the <code>docker rmi</code> command.</li>
+</ul>
+</div>
+<p>Most modern libraries have a dedicated Docker image maintained by the community. Do not hesitate to browse <a href="https://hub.docker.com/">the Docker Hub</a> to test the latest systems.</p>
+<p>What if you want to use a Python image but don't want to use its Python shell?</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Changing the CMD of the image</p>
+<ul>
+<li>In an Anaconda prompt, run <code>python -m http.server 9999</code>. In a browser, connect to <a href="http://localhost:9999">http://localhost:9999</a>. <ul>
+<li>What is the <code>http.server</code> program in Python?</li>
+<li>Close it with <code>CTRL + C</code>.</li>
+</ul>
+</li>
+<li>Let's run this command in a Docker container! Run <code>docker run -it --rm -p 9999:9999 python:3.12-slim python -m http.server 9999</code>. connect to <a href="http://localhost:9999">http://localhost:9999</a> in your browser.</li>
+<li>What is the <code>-p 9999:9999</code> flag? </li>
+<li>How do you connect to the http server if you run the command with <code>-p 7777:9999</code> instead?</li>
+</ul>
+</div>
+<p>This way we now can download an image, run it with a custom command and expose some of the ports to us.</p>
+<div class="admonition danger">
+<p class="admonition-title">Challenge</p>
+<ul>
+<li>In a folder with some Python notebooks you copied from some other projects you want to use, run the following command: <code>docker run -v &lt;current directory&gt;:/tmp/working -w=/tmp/working --rm -it -p 8888:8888 kaggle/python jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token="" --notebook-dir=/tmp/working</code>.<ul>
+<li>The <code>&lt;current directory&gt;</code> should be replaced by <code>%cd%</code> in Windows Command line, <code>${PWD}</code> in Powershell and <code>$(pwd)</code> in WSL2.</li>
+<li>This is the notebook that is used by Kaggle notebooks, with all the necessary Data Science packages to work on your projects! But it is very big, it might takes several minutes to download.</li>
+<li>Carefully read each part of the command and prepare to be able to explain each part to me.</li>
+<li>The only flag you currently don't know is <code>-v</code>. It mounts one of your local folders to a folder inside the running container, so that you can see your local Jupyter notebooks from inside the containers. You can edit a file in the Jupyter notebook and see the changes locally (though I don't recommend doing it like this because of line separator risks).</li>
+</ul>
+</li>
+</ul>
+</div>
+<h3 id="b-your-first-dockerfile">b. Your first Dockerfile</h3>
+<p>Our goal is to create our own Docker image, using a <code>Dockerfile</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Folder architecture</p>
+<ul>
+<li>Put yourself in a brand new folder, like <code>mlops-td</code>. </li>
+<li>In this <code>mlops-td</code> folder, create a new folder, name it however you like. For example <code>td</code>.</li>
+<li>Create the following empty files:</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>td
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a> ├── app.py             &lt;- A python script
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a> ├── requirements.txt   &lt;- Python packages (feel free to install packages you like)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a> └── Dockerfile         &lt;- Has the Docker commands to build our custom image
+</span></code></pre></div>
+<ul>
+<li>Write some Python code in <code>app.py</code>. Printing <code>Hello World</code> is good enough.</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Dockerfile</p>
+<ul>
+<li>Open the <code>Dockerfile</code> file with your favorite editor (I would recommend opening the <code>mlops-td</code> folder with <a href="https://code.visualstudio.com/">VSCode</a>).</li>
+<li>Write down the following lines into <code>Dockerfile</code>:</li>
+</ul>
+<div class="language-Dockerfile highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.12-slim</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>/app/requirements.txt
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app </span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">COPY</span><span class="w"> </span>app.py<span class="w"> </span>app.py
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;app.py&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+<details class="abstract">
+<summary>Explaining the Dockerfile commands</summary>
+<ul>
+<li><code>FROM</code> specifies the parent image <a href="https://docs.docker.com/engine/reference/builder/#from">link</a></li>
+<li><code>COPY</code> copies files or directories from the folder you ran docker from, into the image (at the current selected <code>WORKDIR</code>). <a href="https://docs.docker.com/engine/reference/builder/#copy">link</a></li>
+<li><code>WORKDIR</code> puts the image location to the desired folder. In this example, all future commands will be run inside the <code>/app</code> folder, like if you did a <code>cd /app</code>. <a href="https://docs.docker.com/engine/reference/builder/#workdir">link</a></li>
+<li><code>RUN</code> runs a classic UNIX command. Use them to install stuff. <a href="https://docs.docker.com/engine/reference/builder/#run">link</a></li>
+<li><code>CMD</code> defines the command the Docker image will run by default. <a href="https://docs.docker.com/engine/reference/builder/#cmd">link</a></li>
+</ul>
+</details>
+<ul>
+<li>To run the building of the image, run <code>docker build -t td:0.1 ./</code><ul>
+<li>the <code>-t</code> is the name (<code>td</code>) and tag (<code>0.1</code>) of the image.</li>
+<li>the <code>./</code> specifies the current folder which contains the <code>Dockerfile</code> to build. If you're not in the folder, point to the path accordingly.</li>
+</ul>
+</li>
+<li>Make sure the new <code>td:0.1</code> image was created. What is the size of the image?</li>
+<li>Run your new image and verify the code from your <code>app.py</code> script runs correctly.</li>
+<li>Try to add dependencies in the <code>requirements.txt</code> file. When you rerun the same <code>build</code> command, do you notice something in the print output? <ul>
+<li>You should see <code>---&gt; Using cache</code> appear in particular places, telling you it didn't start the build from scratch.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Challenge</p>
+<ul>
+<li>Create a Docker image which contains a copy of any of your Jupyter notebooks and installs the <code>jupyterlab</code> dependency. When the container runs, a Jupyter lab server should run. I should be able to access every notebook at the root.</li>
+<li>Mount a folder with Jupyter notebooks into a volume using the <code>-v &lt;current directory&gt;:/tmp/working</code> flag. Check any edit you do on a notebook in the container is stored on your disk.<ul>
+<li>The <code>&lt;current directory&gt;</code> should be replaced by <code>%cd%</code> in Windows Command line, <code>${PWD}</code> in Powershell and <code>$(pwd)</code> in WSL2.</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="2-running-multiple-microservices-together-with-docker-compose">2. Running multiple microservices together with docker compose</h2>
+<p>With <code>docker-compose</code>, you are able to run a group of containers altogether. In this tutorial, we will setup a 3-tier architecture with Docker compose, by running a Docker container for each tier.</p>
+<p><img alt="" src="../images/mlops-three-tier-architecture.png" /></p>
+<h3 id="a-developing-the-fastapi-api-locally">a. Developing the FastAPI API locally</h3>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Architecture</p>
+<ul>
+<li>In the <code>mlops-td</code> folder, build the following folder architecture
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mlops-td
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── client
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>|      ├── app.py             &lt;- Streamlit/Gradio/Panel/Dash/Shiny to request a REST API
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>|      ├── requirements.txt   &lt;- Python packages
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>|      └── Dockerfile         &lt;- Commands to build our custom image
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>|    
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>├── server
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>|      ├── app.py             &lt;- FastAPI to expose a REST API that will write to MongoDB
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>|      ├── requirements.txt   &lt;- Python packages
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>|      └── Dockerfile         &lt;- Commands to build our custom image
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>|
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>├── td                        &lt;- Contains your previous exercise
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>| 
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>└── docker-compose.yml
+</span></code></pre></div></li>
+</ul>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">Prerequisites - Install Python dependencies in a local Conda environment</p>
+<ul>
+<li>In a new <code>Anaconda Prompt</code>, create a new conda environment (call it <code>mlops</code> if you want)</li>
+<li>Activate the created environment</li>
+<li>In this environment, install <code>fastapi</code>, <code>streamlit</code>, <code>uvicorn</code> and <code>pymongo</code>: <code>pip install fastapi streamlit uvicorn pymongo</code></li>
+<li>Check that both <code>docker</code> and <code>conda</code> can be used from your command line.</li>
+</ul>
+</div>
+<p><img alt="" src="../images/mlops-local-conda.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Build a Python REST API with FastAPI (a Flask alternative)</p>
+<ul>
+<li>In <code>server/app.py</code>, create a REST API with <a href="https://fastapi.tiangolo.com/tutorial/first-steps/">FastAPI</a> so that:<ul>
+<li>when you run <code>uvicorn --reload --host 0.0.0.0 app:app</code> locally, from the <code>server</code> folder, you can connect to <a href="http://localhost:8000">http://localhost:8000</a> and get back <code>{"message": "Hello World"}</code>. </li>
+<li>when you connect to <a href="http://localhost:8000/docs">http://localhost:8000/docs</a>, you can access the documentation page of your API like in the image below.</li>
+</ul>
+</li>
+</ul>
+<p>Refer to the <a href="https://fastapi.tiangolo.com/#example">Quick Start</a> to discover how to implement the API.</p>
+<details class="abstract">
+<summary>Solution ONLY if you feel stuck</summary>
+<details class="abstract">
+<summary>Are you really stuck <img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:" /> ?? Give it one last try <img alt="💪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4aa.svg" title=":muscle:" /></summary>
+<p>Content of <code>server/app.py</code>:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">root</span><span class="p">():</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">}</span>
+</span></code></pre></div></p>
+</details>
+</details>
+</div>
+<p>You should have the documentation of your FastAPI server running locally on <a href="http://localhost:8000/docs">http://localhost:8000/docs</a>.</p>
+<p>You can test any part of the API by clicking on the <code>Try it out button</code> on the top right of each resource:</p>
+<p><img alt="" src="../images/mlops-swagger-ui-simple.png" /></p>
+<h3 id="b-building-the-fastapi-docker-image">b. Building the FastAPI Docker image</h3>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Run the FastAPI API in a Docker container</p>
+<ul>
+<li>In <code>server/Dockerfile</code>, install the dependencies from the local Conda environment.</li>
+<li>In <code>server/Dockerfile</code>, run the command that runs the Uvicorn server through <code>CMD</code>. Use the <code>Dockerfile</code> from the previous part as template.<ul>
+<li>Do note that <code>"cmd --reload -h 127.0.0.1 app"</code> and [<code>"cmd"</code>, <code>"--reload"</code>, <code>"-h"</code>, <code>"127.0.0.1"</code>, <code>"app"</code>] are the same.</li>
+</ul>
+</li>
+<li>Build your image. Give it a label like <code>mlops-server</code>. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser on <a href="http://localhost:8000">http://localhost:8000</a> and get your <code>Hello world</code>.</li>
+</ul>
+<details class="abstract">
+<summary>Solution ONLY if you feel stuck</summary>
+<details class="abstract">
+<summary>Are you really stuck <img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:" /> ?? Give it one last try <img alt="💪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4aa.svg" title=":muscle:" /></summary>
+<p>Build with <code>docker build -t mlops-server .</code> . Run with <code>docker run -p 8000:8000 --rm mlops-server</code>. 
+<div class="language-Dockerfile highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.12-slim</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>/app/requirements.txt
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app </span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="k">COPY</span><span class="w"> </span>app.py<span class="w"> </span>app.py
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;uvicorn&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--reload&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--host&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;app:app&quot;</span><span class="p">]</span>
+</span></code></pre></div></p>
+</details>
+</details>
+</div>
+<p><img alt="" src="../images/mlops-docker-server.png" /></p>
+<hr />
+<h3 id="c-connecting-the-fastapi-docker-container-to-a-mongo-container">c. Connecting the FastAPI Docker container to a Mongo container</h3>
+<p>We are going to add a MongoDB database next to our API, which is used to store JSON objects.</p>
+<p><img alt="" src="../images/mlops-mongo-fastapi.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Run Mongodb in Docker, FastAPI locally</p>
+<ul>
+<li>Run a <a href="https://hub.docker.com/_/mongo">MongoDB</a> container using the <code>docker run</code> command.</li>
+<li>Let's add some code into <code>server/app.py</code> to push data into MongoDB. Here's code to push and retrieve a Python Dict into a running local MongoDB.</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">MongoClient</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">27017</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_database</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">collection</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">test_collection</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">add_list_fruits</span><span class="p">(</span><span class="n">fruit</span><span class="p">):</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span><span class="s2">&quot;fruit&quot;</span><span class="p">:</span> <span class="n">fruit</span><span class="p">})</span><span class="o">.</span><span class="n">inserted_id</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">({},</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}))</span>
+</span></code></pre></div>
+<ul>
+<li>Create a new <code>GET</code> method so that if you connect to <code>/add/mango</code> it adds <code>{fruit: mango}</code> to mongodb, and another <code>GET</code> method <code>/list</code> that returns all fruits in MongoDB.<ul>
+<li>Use <a href="https://fastapi.tiangolo.com/tutorial/path-params/">the Path params doc</a> to get started</li>
+</ul>
+</li>
+<li>Run your FastAPI server locally. From <a href="http://localhost:8000/docs">http://localhost:8000/docs</a>, you can try out the API examples and check that data is returned correctly.</li>
+</ul>
+<p><img alt="" src="../images/mlops-mongo-fastapi-local.png" /></p>
+<details class="abstract">
+<summary>Solution ONLY if you feel stuck</summary>
+<details class="abstract">
+<summary>Are you really stuck <img alt="🤔" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f914.svg" title=":thinking:" /> ?? Give it one last try <img alt="💪" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f4aa.svg" title=":muscle:" /></summary>
+<p>Run MongoDB with <code>docker run -it --rm --name some-mongo -p 27017:27017 mongo:4</code>.</p>
+<p>My <code>server/app.py</code> content:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">MongoClient</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">27017</span><span class="p">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_database</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">collection</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">test_collection</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">root</span><span class="p">():</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">}</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/add/</span><span class="si">{fruit}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_fruit</span><span class="p">(</span><span class="n">fruit</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span><span class="s2">&quot;fruit&quot;</span><span class="p">:</span> <span class="n">fruit</span><span class="p">})</span><span class="o">.</span><span class="n">inserted_id</span> 
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)}</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/list&quot;</span><span class="p">)</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_fruits</span><span class="p">():</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">({},</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}))}</span>
+</span></code></pre></div></p>
+</details>
+</details>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Run Mongodb and FastAPI in separate Docker containers</p>
+<ul>
+<li>Add the following code in <code>docker-compose.yml</code>. This will start a Mongodb next to your server image:</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3&#39;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">mongo</span><span class="p">:</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongo</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nt">server</span><span class="p">:</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mlops-server</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="nt">build</span><span class="p">:</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">            </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./server</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">            </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8000:8000</span>
+</span></code></pre></div>
+<ul>
+<li>Run the cluster with <code>docker-compose up</code>, from the root folder (where <code>docker-compose.yml</code> is).<ul>
+<li><strong>BEWARE</strong>! only works if your <code>mlops-server</code> image has already been built</li>
+<li>Check that you have indeed 2 containers running.</li>
+</ul>
+</li>
+<li>Close the cluster with <code>CTRL+C</code>, and destroy it with <code>docker-compose down</code>. A <code>docker ps -a</code> should show no containers remaining.</li>
+<li>In <code>server/app.py</code>, change <code>client = MongoClient('localhost', 27017)</code> into <code>client = MongoClient('mongo', 27017)</code>. <ul>
+<li>It is docker-compose that redirects the <code>mongo</code> URL/service into the <code>mongo</code> container.</li>
+</ul>
+</li>
+<li>Because the image building info is in <code>docker-compose.yml</code>, you can rebuild the images immediately with <code>docker-compose up --build</code> instead. Try it out.</li>
+<li>Connect to your API with <a href="http://localhost:8000/docs">http://localhost:8000/docs</a> running in a container. Make sure you can still add and get objects from MongoDB through the API.</li>
+</ul>
+<p><img alt="" src="../images/mlops-mongo-fastapi-docker.png" /></p>
+</div>
+<h3 id="d-adding-the-user-interface-layer-with-streamlit">d. Adding the User Interface layer with Streamlit</h3>
+<p>Instead of connecting to the FastAPI documentation page to interact with it, let's create a simple Streamlit UI to interact with the API.</p>
+<p><img alt="" src="../images/mlops-three-tier-simple.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Building a Streamlit UI connected to the API</p>
+<ul>
+<li>Make sure your docker-compose FastAPI + MongoDB cluster from the previous section is running.</li>
+<li>Build a local <a href="https://docs.streamlit.io/">Streamlit</a> <em>(or Gradio or Dash or Shiny or whatever)</em> app in <code>client/app.py</code> with a text input to write down a fruit and a button to request the <code>http://server:8000/add/&lt;fruit&gt;</code>. <ul>
+<li>The command to run a Streamlit app from your conda environment is <code>streamlit run app.py</code></li>
+<li>Here is some code to put in <code>client/app.py</code> to react to a button click:</li>
+</ul>
+</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">streamlit</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">st</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;My beautiful App&quot;</span><span class="p">)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">button_clicked</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">&quot;Click me&quot;</span><span class="p">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="k">if</span> <span class="n">button_clicked</span><span class="p">:</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>    <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;It worked&quot;</span><span class="p">)</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">st</span><span class="o">.</span><span class="n">balloons</span><span class="p">()</span>
+</span></code></pre></div>
+<ul>
+<li>Get back the list of all fruits currently in Mongo from the API by hitting <a href="http://localhost:8000/list">http://localhost:8000/list</a> on clicking from another button.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Challenge - Building our first Dockerized Fullstack web service</p>
+<ul>
+<li>Implement <code>client/Dockerfile</code>, build it as <code>mlops-client</code>. Make sure you can properly run it without <code>docker compose</code></li>
+<li>Add the Streamlit UI container run to <code>docker-compose.yml</code>.<ul>
+<li>Don't forget to change the URL of your <code>MongoClient</code></li>
+</ul>
+</li>
+<li>Restart your <code>docker-compose</code> cluster.<ul>
+<li>If all is well, in your 3-tier architecture, Streamlit is only hitting FastAPI and only FastAPI is hitting MongoDB. </li>
+<li>That way you can add authentication or security measures at FastAPI level, which would be harder to do if the client immediately hit MongoDB.</li>
+</ul>
+</li>
+</ul>
+</div>
+<p><img alt="" src="../images/mlops-three-tier-architecture.png" /></p>
+<h2 id="3-a-full-stack-dockerized-ml-project">3. A full-stack Dockerized ML project</h2>
+<p>Pick up a classification training dataset, like Iris or Penguins. The goal is to build a fully functional <code>docker-compose</code> app that provides an UI to do predictions on a pretrained ML model.</p>
+<p><img alt="" src="../images/mlops-architecture.png" /></p>
+<div class="admonition warning">
+<p class="admonition-title">Challenge</p>
+<ul>
+<li>Create a <code>server/train.py</code> script, that trains a scikit-learn model over the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html">Iris</a> or any other classification dataset (as long as it doesn't have too many features). When you run it locally with <code>python train.py</code>, it should create a <code>model.pkl</code> file (as pickle or using joblib). This pickled model should then later be copied into the FastAPI Docker image. </li>
+<li>The client should be a Streamlit <em>(or Gradio or Dash or Shiny or whatever)</em>, exposing all feature columns of the dataset we want to use to make a prediction.</li>
+<li>The server should be a FastAPI API, which exposes a POST verb <code>predict</code>. If you send <code>POST /predict</code> with a body containing the values of the features, like <code>{"sepal_length": 42, "petal_length": 34...}</code> it should return the predicted class from a pretrained model. Following is an example of reacting to a POST request in FastAPI:</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.encoders</span><span class="w"> </span><span class="kn">import</span> <span class="n">jsonable_encoder</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">Item</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">sepal_length</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">sepal_width</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="n">petal_length</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="n">petal_width</span><span class="p">:</span> <span class="nb">float</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/predict&quot;</span><span class="p">)</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Item</span><span class="p">):</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>    <span class="n">item_data</span> <span class="o">=</span> <span class="n">jsonable_encoder</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>    <span class="k">return</span> <span class="n">item_data</span>
+</span></code></pre></div>
+<ul>
+<li>The client should request the <code>http://server:8000/predict</code> with the features in the body to get back a class to display.</li>
+<li>Add a <code>README.md</code> to your project to describe how to clone &amp; run the project. <ul>
+<li>Normally, I should just need a <code>docker compose up --build</code> to build and run the Docker image.</li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Good Luck, Have Fun <img alt="🎉" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f389.svg" title=":tada:" />!</p>
+<h2 id="bonus-challenges">===== Bonus Challenges =====</h2>
+<p>The following exercises are optional bonuses if you want to go the full MLOps route. </p>
+<p>You can do them in any order.</p>
+<h2 id="4-github-cicd">4. Github &amp; CI/CD</h2>
+<p>We can push the MLOps images to a Github project so anyone can download them.</p>
+<h3 id="a-create-a-github-repository-for-your-mlops-project">a. Create a Github repository for your MLOps project</h3>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Create a new Github repo</p>
+<ul>
+<li>Create a new <code>mlops</code> repo with a <code>README.md</code> on your Github profile (or any random file). <ul>
+<li>You should see a new <code>Packages</code> in the bottom right of the project</li>
+<li>If you can't see it, head to the <code>Settings</code> gear icon next to the <code>About</code> section and check the <code>Packages</code> option.</li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="../images/mlops-gh-create-repo.png" /></p>
+<ul>
+<li>Click on the <code>Publish your first package</code> option. We will be using the <code>Containers</code> option.</li>
+</ul>
+<p><img alt="" src="../images/mlops-gh-get-started.png" /></p>
+<ul>
+<li>Can you find the pricing for the Containers service?</li>
+</ul>
+</div>
+<h3 id="b-authenticating-to-github-using-a-personal-access-token">b. Authenticating to Github using a personal access token</h3>
+<p>To upload an image to the Github Packages, you will need to authenticate from Command line using a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic">personal access token (classic)</a> before you can push Docker images to the Github project. </p>
+<div class="admonition warning">
+<p class="admonition-title">Personal Access Token are secrets</p>
+<p>A personal access token is different than your Github password, and while you can revoke them if you leak them online, treat them with the same importance as a password so <strong>handle it with care</strong>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Create a personal access token</p>
+<ul>
+<li>
+<p>Follow all instructions in <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic">this tutorial</a>.</p>
+<ul>
+<li>Scope of the token should have at least <strong>write:packages</strong> and <strong>delete:packages</strong> </li>
+<li>Copy your token in a safe space, you'll have to copy it in the command line when required.</li>
+<li>Careful, anyone who gets this personal access token can access any of your public/private repositories, handle with care.</li>
+</ul>
+</li>
+<li>
+<p>In the following image, I have 2 personal token with different access properties. I can delete any whenever I want
+<img alt="" src="../images/mlops-gh-token-list.png" /></p>
+</li>
+</ul>
+</div>
+<h3 id="c-push-a-docker-image-to-the-github-project">c. Push a Docker image to the Github project</h3>
+<p>To push a Docker image to Github, it needs to follow the following name convention: <code>ghcr.io/NAMESPACE/IMAGE_NAME:latest</code>. You will need to rename your images.</p>
+<p>For example, I would need to rename my image to <code>ghcr.io/andfanilo/mlops:latest</code>, because</p>
+<ul>
+<li><code>andfanilo</code> is my profile name, so it's the <code>NAMESPACE</code></li>
+<li><code>mlops</code> is the name of my repo, so it's <code>IMAGE_NAME</code></li>
+<li><code>latest</code> is the default tag. You can put any tag like <code>v0.1</code> but stick to <code>latest</code> for now.</li>
+</ul>
+<p>The following exercise involves the <code>git</code> command, make sure you use <code>git bash</code> or install <code>git</code> in a conda environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Pushing an image to Github</p>
+<ul>
+<li>Run <code>docker images</code></li>
+</ul>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>REPOSITORY<span class="w">     </span>TAG<span class="w">       </span>IMAGE<span class="w"> </span>ID<span class="w">       </span>CREATED<span class="w">       </span>SIZE
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>mlops-client<span class="w">   </span>latest<span class="w">    </span>855e076c7e32<span class="w">   </span><span class="m">6</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">    </span>583MB
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>mlops-server<span class="w">   </span>latest<span class="w">    </span>efac786ed274<span class="w">   </span><span class="m">6</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">    </span>464MB
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>mongo<span class="w">          </span>latest<span class="w">    </span>021b676f1558<span class="w">   </span><span class="m">3</span><span class="w"> </span>weeks<span class="w"> </span>ago<span class="w">   </span>757MB
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Github Packages free tier</p>
+<p>If you remember from the <a href="https://github.com/settings/billing/summary">pricing page</a> you are limited to a monthly:</p>
+<ul>
+<li>500Mb of Packages storage</li>
+<li>1 Gb of transfer out</li>
+</ul>
+<p>Our docker images are 500Mb, way too large for the current free tier. There are ways to <a href="https://pythonspeed.com/articles/smaller-docker-images/">reduce the image size</a>, but honestly we won't be  able to squeeze our Streamlit/FastAPI images to 500Mb, even if the price for hosting is actally <a href="https://github.com/pricing/calculator?feature=packages">pretty low</a>. Let's use a very small image to train for now.</p>
+</div>
+<ul>
+<li>Pull the docker <code>hello-world</code> image, check out its size is around 10Kb.</li>
+</ul>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>$<span class="w"> </span>docker<span class="w"> </span>images
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>REPOSITORY<span class="w">     </span>TAG<span class="w">       </span>IMAGE<span class="w"> </span>ID<span class="w">       </span>CREATED<span class="w">       </span>SIZE
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>mlops-client<span class="w">   </span>latest<span class="w">    </span>855e076c7e32<span class="w">   </span><span class="m">6</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">    </span>583MB
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>mlops-server<span class="w">   </span>latest<span class="w">    </span>efac786ed274<span class="w">   </span><span class="m">6</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">    </span>464MB
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>mongo<span class="w">          </span>latest<span class="w">    </span>021b676f1558<span class="w">   </span><span class="m">3</span><span class="w"> </span>weeks<span class="w"> </span>ago<span class="w">   </span>757MB
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>hello-world<span class="w">    </span>latest<span class="w">    </span>9c7a54a9a43c<span class="w">   </span><span class="m">7</span><span class="w"> </span>months<span class="w"> </span>ago<span class="w">    </span><span class="m">13</span>.3kB
+</span></code></pre></div>
+<ul>
+<li>Rename the <code>hello-world</code> image to comply with the Github Packages URL: <code>docker image tag hello-world:latest ghcr.io/your-name/mlops:latest</code></li>
+</ul>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>$<span class="w"> </span>docker<span class="w"> </span>images
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>REPOSITORY<span class="w">                </span>TAG<span class="w">       </span>IMAGE<span class="w"> </span>ID<span class="w">       </span>CREATED<span class="w">          </span>SIZE
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>mlops-client<span class="w">              </span>latest<span class="w">    </span>4f17fd22a93b<span class="w">   </span><span class="m">16</span><span class="w"> </span>minutes<span class="w"> </span>ago<span class="w">   </span>488MB
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>mlops-server<span class="w">              </span>latest<span class="w">    </span>efac786ed274<span class="w">   </span><span class="m">6</span><span class="w"> </span>days<span class="w"> </span>ago<span class="w">       </span>464MB
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>mongo<span class="w">                     </span>latest<span class="w">    </span>021b676f1558<span class="w">   </span><span class="m">3</span><span class="w"> </span>weeks<span class="w"> </span>ago<span class="w">      </span>757MB
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>hello-world<span class="w">               </span>latest<span class="w">    </span>9c7a54a9a43c<span class="w">   </span><span class="m">7</span><span class="w"> </span>months<span class="w"> </span>ago<span class="w">     </span><span class="m">13</span>.3kB
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>ghcr.io/andfanilo/mlops<span class="w">   </span>latest<span class="w">    </span>9c7a54a9a43c<span class="w">   </span><span class="m">7</span><span class="w"> </span>months<span class="w"> </span>ago<span class="w">     </span><span class="m">13</span>.3kB
+</span></code></pre></div>
+<ul>
+<li>Try to push the <code>ghcr.io/your-name/mlops:latest</code> image to Github: <code>docker push ghcr.io/your-name/mlops:latest</code></li>
+</ul>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$<span class="w"> </span>docker<span class="w"> </span>push<span class="w"> </span>ghcr.io/andfanilo/mlops:latest
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>The<span class="w"> </span>push<span class="w"> </span>refers<span class="w"> </span>to<span class="w"> </span>repository<span class="w"> </span><span class="o">[</span>ghcr.io/andfanilo/mlops<span class="o">]</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>01bb4fce3eb1:<span class="w"> </span>Preparing
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>unauthorized:<span class="w"> </span>unauthenticated:<span class="w"> </span>User<span class="w"> </span>cannot<span class="w"> </span>be<span class="w"> </span>authenticated<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>token<span class="w"> </span>provided.
+</span></code></pre></div>
+<ul>
+<li>To authenticate with your personal access token in place of password: <code>docker login ghcr.io -u GITHUB_USERNAME</code><ul>
+<li>Take note that when you enter letters or paste in the <code>Password:</code> field, no stars will appear to show a character count. This is normal, proceed.</li>
+</ul>
+</li>
+</ul>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$<span class="w"> </span>docker<span class="w"> </span>login<span class="w"> </span>ghcr.io<span class="w"> </span>-u<span class="w"> </span>andfanilo
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Password:
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>WARNING!<span class="w"> </span>Your<span class="w"> </span>password<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>stored<span class="w"> </span>unencrypted<span class="w"> </span><span class="k">in</span><span class="w"> </span>/home/docker/.docker/config.json.
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Configure<span class="w"> </span>a<span class="w"> </span>credential<span class="w"> </span>helper<span class="w"> </span>to<span class="w"> </span>remove<span class="w"> </span>this<span class="w"> </span>warning.<span class="w"> </span>See
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>Login<span class="w"> </span>Succeeded
+</span></code></pre></div>
+<ul>
+<li>Try to push again</li>
+</ul>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$<span class="w"> </span>docker<span class="w"> </span>push<span class="w"> </span>ghcr.io/andfanilo/mlops:latest
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>The<span class="w"> </span>push<span class="w"> </span>refers<span class="w"> </span>to<span class="w"> </span>repository<span class="w"> </span><span class="o">[</span>ghcr.io/andfanilo/mlops<span class="o">]</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>01bb4fce3eb1:<span class="w"> </span>Pushed
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>latest:<span class="w"> </span>digest:<span class="w"> </span>sha256:7e9b6e7ba2842c91cf49f3e214d04a7a496f8214356f41d81a6e6dcad11f11e3<span class="w"> </span>size:<span class="w"> </span><span class="m">525</span>
+</span></code></pre></div>
+<ul>
+<li>Though the Docker image has been pushed to you Github project, it is still private and invisible. You can find it on your profile page: <a href="https://github.com/your-profile?tab=packages">https://github.com/your-profile?tab=packages</a>. Connect it to your <code>mlops</code> repository through <a href="https://docs.github.com/en/packages/learn-github-packages/connecting-a-repository-to-a-package">this tutorial</a>. A Docker package should finally appear on your repository.</li>
+</ul>
+<p><img alt="" src="../images/mlops-gh-list-docker.png" /></p>
+<ul>
+<li>Ask a friend to download your image!</li>
+</ul>
+</div>
+<p>There are other Docker registries to push images to, like <a href="https://hub.docker.com/">Docker Hub (which has a better free tier)</a>, <a href="https://gitlab.com/">Gitlab</a> and <a href="https://quay.io/">Quay.io</a>. Every Cloud Provider (AWS/Azure/GCP) also have their dedicated container registry per project, you'll be expected to push images there in customer projects.</p>
+<h3 id="d-continuous-integration-with-github-actions">d. Continuous integration with Github Actions</h3>
+<p>CI/CD is an acronym that stands for Continuous Integration (CI) and Continuous Deployment or Continuous Delivery (CD). It's a methodology that modern software development teams use to deliver code changes more frequently and reliably.</p>
+<p><img alt="" src="../images/mlops-cicd.png" /></p>
+<ul>
+<li>CI: Each code change triggers an automated build and testing sequence. Any time to push commits to Github, a new Docker image with the changes should be built and stored in Github Packages</li>
+<li>CD: After building a new image, automatically deploy every change that passes the build and test stages to a production environment</li>
+</ul>
+<p>In our MLOps tutorial, CI/CD refers to the continuous integration and delivery of up-to-date Machine Learning APIs.</p>
+<div class="admonition note">
+<p class="admonition-title">Exercise - Github Actions quick start</p>
+<p>Run through the Github Actions quick start on your <code>mlops</code> Github project: <a href="https://docs.github.com/en/actions/quickstart">https://docs.github.com/en/actions/quickstart</a></p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Challenge - Rebuild the <code>hello-world</code> image at every commit</p>
+<ul>
+<li>Create a new Dockerfile in the <code>mlops</code> project. This Dockerfile should use the <code>hello-world</code> base image but change the <code>CMD</code> to print something (like an environment variable)</li>
+<li>Edit the <code>.github/workgflows/github-actions-demo.yml</code> (or however you named it) to build the new image and push it to the project's container registry automatically at every commit push. <ul>
+<li><a href="https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages">This link should teach you how to push</a> </li>
+<li>and <a href="https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository">this one will help you configure Docker login to your Github project</a>.</li>
+</ul>
+</li>
+<li>Push a new commit, wait for the image build, then redownload the Docker image locally an try running it.</li>
+</ul>
+</div>
+<p>You are now able to host up-to-date images on Github.</p>
+<h2 id="5-deploying-to-huggingface-spaces">5. Deploying to Huggingface Spaces</h2>
+<p>The Hugging Face Hub is a platform with over 350k models, 75k datasets, and 150k demo apps (Spaces), all open source and publicly available, in an online platform where people can easily collaborate and build ML together. The Hub works as a central place where anyone can explore, experiment, collaborate, and build technology with Machine Learning.</p>
+<p>Hugging Face Spaces offer a simple way to host ML demo apps directly on your profile or your organization’s profile. It's the perfect platform to deploy small ML apps in Streamlit, Gradio or Docker. All CI/CD is preconfigured on Huggingface Spaces, any code change you push will automatically rebuild and redeploy the app online.</p>
+<p><img alt="" src="../images/mlops-hf-spaces.png" /></p>
+<div class="admonition danger">
+<p class="admonition-title">Challenge - Deploy a Docker image on Huggingface Spaces</p>
+<ul>
+<li>Create an account on <a href="https://huggingface.co/">HuggingFace</a></li>
+<li>Follow the Docker Spaces quick start: <a href="https://huggingface.co/docs/hub/spaces-sdks-docker-first-demo">https://huggingface.co/docs/hub/spaces-sdks-docker-first-demo</a></li>
+<li>Create a new project for your <code>mlops-server</code> FastAPI part and deploy it on Huggingface Spaces. Your local Streamlit app should be able to use it for predictions.</li>
+</ul>
+</div>
+<h2 id="6-enhancing-the-docker-compose-for-continuous-deployment">6. Enhancing the Docker Compose for Continuous Deployment</h2>
+<p>We can use a MLOps platform to:</p>
+<ul>
+<li>track training experiments</li>
+<li>store and evaluate models in a registry for reuse</li>
+<li>package models into APIs and Docker images</li>
+</ul>
+<p>Popular platforms are <a href="https://mlflow.org/">MLFlow</a>, <a href="https://neptune.ai/">Neptune</a> and <a href="https://wandb.ai/">Weights &amp; Biases</a>.</p>
+<h3 id="a-adding-mlflow">a. Adding MLFlow</h3>
+<p>Using the <code>ghcr.io/mlflow/mlflow</code> Docker image, you can start a MLFlow Model Registry, and send Scikit-Learn models there with associated metrics.</p>
+<p>For example if you start a MLFlow Server with <code>docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite</code>, you can use the following code to train a model and push it to the MLFlow Server with its evaluation metrics:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">r2_score</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">mlflow</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">mlflow.sklearn</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">eval_metrics</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">pred</span><span class="p">))</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    <span class="n">mae</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="n">r2</span> <span class="o">=</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>    <span class="k">return</span> <span class="n">rmse</span><span class="p">,</span> <span class="n">mae</span><span class="p">,</span> <span class="n">r2</span>
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">():</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>    <span class="n">lr</span> <span class="o">=</span> <span class="n">ElasticNet</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">l1_ratio</span><span class="o">=</span><span class="n">l1_ratio</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>    <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">)</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>    <span class="n">predicted_qualities</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_x</span><span class="p">)</span>
+</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>
+</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>    <span class="p">(</span><span class="n">rmse</span><span class="p">,</span> <span class="n">mae</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span> <span class="o">=</span> <span class="n">eval_metrics</span><span class="p">(</span><span class="n">test_y</span><span class="p">,</span> <span class="n">predicted_qualities</span><span class="p">)</span>
+</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>
+</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>    <span class="c1"># send to MLFlow</span>
+</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;alpha&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;l1_ratio&quot;</span><span class="p">,</span> <span class="n">l1_ratio</span><span class="p">)</span>
+</span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="n">rmse</span><span class="p">)</span>
+</span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;r2&quot;</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span>
+</span><span id="__span-16-25"><a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="n">mae</span><span class="p">)</span>
+</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>
+</span><span id="__span-16-27"><a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>    <span class="n">mlflow</span><span class="o">.</span><span class="n">sklearn</span><span class="o">.</span><span class="n">log_model</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">registered_model_name</span><span class="o">=</span><span class="s2">&quot;ElasticnetWineModel&quot;</span><span class="p">)</span> 
+</span></code></pre></div>
+<p>You should be able to visualize you model on the dashboard <a href="http://localhost:5000">http://localhost:5000</a>.</p>
+<div class="admonition danger">
+<p class="admonition-title">Challenge</p>
+<ul>
+<li>Use the previous challenge as template to create the above architecture, adding a MLFlow service in <code>docker-compose</code>. You now have a <code>client</code> Streamlit, <code>FastAPI</code> server and <code>MLFlow</code> backend.</li>
+<li>Locally, in the <code>train.py</code> that trains your ML Model, log your model into MLFlow.</li>
+<li>In your <code>FastAPI</code> server, load the model from MLFlow 
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">pyfunc</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">model_uri</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;models:/</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">model_version</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p">)</span>
+</span></code></pre></div></li>
+<li>Add an API endpoint like <code>GET /update-model</code> that loads a new model from MLFlow.</li>
+<li>From the client, add a button to update a model.</li>
+</ul>
+</div>
+<p>You can now decide to update models from the client, or detect data drift by storing the latest instances server side/in a database and using <a href="https://github.com/whylabs/whylogs">whylabs</a> to detect a drift and train a new model.</p>
+<h3 id="b-adding-prefect">b. Adding Prefect</h3>
+<p>Instead of running <code>train.py</code> to retrain a model on demand, you can schedule the run using <a href="https://www.prefect.io/">Prefect</a>, <a href="https://dagster.io/">Dagster</a> or <a href="https://airflow.apache.org/">Airflow</a></p>
+<div class="admonition danger">
+<p class="admonition-title">Challenge</p>
+<ul>
+<li>Locally, use Prefect to schedule a <code>train.py</code> run every 5 minutes.<ul>
+<li>Visualize all runs in their respective UIs.</li>
+</ul>
+</li>
+<li>Build a Docker image which will contain your Prefect/Airflow and add it to <code>docker-compose.yml</code>. In the end you should have the following architecture</li>
+</ul>
+</div>
+<p><img alt="" src="../images/mlops-final.png" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Fanilo ANDRIANASOLO
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
