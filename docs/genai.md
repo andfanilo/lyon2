@@ -58,7 +58,7 @@ You can read [this retrospective of Open Source LLMs](https://huggingface.co/blo
         - Mistral-7B
         - Phi 2
         - Vicuna
-        - Llama 2
+        - Llama 3.1
         - Nous-Hermes
     - for code generation:
         - CodeLlama
@@ -84,7 +84,7 @@ LMStudio uses [llama.cpp](https://github.com/ggerganov/llama.cpp) as backend to 
 !!! note "Exercise - Playing with LMStudio"
     - Install LMStudio 
     - Search for `Mistral` models, for a list of all available Mistral models on Huggingface Hub stored in GGUF format.
-    - From the `TheBloke/Mistral-7B-Instruct-v0.2-GGUF` result, download the `mistral-7b-instruct-v0.2.Q4_K_S.gguf` model.
+    - From the `Mistral-7B-Instruct-v0.3-GGUF` result, download the `mistral-7b-instruct-v0.3.Q4_K_M.gguf` model.
     - Open a conversation thread and start chatting with the newly downloaded Mistral model.
     - Download a `Deepseek Coder` model. Have it generate SQLAlchemy code like in the previous example.
 
@@ -96,7 +96,7 @@ LMStudio uses [llama.cpp](https://github.com/ggerganov/llama.cpp) as backend to 
         - The `Instruct` mode is trained to follow the user's instructions. For example `Summarize the following text: {text}`
     - In the `Mistral-7B` name, `7B` refers to the model size, here being 7 billion parameters. The parameter count is a rough indicator of its performance on various natural language processing tasks, at the expense of being way harder to store in RAM/vRAM.
     - In general models are trained in FP16 (half-precision), so each weight occupies 16 bits. No one runs such big models, but rather run quantized models by converting the weights from higher precision data types to lower-precision ones. : Q8 (single byte float quant), Q5, Q4 and Q2.
-        - Llama2-7B in FP16 takes around 13.5 GB, whereas Llama2-7B in Q4 takes only 4 GB
+        - Llama3-8B in FP16 takes around 15 GB, whereas Llama3-8B in Q4 takes only 5 GB
         - There is quality loss in quantization, but you win on resources and speed of inference. It is still debatable whether it's better to use larger quantized models VS smaller non-quantized models. Unfortunately you will have to test that yourself. Research usually points to larger quantized model outperforming smaller non-quantized in quality and speed.
 
 !!! note "Exercise - REST API with LMStudio"
@@ -117,7 +117,7 @@ LMStudio uses [llama.cpp](https://github.com/ggerganov/llama.cpp) as backend to 
     )
 
     completion = client.chat.completions.create(
-        model="local-model", # this field is currently unused
+        model="local-model",
         messages=[
             {"role": "system", "content": "Always answer in rhymes."},  # the system prompt helps steer the behavior of the model
             {"role": "user", "content": "Introduce yourself."}          # start of the conversation
@@ -206,7 +206,7 @@ Ollama cannot be used on Windows yet, apart if you're using WSL2...fortunately, 
     )
 
     response = client.chat.completions.create(
-        model="mistral", # this field is currently unused
+        model="mistral",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": "Who won the world series in 2020?"},
@@ -250,7 +250,7 @@ The RAG process comprises of four parts:
 We will recreate a full RAG setup using open source components:
 
 - [Sentence Transformers](https://www.sbert.net/index.html) as the embedding model
-- Mistral (or Llama 2) as the LLM, through LMStudio or Ollama REST API
+- Mistral (or Llama 3) as the LLM, through LMStudio or Ollama REST API
 - [ChromaDB](https://www.trychroma.com/) as a vector store to save vector embeddings
 - [Llama-index](https://docs.llamaindex.ai/) to orchestrate the RAG
 
@@ -370,16 +370,16 @@ The above code doesn't work, we need to point the embedding model to use a local
     ```python hl_lines="3 5-6 12"
     from llama_index.core import SimpleDirectoryReader
     from llama_index.core import VectorStoreIndex
+    from llama_index.core import Settings
     from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
     # define embedding function
-    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+    Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 
     # index will contain all document chunks with embeddings
     documents = SimpleDirectoryReader("data").load_data()
     index = VectorStoreIndex.from_documents(
         documents,
-        embed_model=embed_model,
     ) 
 
     # To query your newly created index, you would then run the following:
@@ -406,14 +406,15 @@ The above code doesn't work, we need to point the embedding model to use a local
     ```python hl_lines="4 9-13 24"
     from llama_index.core import SimpleDirectoryReader
     from llama_index.core import VectorStoreIndex
+    from llama_index.core import Settings
     from llama_index.embeddings.huggingface import HuggingFaceEmbedding
     from llama_index.llms.ollama import Ollama
 
     # define embedding function
-    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+    Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 
     # define LLM
-    llm = Ollama(
+    Settings.llm = Ollama(
         request_timeout=300.0,
         model="mistral", 
     )
@@ -422,13 +423,10 @@ The above code doesn't work, we need to point the embedding model to use a local
     documents = SimpleDirectoryReader("data").load_data()
     index = VectorStoreIndex.from_documents(
         documents,
-        embed_model=embed_model,
     ) 
 
     # To query your newly created index, you would then run the following:
-    query_engine = index.as_query_engine(
-        llm=llm,
-    )
+    query_engine = index.as_query_engine()
     response = query_engine.query("What did the author do growing up?")
     print(response)
     ```
@@ -437,18 +435,20 @@ The above code doesn't work, we need to point the embedding model to use a local
     - Configure the indexing phase of your `app.py` llama-index script to use a persistent chromaDB database:
 
     ```python hl_lines="2 6 17-20 25-27 32"
+    import chromadb
     from llama_index.core import SimpleDirectoryReader
     from llama_index.core import StorageContext
     from llama_index.core import VectorStoreIndex
+    from llama_index.core import Settings
     from llama_index.embeddings.huggingface import HuggingFaceEmbedding
     from llama_index.llms.ollama import Ollama
     from llama_index.vector_stores.chroma import ChromaVectorStore
 
     # define embedding function
-    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+    Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 
     # define LLM
-    llm = Ollama(
+    Settings.llm = Ollama(
         request_timeout=300.0,
         model="mistral", 
     )
@@ -456,7 +456,7 @@ The above code doesn't work, we need to point the embedding model to use a local
     # create ChromaDB database
     #chroma_client = chromadb.EphemeralClient() # can use this if you want an in-memory test
     chroma_client = chromadb.PersistentClient(path="./chroma_db")
-    chroma_collection = chroma_client.create_collection("quickstart")
+    chroma_collection = chroma_client.get_or_create_collection("quickstart")
 
     # index will contain all document chunks with embeddings
     documents = SimpleDirectoryReader("data").load_data()
@@ -467,14 +467,11 @@ The above code doesn't work, we need to point the embedding model to use a local
 
     index = VectorStoreIndex.from_documents(
         documents,
-        embed_model=embed_model,
         storage_context=storage_context, 
     ) 
 
     # To query your newly created index, you would then run the following:
-    query_engine = index.as_query_engine(
-        llm=llm,
-    )
+    query_engine = index.as_query_engine()
     response = query_engine.query("What did the author do growing up?")
     print(response)
     ```
