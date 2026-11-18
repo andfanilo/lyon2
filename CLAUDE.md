@@ -84,10 +84,22 @@ uv run mkdocs build
 uv run mkdocs gh-deploy
 ```
 
+## Tutorial Conventions
+
+The tutorials teach [uv](https://docs.astral.sh/uv/). Do not reintroduce conda, Anaconda or `pip install -r requirements.txt`.
+
+*   **Python environments:** `prerequisites.md` teaches `uv venv` + `uv pip` as a bridge, then the project workflow (`uv init`, `uv add`, `uv run`), then `uvx` and `uv tool install`. Other TDs use the project workflow only.
+*   **`uv init` flags:** always `--app --no-package`, because recent uv versions default to a `src/` package. Add `--vcs none` for projects nested in a student folder (MLOps services, MCP server). Add `--no-workspace` for projects created inside this repository (dbt): without it, uv adds them to the root `pyproject.toml` workspace.
+*   **One uv project per Docker image:** MLOps `client/`, `server/`, GenAI `mcp-server/`, `agent/`. GenAI exercises share one `genai-td` project.
+*   **Dockerfiles:** `FROM python:3.12-slim`, `COPY --from=ghcr.io/astral-sh/uv:<pinned> /uv /uvx /bin/`, copy `pyproject.toml uv.lock`, `uv sync --locked --no-install-project`, copy the code, `CMD ["uv", "run", ...]`. Each project has a `.dockerignore` with `.venv`. Keep the uv version identical across pages.
+*   **Shells:** Git Bash is the default. Use content tabs (`=== "Git Bash"`, `=== "PowerShell"`, `=== "WSL / macOS / Linux"`) only where commands differ. In Git Bash, `docker run -v` with a Linux path needs `MSYS_NO_PATHCONV=1`.
+*   **Pending:** `prerequisites.md` step 4 (`uvx jupyter lab` on the cloned pyspark-tutorial) is temporary until the pyspark-tutorial environment setup (nbgrader, VS Code) is decided.
+
 ## Log Generator Utility
 
 The `gen_logs` directory contains a tool to simulate web traffic logs, likely used for Spark or NoSQL tutorials.
 
+*   **Fixed count:** `uv run python gen_logs/lib/genhttplogs.py --count 1000 > out.log` writes 1000 lines and exits. Works from any folder.
 *   **Start:** `./gen_logs/start_logs.sh` (Runs the generator in the background and writes to `gen_logs/logs/access.log`)
 *   **Stop:** `./gen_logs/stop_logs.sh`
 *   **Tail:** `./gen_logs/tail_logs.sh`
