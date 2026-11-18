@@ -14,7 +14,7 @@ This repository contains the source code for the Lyon 2 SISE tutorials documenta
 *   **GenAI:** Generative AI.
 *   **Kubernetes:** Container orchestration.
 
-[Zensical](https://zensical.org/) builds the documentation from `mkdocs.yml`, with the `classic` theme variant that keeps the Material for MkDocs look. The repository also includes utility scripts for generating dummy data (HTTP logs) used in the tutorials.
+[Zensical](https://zensical.org/) builds the documentation from `mkdocs.yml`, with the `modern` theme variant. `docs/stylesheets/extra.css` sets the teal primary and accent colours. In `modern`, the primary colour styles text links only, and the accent colour styles the current page in the sidebar. The header stays white. The repository also includes utility scripts for generating dummy data (HTTP logs) used in the tutorials.
 
 ## Tech Stack
 

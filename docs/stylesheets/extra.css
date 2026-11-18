@@ -1,3 +1,5 @@
-:root {
+:root > * {
     --md-primary-fg-color:        #174C4f;
+    --md-accent-fg-color:         #174C4f;
+    --md-accent-fg-color--transparent: #174C4f1a;
   }

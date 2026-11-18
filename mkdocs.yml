@@ -1,9 +1,10 @@
 site_name: Lyon 2 SISE Tutorials
 theme:
   name: material
-  variant: classic
+  variant: modern
   palette:
     primary: custom
+    accent: custom
 
 extra_css:
   - stylesheets/extra.css
