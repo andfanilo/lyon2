@@ -7,25 +7,20 @@ uv sync
 ## Dev
 
 ```
-uv run mkdocs serve
+uv run zensical serve
 ```
 
 ## Build
 
 ```
-uv run mkdocs build
+uv run zensical build --strict
 cd site/
 uv run python -m http.server
 ```
 
-## Deploy 
+## Deploy
 
-Because of 2FA, deploy with:
-
-```
-uv run mkdocs build
-uv run mkdocs gh-deploy
-```
+Push to `master`. The `ci` GitHub Actions workflow builds the site and publishes it to GitHub Pages. To redeploy without a push, run the workflow from the **Actions** tab.
 
 ## Resources
 

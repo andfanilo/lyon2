@@ -14,11 +14,11 @@ This repository contains the source code for the Lyon 2 SISE tutorials documenta
 *   **GenAI:** Generative AI.
 *   **Kubernetes:** Container orchestration.
 
-The documentation is built using [MkDocs](https://www.mkdocs.org/) with the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme. It also includes utility scripts for generating dummy data (HTTP logs) used in the tutorials.
+[Zensical](https://zensical.org/) builds the documentation from `mkdocs.yml`, with the `classic` theme variant that keeps the Material for MkDocs look. The repository also includes utility scripts for generating dummy data (HTTP logs) used in the tutorials.
 
 ## Tech Stack
 
-*   **Documentation:** MkDocs, Material for MkDocs
+*   **Documentation:** Zensical (reads `mkdocs.yml`)
 *   **Language:** Python (>=3.11)
 *   **Package Manager:** uv
 *   **CI/CD:** GitHub Actions (for deployment)
@@ -32,7 +32,7 @@ The documentation is built using [MkDocs](https://www.mkdocs.org/) with the [Mat
     *   `lib/genhttplogs.py`: The main Python script for log generation.
     *   `data/`: JSON data sources (products, departments, categories) for the log generator.
     *   `start_logs.sh`, `stop_logs.sh`, `tail_logs.sh`: Shell scripts to manage the log generation process.
-*   `site/`: The generated static site (created after running `mkdocs build`).
+*   `site/`: The generated static site (created after running `zensical build`).
 *   `data/`: Miscellaneous data files (CSV, ZIP) used in tutorials.
 *   `.github/workflows/`: CI/CD configuration files.
 
@@ -55,7 +55,7 @@ uv sync
 Start the local development server:
 
 ```bash
-uv run mkdocs serve
+uv run zensical serve
 ```
 
 The site will be available at `http://127.0.0.1:8000/`.
@@ -65,8 +65,10 @@ The site will be available at `http://127.0.0.1:8000/`.
 Build the static site:
 
 ```bash
-uv run mkdocs build
+uv run zensical build --strict
 ```
+
+`--strict` fails the build on a broken link or anchor. CI runs it too.
 
 To preview the built site locally:
 
@@ -77,12 +79,9 @@ uv run python -m http.server
 
 ### Deployment
 
-The site is deployed to GitHub Pages. Due to 2FA requirements, manual deployment via the CLI is often used:
+A push to `master` runs `.github/workflows/ci.yml`, which builds the site and publishes it with the GitHub Pages actions. To redeploy without a push, run the workflow from the **Actions** tab. Zensical has no `gh-deploy` command.
 
-```bash
-uv run mkdocs build
-uv run mkdocs gh-deploy
-```
+Zensical does not support MkDocs `hooks` or arbitrary MkDocs plugins. Check the [supported plugins](https://zensical.org/docs/compatibility/mkdocs/plugins/) before adding one.
 
 ## Tutorial Conventions
 
@@ -106,6 +105,6 @@ The `gen_logs` directory contains a tool to simulate web traffic logs, likely us
 
 ## Key Files
 
-*   `mkdocs.yml`: The main configuration file for the MkDocs site.
+*   `mkdocs.yml`: The site configuration, in MkDocs format, read by Zensical.
 *   `pyproject.toml`: Project metadata and dependencies.
 *   `README.md`: Basic project information and commands.

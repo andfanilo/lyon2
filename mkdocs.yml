@@ -1,6 +1,7 @@
 site_name: Lyon 2 SISE Tutorials
 theme:
   name: material
+  variant: classic
   palette:
     primary: custom
 
@@ -10,8 +11,8 @@ extra_css:
 markdown_extensions:
   - admonition
   - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:zensical.extensions.emoji.twemoji
+      emoji_generator: !!python/name:zensical.extensions.emoji.to_svg
   - def_list
   - pymdownx.details
   - pymdownx.highlight:
@@ -35,8 +36,5 @@ nav:
   - 4 - GenAI: genai.md
   - 5 - Kubernetes: k8s.md
   - 6 - dbt: dbt.md
-
-hooks:
-  - hooks.py
 
 copyright: Copyright &copy; Fanilo ANDRIANASOLO
