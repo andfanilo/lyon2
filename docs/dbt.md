@@ -4,7 +4,7 @@
 
 Make sure you have the following installed:
 
-- Python 3.8+ (managed via `uv` or `conda`)
+- [uv](https://docs.astral.sh/uv/), see [TD0](prerequisites.md)
 - [Visual Studio Code](https://code.visualstudio.com/) (highly recommended with the "dbt Power User" extension)
 - A terminal
 
@@ -19,15 +19,16 @@ We will create a specific directory for our analytics project to keep it separat
 !!! note "Exercise - Environment Setup"
     - Create a new folder named `dbt_project` at the root of your repository (sibling to `docs`, `gen_logs`, etc.).
     - Open your terminal in this new folder.
-    - Initialize a new python environment: `uv venv` (or `python -m venv .venv`).
-    - Activate the environment:
-        - Windows: `.venv\Scripts\activate`
-        - Mac/Linux: `source .venv/bin/activate`
-    - Install dbt for DuckDB:
+    - Initialize a new uv project:
         ```bash
-        uv pip install dbt-duckdb
+        uv init --app --no-package --no-workspace --vcs none --python 3.12
         ```
-        (or `pip install dbt-duckdb`)
+        - Without `--no-workspace`, uv adds `dbt_project` to the repository's own `pyproject.toml`, the one that builds this documentation site.
+    - Add dbt for DuckDB to the project:
+        ```bash
+        uv add dbt-duckdb
+        ```
+    - Run every dbt command through `uv run`, from `dbt_project` or any folder inside it. Check that it works with `uv run dbt --version`.
 
 ### b. dbt Initialization
 
@@ -36,7 +37,7 @@ dbt (data build tool) comes with a CLI to scaffold projects.
 !!! note "Exercise - Create the dbt project"
     - Run the initialization command:
         ```bash
-        dbt init ecommerce_analytics
+        uv run dbt init ecommerce_analytics
         ```
     - The wizard will ask you for configuration:
         - **Database**: Select `duckdb`.
@@ -70,12 +71,22 @@ For this project to be self-contained, we will create a local configuration.
     - **Crucial**: From now on, when you run dbt commands, you must tell dbt to look for the profile in the current directory.
     - You have two options:
   
-        1.  Add the flag: `dbt debug --profiles-dir .`
+        1.  Add the flag: `uv run dbt debug --profiles-dir .`
         2.  (Recommended) Set an environment variable in your terminal:
-            - **Windows (PowerShell)**: `$env:DBT_PROFILES_DIR="."`
-            - **Mac/Linux**: `export DBT_PROFILES_DIR=.`
+
+            === "Git Bash / WSL / macOS / Linux"
+
+                ```bash
+                export DBT_PROFILES_DIR=.
+                ```
+
+            === "PowerShell"
+
+                ```powershell
+                $env:DBT_PROFILES_DIR="."
+                ```
     
-    - Run `dbt debug` to confirm the connection works.
+    - Run `uv run dbt debug` to confirm the connection works.
 
     *Note: The `extensions` list ensures DuckDB can read remote files and parquet, which is useful for advanced features.*
 
@@ -93,10 +104,10 @@ Your goal is to turn this mess into a clean "Daily Revenue" report.
 We will use the repository's existing tools to generate our raw data.
 
 !!! note "Exercise - Data Generation"
-    - Go back to the root of the repository (where `gen_logs` is located).
-    - Generate 50,000 log lines:
+    - Go back to the `dbt_project` folder.
+    - Generate 50,000 log lines with the repository's `gen_logs` script:
         ```bash
-        python gen_logs/lib/genhttplogs.py --count 50000 > dbt_project/ecommerce_analytics/access.log
+        uv run python ../gen_logs/lib/genhttplogs.py --count 50000 > ecommerce_analytics/access.log
         ```
         *Note: The script works from any folder. Without `--count`, it streams one line per second until you stop it with Ctrl+C.*
     - Copy the dimension data into your dbt project's `seeds` folder.
@@ -128,7 +139,7 @@ dbt "Seeds" are perfect for static data like our product catalogs.
 !!! note "Exercise - Loading Seeds"
     - In your terminal (inside `ecommerce_analytics`), run:
         ```bash
-        dbt seed
+        uv run dbt seed
         ```
     - dbt will automatically infer schemas from the JSON files and create tables in your DuckDB database (by default, a file named `dbt.duckdb` will appear).
     - You can verify the data using the DuckDB CLI or by installing the `duckdb` python package and querying it, but trusting dbt is usually enough!
@@ -186,8 +197,8 @@ We will create a "staging" model to clean up the raw data. This is where we appl
 
     select * from parsed
     ```
-    - Run `dbt run` to build this model.
-    - Inspect the view/table created in DuckDB (or use `dbt show --select stg_access_logs`).
+    - Run `uv run dbt run` to build this model.
+    - Inspect the view/table created in DuckDB (or use `uv run dbt show --select stg_access_logs`).
 
 ### b. Feature Extraction
 
@@ -264,7 +275,7 @@ We want to know how much money is being "added to cart" each day.
     group by 1
     order by 1 desc
     ```
-    - Run `dbt run`.
+    - Run `uv run dbt run`.
 
 ## 6. Quality & Documentation
 
@@ -297,18 +308,18 @@ A huge advantage of dbt is that documentation and testing are code, living right
               - unique
               - not_null
     ```
-    - Run `dbt test`. If everything is correct, all tests should pass (green).
+    - Run `uv run dbt test`. If everything is correct, all tests should pass (green).
 
 ### b. Documentation
 
 !!! note "Exercise - Generate Documentation"
     - Run the following command:
         ```bash
-        dbt docs generate
+        uv run dbt docs generate
         ```
     - Then launch the local documentation server:
         ```bash
-        dbt docs serve
+        uv run dbt docs serve
         ```
     - A browser tab will open. Explore the **Lineage Graph** (bottom right icon). You will see the full flow of your data from `access.log` to `mart_daily_revenue`.
 
