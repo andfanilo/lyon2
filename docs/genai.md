@@ -102,7 +102,8 @@ LMStudio uses [llama.cpp](https://github.com/ggerganov/llama.cpp) as backend to 
 !!! note "Exercise - REST API with LMStudio"
     Feel free to use a Jupyter Notebook, VSCode script or Streamlit app for the following exercise.
 
-    - Prerequisites: create or reuse a conda environment, install `openai`. 
+    - Prerequisites: create a uv project for this TD with `uv init genai-td --app --no-package`. Browse into `genai-td`, then run `uv add openai`. The rest of the TD reuses this project, so add each new package to it with `uv add`.
+        - Run scripts with `uv run <script>.py`. To use a notebook with the project packages, run `uv run --with jupyter jupyter lab`.
     - In the `Local Server` tab, start a OpenAI REST API hosting your previously downloaded Mistral-7B.
     - Edit and run the following code, copied directly from the `chat (python)` tab of the Local Inference Server:
 
@@ -143,7 +144,7 @@ Ollama cannot be used on Windows yet, apart if you're using WSL2...fortunately, 
 !!! note "Exercise - Playing with Ollama"
     Feel free to use a Jupyter Notebook, VSCode script or Streamlit app for the following exercise.
 
-    - Prerequisites: create or reuse a conda environment, install `ollama`. 
+    - Prerequisites: in your `genai-td` project, run `uv add ollama requests`. 
     - Run ane ollama docker container in the background: `docker run -d -p 11434:11434 --name ollama ollama/ollama`. 
         - Ollama exposes a REST API by default, check <http://localhost:11434/> to see if Ollama is running.
     - Check for available models [here](https://ollama.com/library).
@@ -261,8 +262,8 @@ An embedding is a vector (list) of floating point numbers. The distance between 
 You can use BERT, S-BERT, or OpenAI's text embeddings.
 
 !!! note "Exercise - Understand Embeddings"
-    - Create or reuse a conda environment, install `sentence-transformers`. 
-      - You may also need to upgrade numpy if you get `RuntimeError: Numpy is not available`. 
+    - In your `genai-td` project, run `uv add sentence-transformers`. It downloads PyTorch, so it may take a while.
+      - If you get `RuntimeError: Numpy is not available`, upgrade numpy: run `uv lock --upgrade-package numpy`, then `uv sync`. 
     - Run some code to generate embeddings for different sentences:
 
     ```python
@@ -679,7 +680,7 @@ Instead of building custom APIs for every tool, the [Model Context Protocol (MCP
 We will use [FastMCP](https://github.com/jlowin/fastmcp), a library designed to build MCP servers easily (by the creators of FastAPI).
 
 !!! note "Exercise - Build a FastMCP Server"
-    - Create a folder `mcp-server`
+    - Like the MLOps services, the MCP server gets its own uv project and Docker image. Outside of `genai-td`, create it with `uv init mcp-server --app --no-package --vcs none`. Then run `uv add fastmcp` from the `mcp-server` folder.
     - Create `mcp-server/server.py`:
     ```python
     from fastmcp import FastMCP
@@ -694,12 +695,17 @@ We will use [FastMCP](https://github.com/jlowin/fastmcp), a library designed to 
     if __name__ == "__main__":
         mcp.run()
     ```
-    - Create `mcp-server/Dockerfile`:
+    - Create `mcp-server/.dockerignore` containing `.venv`, and `mcp-server/Dockerfile`:
     ```Dockerfile
-    FROM python:3.11-slim
-    RUN pip install fastmcp
-    COPY server.py .
-    CMD ["fastmcp", "run", "server.py", "--host", "0.0.0.0", "--port", "8000"]
+    FROM python:3.12-slim
+    COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
+
+    WORKDIR /app
+    COPY pyproject.toml uv.lock /app/
+    RUN uv sync --locked --no-install-project
+
+    COPY server.py server.py
+    CMD ["uv", "run", "fastmcp", "run", "server.py", "--host", "0.0.0.0", "--port", "8000"]
     ```
 
 ### b. Agentic Workflows with PydanticAI
@@ -707,9 +713,9 @@ We will use [FastMCP](https://github.com/jlowin/fastmcp), a library designed to 
 [PydanticAI](https://ai.pydantic.dev/) helps build production-grade agents that are type-safe and easy to test.
 
 !!! note "Exercise - Build an Agent"
-    - Create a folder `agent`
-    - Create `agent/main.py` that defines an agent.
-    - Create `agent/Dockerfile`.
+    - Create an `agent` uv project the same way as `mcp-server`. Then run `uv add pydantic-ai` from the `agent` folder.
+    - Edit `agent/main.py` so that it defines an agent.
+    - Create `agent/.dockerignore` and `agent/Dockerfile`. Use `mcp-server/Dockerfile` as a template.
 
 ### c. Orchestration with Docker Compose
 
