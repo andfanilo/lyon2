@@ -4,7 +4,7 @@
 
 Make sure you have the following commands working on your workstation:
 
-- conda
+- uv
 - docker 
 - docker compose
 
@@ -50,7 +50,7 @@ Most modern libraries have a dedicated Docker image maintained by the community.
 What if you want to use a Python image but don't want to use its Python shell?
 
 !!! note "Exercise - Changing the CMD of the image"
-    - In an Anaconda prompt, run `python -m http.server 9999`. In a browser, connect to <http://localhost:9999>. 
+    - In Git Bash, run `uv run python -m http.server 9999`. In a browser, connect to <http://localhost:9999>. 
         - What is the `http.server` program in Python?
         - Close it with `CTRL + C`.
     - Let's run this command in a Docker container! Run `docker run -it --rm -p 9999:9999 python:3.12-slim python -m http.server 9999`. connect to <http://localhost:9999> in your browser.
@@ -60,8 +60,28 @@ What if you want to use a Python image but don't want to use its Python shell?
 This way we now can download an image, run it with a custom command and expose some of the ports to us.
 
 !!! danger "Challenge"
-    - In a folder with some Python notebooks you copied from some other projects you want to use, run the following command: `docker run -v <current directory>:/tmp/working -w=/tmp/working --rm -it -p 8888:8888 kaggle/python jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token="" --notebook-dir=/tmp/working`.
-        - The `<current directory>` should be replaced by `%cd%` in Windows Command line, `${PWD}` in Powershell and `$(pwd)` in WSL2.
+    - In a folder with some Python notebooks you copied from some other projects you want to use, run the following command:
+
+        === "Git Bash"
+
+            ```bash
+            MSYS_NO_PATHCONV=1 docker run -v "$(pwd)":/tmp/working -w=/tmp/working --rm -it -p 8888:8888 kaggle/python jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token="" --notebook-dir=/tmp/working
+            ```
+
+            `MSYS_NO_PATHCONV=1` stops Git Bash from converting `/tmp/working` into a Windows path.
+
+        === "PowerShell"
+
+            ```powershell
+            docker run -v ${PWD}:/tmp/working -w=/tmp/working --rm -it -p 8888:8888 kaggle/python jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token="" --notebook-dir=/tmp/working
+            ```
+
+        === "WSL / macOS / Linux"
+
+            ```bash
+            docker run -v "$(pwd)":/tmp/working -w=/tmp/working --rm -it -p 8888:8888 kaggle/python jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token="" --notebook-dir=/tmp/working
+            ```
+
         - This is the notebook that is used by Kaggle notebooks, with all the necessary Data Science packages to work on your projects! But it is very big, it might takes several minutes to download.
         - Carefully read each part of the command and prepare to be able to explain each part to me.
         - The only flag you currently don't know is `-v`. It mounts one of your local folders to a folder inside the running container, so that you can see your local Jupyter notebooks from inside the containers. You can edit a file in the Jupyter notebook and see the changes locally (though I don't recommend doing it like this because of line separator risks).
@@ -72,17 +92,24 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
 
 !!! note "Exercise - Folder architecture"
     - Put yourself in a brand new folder, like `mlops-td`. 
-    - In this `mlops-td` folder, create a new folder, name it however you like. For example `td`.
-    - Create the following empty files:
+    - In this `mlops-td` folder, create a new uv project. Name it however you like, for example `td`: `uv init td --app --no-package --vcs none`.
+        - `--vcs none` tells uv not to create a Git repository inside `td`, because you may want to version the whole `mlops-td` folder later.
+    - Browse into `td`, then run `uv lock` to create the `uv.lock` file.
+    - Create the empty `Dockerfile` and `.dockerignore` files, so that you get:
 
     ```
     td
-     ├── app.py             <- A python script
-     ├── requirements.txt   <- Python packages (feel free to install packages you like)
+     ├── main.py            <- A python script
+     ├── pyproject.toml     <- Python packages (feel free to `uv add` packages you like)
+     ├── uv.lock            <- Exact versions of the Python packages
+     ├── .python-version    <- Python version of the project
+     ├── README.md          <- Describes the project
+     ├── .dockerignore      <- Files Docker must not copy into the image
      └── Dockerfile         <- Has the Docker commands to build our custom image
     ```
 
-    - Write some Python code in `app.py`. Printing `Hello World` is good enough.
+    - Write some Python code in `main.py`. Printing `Hello World` is good enough. Check it works with `uv run main.py`.
+    - Write `.venv` in `.dockerignore`. Your local `.venv` is built for your operating system. The image builds its own.
 
 !!! note "Exercise - Dockerfile"
     - Open the `Dockerfile` file with your favorite editor (I would recommend opening the `mlops-td` folder with [VSCode](https://code.visualstudio.com/)).
@@ -90,22 +117,25 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
 
     ```Dockerfile
     FROM python:3.12-slim
-
-    COPY requirements.txt /app/requirements.txt
+    COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
 
     WORKDIR /app 
-    RUN pip install -r requirements.txt
+    COPY pyproject.toml uv.lock /app/
+    RUN uv sync --locked --no-install-project
 
-    COPY app.py app.py
+    COPY main.py main.py
 
-    CMD ["python", "app.py"]
+    CMD ["uv", "run", "main.py"]
     ```
 
     ??? abstract "Explaining the Dockerfile commands"
         - `FROM` specifies the parent image [link](https://docs.docker.com/engine/reference/builder/#from)
         - `COPY` copies files or directories from the folder you ran docker from, into the image (at the current selected `WORKDIR`). [link](https://docs.docker.com/engine/reference/builder/#copy)
+            - `COPY --from=<image>` copies files from another image instead. Here, we copy the `uv` and `uvx` programs from the official uv image.
         - `WORKDIR` puts the image location to the desired folder. In this example, all future commands will be run inside the `/app` folder, like if you did a `cd /app`. [link](https://docs.docker.com/engine/reference/builder/#workdir)
         - `RUN` runs a classic UNIX command. Use them to install stuff. [link](https://docs.docker.com/engine/reference/builder/#run)
+            - `uv sync --locked` installs the exact versions from `uv.lock`. It fails if `uv.lock` is out of date with `pyproject.toml`. 
+            - `--no-install-project` installs only the dependencies, not your code, which isn't copied yet.
         - `CMD` defines the command the Docker image will run by default. [link](https://docs.docker.com/engine/reference/builder/#cmd)
 
     - To run the building of the image, run `docker build -t td:0.1 ./`
@@ -113,13 +143,15 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
         - the `./` specifies the current folder which contains the `Dockerfile` to build. If you're not in the folder, point to the path accordingly.
     - Make sure the new `td:0.1` image was created. What is the size of the image?
     - Run your new image and verify the code from your `app.py` script runs correctly.
-    - Try to add dependencies in the `requirements.txt` file. When you rerun the same `build` command, do you notice something in the print output? 
-        - You should see ` ---> Using cache` appear in particular places, telling you it didn't start the build from scratch.
+    - Change only the code in `main.py`, then rerun the same `build` command. Do you notice something in the print output? 
+        - `CACHED` appears next to some steps. Docker reused those steps, so it didn't reinstall the dependencies.
+    - Now add a dependency with `uv add requests`, and rebuild. Which steps are not `CACHED` anymore? Why do we copy `pyproject.toml` and `uv.lock` before `main.py`?
 
 !!! danger "Challenge"
-    - Create a Docker image which contains a copy of any of your Jupyter notebooks and installs the `jupyterlab` dependency. When the container runs, a Jupyter lab server should run. I should be able to access every notebook at the root.
+    - Create a Docker image which contains a copy of any of your Jupyter notebooks and installs the `jupyterlab` dependency (`uv add jupyterlab`). When the container runs, a Jupyter lab server should run. I should be able to access every notebook at the root.
     - Mount a folder with Jupyter notebooks into a volume using the `-v <current directory>:/tmp/working` flag. Check any edit you do on a notebook in the container is stored on your disk.
-        - The `<current directory>` should be replaced by `%cd%` in Windows Command line, `${PWD}` in Powershell and `$(pwd)` in WSL2.
+        - Replace `<current directory>` with `"$(pwd)"` in Git Bash, WSL, macOS, and Linux, and with `${PWD}` in PowerShell.
+        - In Git Bash, prefix the command with `MSYS_NO_PATHCONV=1`, like in the previous challenge.
 
 ## 2. Running multiple microservices together with docker compose
 
@@ -135,12 +167,16 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
     mlops-td
     ├── client
     |      ├── app.py             <- Streamlit/Gradio/Panel/Dash/Shiny to request a REST API
-    |      ├── requirements.txt   <- Python packages
+    |      ├── pyproject.toml     <- Python packages
+    |      ├── uv.lock            <- Exact versions of the Python packages
+    |      ├── .dockerignore      <- Contains .venv
     |      └── Dockerfile         <- Commands to build our custom image
     |    
     ├── server
     |      ├── app.py             <- FastAPI to expose a REST API that will write to MongoDB
-    |      ├── requirements.txt   <- Python packages
+    |      ├── pyproject.toml     <- Python packages
+    |      ├── uv.lock            <- Exact versions of the Python packages
+    |      ├── .dockerignore      <- Contains .venv
     |      └── Dockerfile         <- Commands to build our custom image
     |
     ├── td                        <- Contains your previous exercise
@@ -148,17 +184,18 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
     └── docker-compose.yml
     ```
 
-!!! abstract "Prerequisites - Install Python dependencies in a local Conda environment"
-    - In a new `Anaconda Prompt`, create a new conda environment (call it `mlops` if you want)
-    - Activate the created environment
-    - In this environment, install `fastapi`, `streamlit`, `uvicorn` and `pymongo`: `pip install fastapi streamlit uvicorn pymongo`
-    - Check that both `docker` and `conda` can be used from your command line.
+!!! abstract "Prerequisites - One uv project per service"
+    Each service has its own dependencies and its own Docker image, so each folder is its own uv project.
 
-![](./images/mlops-local-conda.png)
+    - In the `server` folder, run `uv init --app --no-package --vcs none`, then `uv add fastapi uvicorn pymongo`.
+    - In the `client` folder, run `uv init --app --no-package --vcs none`, then `uv add streamlit requests`.
+    - Delete the `main.py` files that `uv init` created. We write our code in `app.py`.
+    - Check that both `docker version` and `uv --version` work from your command line.
+    - In VS Code, select the interpreter of the service you're working on (`server/.venv` or `client/.venv`) with the `Python: Select Interpreter` command.
 
 !!! note "Exercise - Build a Python REST API with FastAPI (a Flask alternative)"
     - In `server/app.py`, create a REST API with [FastAPI](https://fastapi.tiangolo.com/tutorial/first-steps/) so that:
-        - when you run `uvicorn --reload --host 0.0.0.0 app:app` locally, from the `server` folder, you can connect to <http://localhost:8000> and get back `{"message": "Hello World"}`. 
+        - when you run `uv run uvicorn --reload --host 0.0.0.0 app:app` locally, from the `server` folder, you can connect to <http://localhost:8000> and get back `{"message": "Hello World"}`. 
         - when you connect to <http://localhost:8000/docs>, you can access the documentation page of your API like in the image below.
     
     Refer to the [Quick Start](https://fastapi.tiangolo.com/#example) to discover how to implement the API.
@@ -186,7 +223,7 @@ You can test any part of the API by clicking on the `Try it out button` on the t
 ### b. Building the FastAPI Docker image
 
 !!! note "Exercise - Run the FastAPI API in a Docker container"
-    - In `server/Dockerfile`, install the dependencies from the local Conda environment.
+    - In `server/Dockerfile`, install the dependencies locked in `server/uv.lock`. Don't forget `server/.dockerignore`.
     - In `server/Dockerfile`, run the command that runs the Uvicorn server through `CMD`. Use the `Dockerfile` from the previous part as template.
         - Do note that `"cmd --reload -h 127.0.0.1 app"` and [`"cmd"`, `"--reload"`, `"-h"`, `"127.0.0.1"`, `"app"`] are the same.
     - Build your image. Give it a label like `mlops-server`. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser on <http://localhost:8000> and get your `Hello world`.
@@ -196,15 +233,15 @@ You can test any part of the API by clicking on the `Try it out button` on the t
             Build with `docker build -t mlops-server .` . Run with `docker run -p 8000:8000 --rm mlops-server`. 
             ```Dockerfile
             FROM python:3.12-slim
+            COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
 
-            COPY requirements.txt /app/requirements.txt
             WORKDIR /app 
-
-            RUN pip install -r requirements.txt
+            COPY pyproject.toml uv.lock /app/
+            RUN uv sync --locked --no-install-project
 
             COPY app.py app.py
 
-            CMD ["uvicorn", "--reload", "--host", "0.0.0.0", "app:app"]
+            CMD ["uv", "run", "uvicorn", "--reload", "--host", "0.0.0.0", "app:app"]
             ```
 
 ![](./images/mlops-docker-server.png)
@@ -306,7 +343,7 @@ Instead of connecting to the FastAPI documentation page to interact with it, let
 !!! note "Building a Streamlit UI connected to the API"
     - Make sure your docker-compose FastAPI + MongoDB cluster from the previous section is running.
     - Build a local [Streamlit](https://docs.streamlit.io/) _(or Gradio or Dash or Shiny or whatever)_ app in `client/app.py` with a text input to write down a fruit and a button to request the `http://server:8000/add/<fruit>`. 
-        - The command to run a Streamlit app from your conda environment is `streamlit run app.py`
+        - The command to run a Streamlit app from the `client` folder is `uv run streamlit run app.py`
         - Here is some code to put in `client/app.py` to react to a button click:
 
     ```python
@@ -339,7 +376,7 @@ Pick up a classification training dataset, like Iris or Penguins. The goal is to
 ![](./images/mlops-architecture.png)
 
 !!! warning "Challenge"
-    - Create a `server/train.py` script, that trains a scikit-learn model over the [Iris](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html) or any other classification dataset (as long as it doesn't have too many features). When you run it locally with `python train.py`, it should create a `model.pkl` file (as pickle or using joblib). This pickled model should then later be copied into the FastAPI Docker image. 
+    - Create a `server/train.py` script, that trains a scikit-learn model over the [Iris](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html) or any other classification dataset (as long as it doesn't have too many features). When you run it locally with `uv run train.py` (after `uv add scikit-learn`), it should create a `model.pkl` file (as pickle or using joblib). This pickled model should then later be copied into the FastAPI Docker image. 
     - The client should be a Streamlit _(or Gradio or Dash or Shiny or whatever)_, exposing all feature columns of the dataset we want to use to make a prediction.
     - The server should be a FastAPI API, which exposes a POST verb `predict`. If you send `POST /predict` with a body containing the values of the features, like `{"sepal_length": 42, "petal_length": 34...}` it should return the predicted class from a pretrained model. Following is an example of reacting to a POST request in FastAPI:
 
@@ -419,7 +456,7 @@ For example, I would need to rename my image to `ghcr.io/andfanilo/mlops:latest`
 - `mlops` is the name of my repo, so it's `IMAGE_NAME`
 - `latest` is the default tag. You can put any tag like `v0.1` but stick to `latest` for now.
 
-The following exercise involves the `git` command, make sure you use `git bash` or install `git` in a conda environment.
+The following exercise uses the `git` command, so run it in Git Bash.
 
 !!! note "Exercise - Pushing an image to Github"
     - Run `docker images`
