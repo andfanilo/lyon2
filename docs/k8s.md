@@ -618,7 +618,7 @@ Canary deployment involves gradually routing a small percentage of traffic to th
     - If canary is successful, gradually migrate all traffic to new version
     - If issues occur, scale down canary deployment to 0
 
-## 4. Advanced Practices (GEMINI generated)
+## 4. Advanced Practices
 
 ### a. Configuration & Secrets
 
@@ -737,9 +737,9 @@ Sometimes you need to run batch jobs (e.g., data processing, model retraining) o
     - Watch the jobs being created: `kubectl get jobs --watch`
     - Check the logs of a completed job to see the output.
 
-## 5. Deploying Modern AI Workloads (GEMINI generated)
+## 5. Deploying Modern AI Workloads
 
-In [GenAI Tutorial Section 6](genai.md#6-the-modern-ai-stack-agents--tools), we built a modern AI stack with **FastMCP** (Tool Server) and **PydanticAI** (Agent). Let's deploy this to Kubernetes.
+In [GenAI Tutorial Section 6](genai.md#6-the-modern-ai-stack-agents-tools), we built a modern AI stack with **FastMCP** (Tool Server) and **PydanticAI** (Agent). Let's deploy this to Kubernetes.
 
 ### a. Deploying the MCP Server
 

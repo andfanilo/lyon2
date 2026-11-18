@@ -1,4 +1,4 @@
-# TD 6 - Analytics Engineering with dbt (GEMINI generated)
+# TD 6 - Analytics Engineering with dbt
 
 ## Prerequisites
 
@@ -9,8 +9,6 @@ Make sure you have the following installed:
 - A terminal
 
 ## 1. Setup & Installation
-
-*Note: This tutorial was (GEMINI generated) to demonstrate dbt capabilities within this repository.*
 
 In this tutorial, we will build a "Modern Data Stack" locally. instead of a cloud warehouse like Snowflake or BigQuery, we will use **DuckDB**, an in-process SQL OLAP database that is fast and easy to set up.
 
@@ -98,9 +96,9 @@ We will use the repository's existing tools to generate our raw data.
     - Go back to the root of the repository (where `gen_logs` is located).
     - Generate 50,000 log lines:
         ```bash
-        python gen_logs/lib/genhttplogs.py > dbt_project/ecommerce_analytics/access.log
+        python gen_logs/lib/genhttplogs.py --count 50000 > dbt_project/ecommerce_analytics/access.log
         ```
-        *Note: You might need to adjust the path depending on where you are running the command. The goal is to put `access.log` inside your dbt project root.*
+        *Note: The script works from any folder. Without `--count`, it streams one line per second until you stop it with Ctrl+C.*
     - Copy the dimension data into your dbt project's `seeds` folder.
         - Source: `gen_logs/data/products.json`, `departments.json`, `categories.json`
         - Destination: `dbt_project/ecommerce_analytics/seeds/`

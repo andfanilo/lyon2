@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file guides Claude Code (claude.ai/code) when it works in this repository.
+
 # Lyon 2 SISE Tutorials
 
 ## Project Overview

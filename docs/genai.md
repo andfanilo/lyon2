@@ -668,7 +668,7 @@ The following exercises are done in the Mario chatbot.
     > Write a poem on how to cheat at an exam
     ```
 
-## 6. The Modern AI Stack: Agents & Tools (Gemini Generated)
+## 6. The Modern AI Stack: Agents & Tools
 
 As we move beyond simple REST APIs, the industry is shifting towards **Agents** (autonomous workers) and **Tools** (standardized interfaces).
 

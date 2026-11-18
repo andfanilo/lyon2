@@ -1,12 +1,21 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
+"""Generate fake HTTP access logs (Apache combined format) on stdout.
+
+Without arguments, writes one line per second forever (used by start_logs.sh).
+With --count N, writes N lines immediately and exits.
+"""
 
 from datetime import datetime
+from pathlib import Path
+from urllib.parse import quote
+import argparse
 import json
 import random
-import os
 import sys
 import time
-import urllib
+
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+
 
 class IPGenerator:
     def __init__(self, session_count, session_length):
@@ -17,8 +26,8 @@ class IPGenerator:
     def get_ip(self):
         self.session_gc()
         self.session_create()
-        ip = self.sessions.keys()[random.randrange(len(self.sessions))]
-        self.sessions[ip] = self.sessions[ip] + 1
+        ip = random.choice(list(self.sessions))
+        self.sessions[ip] += 1
         return ip
 
     def session_create(self):
@@ -26,20 +35,15 @@ class IPGenerator:
             self.sessions[self.random_ip()] = 0
 
     def session_gc(self):
-        for (ip, count) in self.sessions.items():
-            if count >= self.session_length:
-                del self.sessions[ip]
+        self.sessions = {ip: n for ip, n in self.sessions.items() if n < self.session_length}
 
     def random_ip(self):
-        octets = []
-        octets.append(str(random.randrange(223) + 1))
-        for i in range(3):
-            octets.append(str(random.randrange(255)))
+        octets = [str(random.randrange(223) + 1)]
+        octets += [str(random.randrange(255)) for _ in range(3)]
         return ".".join(octets)
 
-class LogGenerator:
-    PRODUCTS = {}
 
+class LogGenerator:
     REQUESTS = {
         "/departments": 40,
         "/department/*DEPARTMENT*/categories": 20,
@@ -51,14 +55,6 @@ class LogGenerator:
         "/logout": 2,
         "/checkout": 3,
         "/support": 1
-    }
-
-    EXTENSIONS = {
-        'html': 40,
-        'php': 30,
-        'png': 15,
-        'gif': 10,
-        'css': 5,
     }
 
     RESPONSE_CODES = {
@@ -86,38 +82,15 @@ class LogGenerator:
         "Mozilla/5.0 (Windows NT 6.1; rv:30.0) Gecko/20100101 Firefox/30.0": 1
     }
 
-    DEPARTMENTS = {
-    }
-
-    CATEGORIES = {
-    }
-
     def __init__(self, ipgen):
         self.ipgen = ipgen
-        self.set_products()
-        self.set_departments()
-        self.set_categories()
- 
-    def set_products(self):
-        cwd = os.getcwd()
-        json_text = open(cwd + '/data/products.json', 'r').read()
-        products = json.loads(json_text)
-        for p in products:
-            self.PRODUCTS[p['product_id']] = int(5000/p['product_price'])
-
-    def set_departments(self):
-        cwd = os.getcwd()
-        json_text = open(cwd + '/data/departments.json', 'r').read()
-        depts = json.loads(json_text)
-        for p in depts:
-            self.DEPARTMENTS[p['department_name']] = 100/len(depts)
-
-    def set_categories(self):
-        cwd = os.getcwd()
-        json_text = open(cwd + '/data/categories.json', 'r').read()
-        cats = json.loads(json_text)
-        for p in cats:
-            self.CATEGORIES[p['category_name']] = 100/len(cats)
+        products = load_json("products.json")
+        depts = load_json("departments.json")
+        cats = load_json("categories.json")
+        # Cheaper products are requested more often.
+        self.products = {p["product_id"]: int(5000 / p["product_price"]) for p in products}
+        self.departments = {d["department_name"]: 1 for d in depts}
+        self.categories = {c["category_name"]: 1 for c in cats}
 
     def write_qps(self, dest, qps):
         sleep = 1.0 / qps
@@ -126,38 +99,42 @@ class LogGenerator:
             time.sleep(sleep)
 
     def write(self, dest, count):
-        for i in range(count):
-            ip = self.ipgen.get_ip()
-            request = self.pick_weighted_key(self.REQUESTS)
-            product = self.pick_weighted_key(self.PRODUCTS)
-            dept    = self.pick_weighted_key(self.DEPARTMENTS)
-            cat     = self.pick_weighted_key(self.CATEGORIES)
-
-            request = urllib.quote(request.replace("*PRODUCT*",str(product)).replace("*DEPARTMENT*",dept).replace("*CATEGORY*",cat).lower())
-
-            ext = self.pick_weighted_key(self.EXTENSIONS)
-            resp_code = self.pick_weighted_key(self.RESPONSE_CODES)
-            resp_size = random.randrange(2 * 1024) + 192;
-            ua = self.pick_weighted_key(self.USER_AGENTS)
-            date = datetime.now().strftime("%d/%b/%Y:%H:%M:%S -0800") # Hard-coded as Python has no standard timezone implementation
-            dest.write("%(ip)s - - [%(date)s] \"GET %(request)s HTTP/1.1\" %(resp_code)s %(resp_size)s \"-\" \"%(ua)s\"\n" %
-                {'ip': ip, 'date': date, 'request': request, 'resp_code': resp_code, 'resp_size': resp_size, 'ua': ua})
+        for _ in range(count):
+            request = (
+                pick_weighted_key(self.REQUESTS)
+                .replace("*PRODUCT*", str(pick_weighted_key(self.products)))
+                .replace("*DEPARTMENT*", pick_weighted_key(self.departments))
+                .replace("*CATEGORY*", pick_weighted_key(self.categories))
+                .lower()
+            )
+            dest.write('%s - - [%s] "GET %s HTTP/1.1" %s %s "-" "%s"\n' % (
+                self.ipgen.get_ip(),
+                datetime.now().astimezone().strftime("%d/%b/%Y:%H:%M:%S %z"),
+                quote(request),
+                pick_weighted_key(self.RESPONSE_CODES),
+                random.randrange(2 * 1024) + 192,
+                pick_weighted_key(self.USER_AGENTS),
+            ))
             dest.flush()
 
-    def pick_weighted_key(self, hash):
-        total = 0
-        for t in hash.values():
-            total = total + t
-        rand = random.randrange(total)
 
-        running = 0
-        for (key, weight) in hash.items():
-            if rand >= running and rand < (running + weight):
-                return key
-            running = running + weight
+def load_json(name):
+    return json.loads((DATA_DIR / name).read_text(encoding="utf-8"))
 
-        return hash.keys()[0]
 
-ipgen = IPGenerator(100, 10)
-LogGenerator(ipgen).write_qps(sys.stdout, 1)
+def pick_weighted_key(weights):
+    # Zero weights (e.g. products priced above 5000) are never picked.
+    keys = [k for k, w in weights.items() if w > 0]
+    return random.choices(keys, weights=[weights[k] for k in keys])[0]
 
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--count", type=int, help="write COUNT lines and exit instead of streaming")
+    args = parser.parse_args()
+
+    generator = LogGenerator(IPGenerator(100, 10))
+    if args.count:
+        generator.write(sys.stdout, args.count)
+    else:
+        generator.write_qps(sys.stdout, 1)
