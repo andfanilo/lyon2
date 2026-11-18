@@ -61,15 +61,22 @@ Spark needs 2 environment variables:
 | Variable | What it does | Where to set it |
 | --- | --- | --- |
 | `JAVA_HOME` | Tells PySpark which JVM to start. | Once for your account. You did it in the previous section. |
-| `PYSPARK_PYTHON` | Tells Spark which Python command to run for its workers. | For each project, because each project has its own Python. |
+| `PYSPARK_PYTHON` | Tells Spark which Python command to run for its workers. | Nowhere. The tutorial sets it for you, see below. |
 
 Without `PYSPARK_PYTHON`, Spark workers may start another Python than the one in `.venv`. On Windows, Spark starts `python3` by default, which is often the Microsoft Store placeholder. Your code then fails with errors like `Python worker failed to connect back`.
+
+The tutorial sets `PYSPARK_PYTHON` in 2 places, so you don't have to:
+
+- The Spark setup cell at the top of each notebook, the one that creates `sc` or `spark`, sets `PYSPARK_PYTHON` to the notebook's own Python with `os.environ["PYSPARK_PYTHON"] = sys.executable`. Always run this cell first, and don't remove it.
+- The `.env` file at the root of the project sets `PYSPARK_PYTHON=python` for VS Code. VS Code reads it when it starts a kernel, a terminal or a Python script.
 
 !!! tip "How environment variables reach your notebook"
     The notebook kernel inherits the environment variables of the program that starts it:
 
-    - With **JupyterLab**, that is your terminal. Set the variables in the terminal, then start JupyterLab from that same terminal.
-    - With **VS Code**, that is VS Code itself, which does not see variables you set in a terminal. Use a `.env` file instead, as shown below.
+    - With **JupyterLab**, that is your terminal.
+    - With **VS Code**, that is VS Code itself, which does not see variables you set in a terminal.
+
+    This is why `JAVA_HOME` must be set for your account, and why you must restart VS Code after you change it.
 
 ---
 
@@ -80,34 +87,8 @@ Use **either** JupyterLab or VS Code.
 ### a. Option A - JupyterLab
 
 !!! note "Exercise - Start JupyterLab"
-    1. From the `pyspark-tutorial` folder, set `PYSPARK_PYTHON` and start JupyterLab **in the same terminal**:
-
-        === "Git Bash"
-
-            ```bash
-            export PYSPARK_PYTHON=python
-            uv run jupyter lab
-            ```
-
-        === "PowerShell"
-
-            ```powershell
-            $env:PYSPARK_PYTHON = "python"
-            uv run jupyter lab
-            ```
-
-        === "WSL / macOS / Linux"
-
-            ```bash
-            export PYSPARK_PYTHON=python
-            uv run jupyter lab
-            ```
-
-        `uv run` puts the `.venv` Python first on the `PATH`, so `python` is the project's Python.
-
+    1. From the `pyspark-tutorial` folder, run `uv run jupyter lab`.
     2. Open `1-beginner/1-Initiation.ipynb`.
-
-    You must set the variable again every time you open a new terminal.
 
 ### b. Option B - VS Code
 
@@ -129,63 +110,33 @@ Use **either** JupyterLab or VS Code.
 
     Add or remove packages with `uv add` and `uv remove` only.
 
-!!! note "Exercise - Set `PYSPARK_PYTHON` with a `.env` file"
-    1. At the root of the `pyspark-tutorial` folder, next to `pyproject.toml`, create a file named `.env` with this content:
-
-        ```bash
-        PYSPARK_PYTHON=python
-        ```
-
-    2. VS Code reads the `.env` file only when it starts the kernel. Restart the kernel with the **Restart** button at the top of the notebook. If the variable is still missing, run **Developer: Reload Window** from `Ctrl+Shift+P`.
-
-!!! tip "If the `.env` file isn't read"
-    Set the variable from Python, in a new cell at the top of the notebook, **before** the cell that creates the `SparkContext` or `SparkSession`:
-
-    ```python
-    import os
-    import sys
-
-    os.environ["PYSPARK_PYTHON"] = sys.executable
-    ```
-
-    `sys.executable` is the full path of the kernel's Python, so Spark workers run the same Python as your notebook. This works in JupyterLab too. If Spark is already running, restart the kernel first.
+!!! tip "The `.env` file"
+    The project ships a `.env` file next to `pyproject.toml`. VS Code reads it only when it starts a kernel. If you edit it, restart the kernel with the **Restart** button at the top of the notebook, or run **Developer: Reload Window** from `Ctrl+Shift+P`.
 
 ---
 
 ## 4. Check your setup
 
 !!! note "Exercise - Run your first Spark job"
-    1. In a new cell at the top of `1-beginner/1-Initiation.ipynb`, run:
+    1. Open `2-novice/1-Initiation-RDD.ipynb` and run its Spark setup cell, the one that creates `sc`. It displays a `SparkContext` summary.
+    2. Add a new cell below it and run:
 
         ```python
-        import os
-        import sys
-
         print(sys.executable)
         print(os.environ.get("JAVA_HOME"))
         print(os.environ.get("PYSPARK_PYTHON"))
-        ```
-
-        - The first line must end with `.venv\Scripts\python.exe` (`.venv/bin/python` on macOS or Linux). If not, select the kernel again.
-        - The second line must be your JDK folder. If it is `None`, go back to the **Install Java** exercise, and close **all** VS Code windows before you reopen VS Code.
-        - The third line must be `python`, or a path to a Python executable. If it is `None`, set `PYSPARK_PYTHON` again.
-
-    2. Run a small Spark job:
-
-        ```python
-        from pyspark import SparkContext
-
-        sc = SparkContext.getOrCreate()
         print(sc.parallelize(range(10)).sum())
         ```
 
-        It must print `45`. While Spark runs, open <http://localhost:4040> to see the Spark UI.
+        - The first and third lines must both end with `.venv\Scripts\python.exe` (`.venv/bin/python` on macOS or Linux). If not, select the kernel again.
+        - The second line must be your JDK folder. If it is `None`, go back to the **Install Java** exercise, and close **all** VS Code windows before you reopen VS Code.
+        - The last line must be `45`. While Spark runs, open <http://localhost:4040> to see the Spark UI.
 
-    3. Delete the 2 cells and restart the kernel, then start the tutorial.
+    3. Delete your cell, then start the tutorial with `1-beginner/1-Initiation.ipynb`.
 
 !!! warning "Common errors"
     - `JAVA_HOME is not set` or `Java gateway process exited before sending its port number`: Spark can't find Java. Check `JAVA_HOME`, then restart your terminal or VS Code.
-    - `Python worker failed to connect back` or `Python worker exited unexpectedly`: Spark started the wrong Python. Check `PYSPARK_PYTHON`.
+    - `Python worker failed to connect back` or `Python worker exited unexpectedly`: Spark started the wrong Python. Restart the kernel, then run the Spark setup cell first.
     - `HADOOP_HOME and hadoop.home.dir are unset` on Windows: this is a warning, not an error. You can ignore it.
 
 ---

@@ -184,13 +184,11 @@ Try your best not to use the Docker dashboard. Use the command line instead. You
 
 ## 4. Git clone a Jupyter project
 
-<!-- Interim: replace once the Python environment setup for pyspark-tutorial (nbgrader, VS Code) is decided. -->
-
 !!! note "Exercise - Git cloning a project"
     1. Open Git Bash from the Start Menu.
     2. Browse into your folder of choice for new projects.
     3. Clone the spark tutorial on https://github.com/andfanilo/pyspark-tutorial to your folder
-    4. Browse into the cloned folder and run `uvx jupyter lab`. Make sure you can read all Spark notebook exercises.
+    4. Follow the [Spark tutorial setup](spark.md#1-install-the-tutorial): install Java, run `uv sync`, then open the notebooks in JupyterLab or VS Code. Make sure you can run the Spark setup cell of `2-novice/1-Initiation-RDD.ipynb`.
 
 ---
 

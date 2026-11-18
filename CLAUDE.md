@@ -92,7 +92,7 @@ The tutorials teach [uv](https://docs.astral.sh/uv/). Do not reintroduce conda, 
 *   **One uv project per Docker image:** MLOps `client/`, `server/`, GenAI `mcp-server/`, `agent/`. GenAI exercises share one `genai-td` project.
 *   **Dockerfiles:** `FROM python:3.12-slim`, `COPY --from=ghcr.io/astral-sh/uv:<pinned> /uv /uvx /bin/`, copy `pyproject.toml uv.lock`, `uv sync --locked --no-install-project`, copy the code, `CMD ["uv", "run", ...]`. Each project has a `.dockerignore` with `.venv`. Keep the uv version identical across pages.
 *   **Shells:** Git Bash is the default. Use content tabs (`=== "Git Bash"`, `=== "PowerShell"`, `=== "WSL / macOS / Linux"`) only where commands differ. In Git Bash, `docker run -v` with a Linux path needs `MSYS_NO_PATHCONV=1`.
-*   **Pending:** `prerequisites.md` step 4 (`uvx jupyter lab` on the cloned pyspark-tutorial) is temporary until the pyspark-tutorial environment setup (nbgrader, VS Code) is decided.
+*   **pyspark-tutorial setup:** `spark.md` holds the JupyterLab and VS Code setup (Java, `JAVA_HOME`, uv interpreter and kernel selection). The notebooks set `PYSPARK_PYTHON` to `sys.executable` in their Spark setup cell, and the repo ships a `.env` file for VS Code, so students never set `PYSPARK_PYTHON` by hand. `prerequisites.md` step 4 links to `spark.md` instead of repeating it.
 
 ## Log Generator Utility
 
