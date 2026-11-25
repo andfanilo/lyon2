@@ -173,51 +173,9 @@ Each project needs its own Python version and its own packages. If all your proj
     3. Install Python 3.12 with `uv python install 3.12`. You don't need to download Python from python.org: uv manages Python versions for you.
     4. List the Python versions uv knows about with `uv python list`. Which ones are installed?
 
-### b. Create a virtual environment by hand
+### b. Create a uv project
 
-A **virtual environment** is a folder, usually named `.venv`, that contains its own Python and its own packages. First, create one by hand.
-
-!!! note "Exercise - Create and activate a virtual environment"
-    1. In `C:\workspace`, create a new folder `uv-venv-td` and browse into it.
-    2. Create a virtual environment with Python 3.12: `uv venv --python 3.12`. What new folder appeared?
-    3. **Activate** the environment, so that the `python` command and the installed packages come from `.venv`:
-
-        === "Git Bash"
-
-            ```bash
-            source .venv/Scripts/activate
-            ```
-
-        === "PowerShell"
-
-            ```powershell
-            .venv\Scripts\activate
-            ```
-
-            If PowerShell refuses to run the script, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once, then retry.
-
-        === "WSL / macOS / Linux"
-
-            ```bash
-            source .venv/bin/activate
-            ```
-
-        When activated, how do you know you're in the correct environment?
-
-    4. To ensure Python is properly installed:
-
-        a. Run `python --version` to check the Python version
-
-        b. Run `python -m http.server` to have Python run an HTTP server on `http://localhost:8000`. Stop it with `Ctrl+C`.
-
-    5. In the activated environment, install packages with `uv pip install fastapi streamlit`. Run `streamlit version` to check that it works.
-    6. Run `deactivate` to leave the environment. Does `streamlit version` still work?
-
-This works, but nothing records which packages you installed. A classmate who clones your code has to guess what to install.
-
-### c. Record dependencies in a uv project
-
-A **uv project** records its dependencies in a `pyproject.toml` file, and the exact installed versions in a `uv.lock` file. Anyone with these 2 files can recreate exactly the same environment.
+A **uv project** records its dependencies in a `pyproject.toml` file, and the exact installed versions in a `uv.lock` file. uv installs them in a **virtual environment**: a `.venv` folder inside the project, with its own Python and its own packages. Anyone with `pyproject.toml` and `uv.lock` can recreate exactly the same environment.
 
 !!! note "Exercise - Create a uv project"
     1. Go back to `C:\workspace`, then create a new project: `uv init uv-project-td --app --no-package --python 3.12`. Browse into `uv-project-td`.
@@ -226,22 +184,24 @@ A **uv project** records its dependencies in a `pyproject.toml` file, and the ex
     3. Add FastAPI and Streamlit to the project: `uv add fastapi streamlit`.
         - What changed in `pyproject.toml`?
         - What new files and folders appeared? Open `uv.lock` and search for `streamlit`.
-    4. Run commands inside the project environment with `uv run`, **without activating anything**:
+    4. Run commands inside the project environment with `uv run`. You don't need to activate the environment:
 
-        a. `uv run python --version`
+        a. `uv run python --version`. Compare with `python --version`, if Python is installed on your machine.
 
         b. `uv run main.py`
 
         c. `uv run streamlit version`
 
+        d. `uv run python -m http.server`, then open <http://localhost:8000>. Stop the server with `Ctrl+C`.
+
     5. Delete the `.venv` folder, then run `uv sync`. What happened? A classmate runs `uv sync` after cloning your project.
     6. Remove a dependency with `uv remove fastapi`, then check `pyproject.toml` again.
 
 !!! question
-    - Compare the `uv-venv-td` and `uv-project-td` folders. If you send each folder to a classmate without its `.venv`, how do they recreate your environment?
+    - You send the `uv-project-td` folder to a classmate without its `.venv`. Which command recreates your environment?
     - Why should you commit `pyproject.toml` and `uv.lock` to Git, but never `.venv`?
 
-### d. Run the demo project with uv
+### c. Run the demo project with uv
 
 Each of the `td`, `client` and `server` folders of `lyon2-docker-demo` is its own uv project, with its own `pyproject.toml` and `uv.lock`. You don't install anything by hand: `uv run` creates the `.venv` and installs the locked packages the first time.
 
@@ -259,7 +219,7 @@ Each of the `td`, `client` and `server` folders of `lyon2-docker-demo` is its ow
     - The `client` and `server` folders each have a `.venv`. Why not share one environment for the whole repository?
     - Run `git status` from `lyon2-docker-demo`. Why doesn't Git list the new `.venv` folders? Open `.gitignore`.
 
-### e. Run Python tools with uvx
+### d. Run Python tools with uvx
 
 Some Python packages are **tools** you run from the command line, like Jupyter or the [Ruff](https://docs.astral.sh/ruff/) linter. They don't need to be part of your project.
 

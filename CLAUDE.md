@@ -87,7 +87,7 @@ Zensical does not support MkDocs `hooks` or arbitrary MkDocs plugins. Check the 
 
 The tutorials teach [uv](https://docs.astral.sh/uv/). Do not reintroduce conda, Anaconda or `pip install -r requirements.txt`.
 
-*   **Python environments:** `prerequisites.md` teaches `uv venv` + `uv pip` as a bridge, then the project workflow (`uv init`, `uv add`, `uv run`), then `uvx` and `uv tool install`. Other TDs use the project workflow only.
+*   **Python environments:** All TDs, `prerequisites.md` included, use the project workflow only (`uv init`, `uv add`, `uv run`, `uv sync`). `prerequisites.md` also teaches `uvx` and `uv tool install`. Don't teach `uv venv`, `uv pip` or activating `.venv`.
 *   **`uv init` flags:** always `--app --no-package`, because recent uv versions default to a `src/` package. Add `--vcs none` for projects nested in a student folder (MLOps services, MCP server). Add `--no-workspace` for projects created inside this repository (dbt): without it, uv adds them to the root `pyproject.toml` workspace.
 *   **One uv project per Docker image:** MLOps `client/`, `server/`, GenAI `mcp-server/`, `agent/`. GenAI exercises share one `genai-td` project.
 *   **Dockerfiles:** `FROM python:3.12-slim`, `COPY --from=ghcr.io/astral-sh/uv:<pinned> /uv /uvx /bin/`, copy `pyproject.toml uv.lock`, `uv sync --locked --no-install-project`, copy the code, `CMD ["uv", "run", ...]`. Each project has a `.dockerignore` with `.venv`. Keep the uv version identical across pages.
