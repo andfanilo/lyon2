@@ -95,6 +95,23 @@ The tutorials teach [uv](https://docs.astral.sh/uv/). Do not reintroduce conda, 
 *   **pyspark-tutorial setup:** `spark.md` holds the JupyterLab and VS Code setup (Java, `JAVA_HOME`, uv interpreter and kernel selection). The notebooks set `PYSPARK_PYTHON` to `sys.executable` in their Spark setup cell, and the repo ships a `.env` file for VS Code, so students never set `PYSPARK_PYTHON` by hand. `prerequisites.md` step 6 links to `spark.md` instead of repeating it.
 *   **lyon2-docker-demo:** `prerequisites.md` has students clone https://github.com/andfanilo/lyon2-docker-demo into `C:\workspace` and run it with uv, Docker and an AI coding assistant (tabs: GitHub Copilot CLI, Gemini CLI, Claude Code). Keep its commands in sync with that repository's README.
 
+### Exercise style
+
+To review a whole TD against these rules, use the `lab-tutorial-review` skill.
+
+*   **Admonitions:** `!!! note "Exercise - <task>"` is only for exercises. `extra.css` renders notes as white cards. Keep explanations as plain prose between exercises, outside any admonition.
+*   **Section endings:** a `!!! question` block with 2 or 3 "why" questions, then optional extra tasks:
+    *   `??? tip "Going further"`: collapsed, optional tasks for fast students. Use it in ungraded TDs, such as TD0.
+    *   `!!! danger "Challenge"`: open, harder tasks for bonus points. Use it in graded TDs, such as MLOps.
+*   **Hints:** when a step gives only the goal, put the commands in a collapsed `??? tip "Hint"` inside the exercise.
+*   **Self-checks:** each exercise tells students what success looks like at least once, for example "You should see `All checks passed!`".
+*   **Predict, then run:** before a command with a surprising result, ask "Before you run it, predict…".
+*   **Fail first:** show the error a tool prevents before you teach the tool, for example `python app.py` before `uv run app.py`.
+*   **One new idea per step.** Split an exercise that brings in many new flags.
+*   **No time estimates**, and no sentences that announce what the page layout already shows.
+*   **Run before you write.** Run every command and observe every output you claim. Before you use a package to show a missing dependency, check that the project does not already pull it in. Streamlit already brings in `rich`.
+*   **Markdown trap:** leave a blank line before `---`. Text directly above `---` becomes a heading.
+
 ## Log Generator Utility
 
 The `gen_logs` directory contains a tool to simulate web traffic logs, likely used for Spark or NoSQL tutorials.
