@@ -23,7 +23,8 @@ Follow the "Exercise style" rules in CLAUDE.md. This skill is the review process
 | Fail first | Can the student see the problem before the solution? |
 | Scaffolding | Is the full command given where only the goal would do? Remove commands only where a stuck student does not block the next steps. |
 | Retrieval | Does the exercise reuse a skill from an earlier section or TD? |
-| Section end | Does the section end with a question block? Graded TDs use `!!! danger "Challenge"` for bonus tasks, and ungraded TDs use `??? tip "Going further"`. |
+| Section end | Does the section end with a question block? Do ungraded TDs end sections with `??? tip "Going further"`? Does a graded TD have "Send me your work" after the Recap? |
+| Difficulty | Does each Challenge use `warning` for medium and `danger` for hard? |
 
 ## 3. Report before you edit
 

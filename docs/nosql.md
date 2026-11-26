@@ -95,3 +95,13 @@ When you finish a session, stop the databases with `docker compose down`.
     - [x] Start Redis, MongoDB and OrientDB with docker compose
     - [x] Connect to each database from a notebook
     - [x] Start the graded lab
+
+---
+
+## 💯 Send me your work
+
+Your grade covers the 3 notebooks of the graded lab.
+
+1. Run every cell of your notebooks, then save them, so that the outputs are in the files.
+2. Compress the `notebooks` folder of `lyon2-nosql` into `nosql-<lastname>-<firstname>.zip`. On Windows, right-click the folder, then select **Compress to ZIP file**. On macOS, select **Compress** instead.
+3. Send the zip file to your teacher by email.

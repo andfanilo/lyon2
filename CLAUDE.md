@@ -99,14 +99,14 @@ The tutorials teach [uv](https://docs.astral.sh/uv/). Do not reintroduce conda, 
 
 To review a whole TD against these rules, use the `lab-tutorial-review` skill.
 
-*   **Page structure:** `# TD N - Title`, a short intro, `## Objectives` (a checklist of actions), `## Prerequisites` (tools, and links to TD 0 or earlier TDs), the numbered sections, then `## Recap`. The Recap repeats the Objectives in a `!!! success` block. In graded TDs, the Recap comes before `## Bonus challenges`.
+*   **Page structure:** `# TD N - Title`, a short intro, `## Objectives` (a checklist of actions), `## Prerequisites` (tools, and links to TD 0 or earlier TDs), the numbered sections, then `## Recap`. The Recap repeats the Objectives in a `!!! success` block.
+*   **Grading:** TD 0 is not graded. In graded TDs, everything before `## Recap` is graded. Graded TDs (MLOps, Spark, NoSQL so far) have a `## 💯 Send me your work` (a Unicode emoji, not a `:shortcode:`: the right sidebar drops shortcode images) section right after the Recap: what to zip (without `.venv`), the file name `<td>-<lastname>-<firstname>.zip`, and "send it to your teacher by email". Don't write an email address. `## Bonus challenges` comes after it and is not graded.
 *   **Setup pages for external labs:** Spark and NoSQL set up a graded lab that lives in another repository (`pyspark-tutorial`, `lyon2-nosql`). They end with a `## N. Start the graded lab` section after "Check your setup", not with a link at the top.
 *   **lyon2-nosql:** a uv project with a `docker-compose.yml` that starts Redis, MongoDB and OrientDB. `pyorient` is old and prints `SyntaxWarning` on first import, and it needs `orientdb:2.2`. Keep `nosql.md` in sync with that repository's README.
 
 *   **Admonitions:** `!!! note "Exercise - <task>"` is only for exercises. `extra.css` renders notes as white cards. Keep explanations as plain prose between exercises, outside any admonition.
-*   **Section endings:** a `!!! question` block with 2 or 3 "why" questions, then optional extra tasks:
-    *   `??? tip "Going further"`: collapsed, optional tasks for fast students. Use it in ungraded TDs, such as TD0.
-    *   `!!! danger "Challenge"`: open, harder tasks for bonus points. Use it in graded TDs, such as MLOps.
+*   **Section endings:** a `!!! question` block with 2 or 3 "why" questions. Ungraded TDs, such as TD 0, add a collapsed `??? tip "Going further"` block with optional tasks for fast students.
+*   **Challenges:** a Challenge block is a harder task, with less guidance than an exercise. The admonition type sets the difficulty: `!!! warning "Challenge - …"` is medium, `!!! danger "Challenge - …"` is hard. Challenges before the Recap are graded, as a bonus.
 *   **Hints:** when a step gives only the goal, put the commands in a collapsed `??? tip "Hint"` inside the exercise.
 *   **Self-checks:** each exercise tells students what success looks like at least once, for example "You should see `All checks passed!`".
 *   **Predict, then run:** before a command with a surprising result, ask "Before you run it, predict…".

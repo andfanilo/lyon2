@@ -159,3 +159,13 @@ The graded lab is the series of notebooks in [pyspark-tutorial](https://github.c
     - [x] Configure the environment variables Spark needs
     - [x] Run a Spark notebook from JupyterLab or VS Code
     - [x] Start the graded lab
+
+---
+
+## 💯 Send me your work
+
+Your grade covers the notebooks of the graded lab.
+
+1. Run every cell of your notebooks, then save them, so that the outputs are in the files.
+2. Compress the notebook folders of `pyspark-tutorial`, the ones that start with a number like `1-beginner`, into `spark-<lastname>-<firstname>.zip`. Don't include the `.venv` folder. On Windows, select the folders, right-click them, then select **Compress to ZIP file**. On macOS, select **Compress** instead.
+3. Send the zip file to your teacher by email.

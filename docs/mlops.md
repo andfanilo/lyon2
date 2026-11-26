@@ -20,54 +20,44 @@ Make sure you have the following commands working on your workstation, from [TD 
 
 ## 1. Docker quick start
 
-### a. Your first Docker commands
+### a. Back to your first containers
 
 ![](./images/mlops-docker-logo.png)
 
-Before starting, make sure your command line has `docker` and `docker-compose` working.
-
-!!! note "Exercise - Your first Docker commands"
-    - List the available docker commands by running `docker`.
-    - Run the `docker images` command. This should list all your existing Docker images you can use. Do you have any? 
-        - Compare them with the images in your `Docker Desktop` window.
-    - Run the `docker ps -a` command. Do you see any previously running containers?
-        - The `ps` command stands for `process`, you can imagine this like a running container. The `-a` flag stands for *all containers*, not only running ones. You should see containers that were stopped earlier.
-
-We want to test the new walrus operator in Python 3.12. You can download any Docker image from [the Docker Hub](https://hub.docker.com/).
+In [TD 0](prerequisites.md#4-run-containers-with-docker), you downloaded images and ran containers. Check that you remember, then learn 3 new commands.
 
 ![](./images/mlops-docker-tags.png)
 
-To run a Docker image, you'll need to specify its name and tag as `<label>:<tag>`. Let's run some code in the `python:3.12-slim` image, as you can guess a _small_ image with Python 3.12 installed.
+!!! note "Exercise - Recall TD 0, without looking"
+    1. Download the `python:3.12-slim` image. Open an interactive Python shell in a container that is deleted when it stops.
+    2. Python 3.12 added the `type` statement. In the shell, run `type Point = tuple[float, float]`, then `Point`. Quit with `exit()`.
+    3. Predict: what happens if you run the same line in a `python:3.11-slim` container? Check with `docker run --rm python:3.11-slim python -c "type Point = tuple[float, float]"`.
+        - Docker lets you test any Python version without installing it.
 
-!!! note "Exercise - Run your first container"
-    - Find the [command](https://docs.docker.com/engine/reference/commandline/pull/) to download the `python:3.12-slim` image in your set of available images.
-        - Check the image is available with `docker images`
-    - Run a container from the image with `docker run -it --rm python:3.12-slim`.
-        - The `-it` flag is shorthand for `-i -t`, short for _interactive_ and _tty_. This opens a tty terminal to your container.
-        - The `--rm` flag tells the Docker Daemon to clean up the container after exiting.
-    - By default the `run` for the image will put you in a Python shell. Try to run some Python code and play with the walrus operator.
-        - Docker gives you an easy way to test new Python versions without installing it on your system.
-    - Exit the container by typing `exit()` in the command. 
-    - Make sure the container has disappeared with `docker ps -a`.
-    - Run the docker run command again without the `--rm` flag. 
-        - Run `docker run -it --name test python:3.12-slim` and then exit the container. What displays this time in `docker ps -a` ?
-    - Since we gave a name to our container, let's restart it with `docker start test`. You can then reattach to it with `docker attach test`.
-    - We had enough fun with that container, destroy it by using the `docker rm` command.
-    - Let's clean up our images a little bit, delete the `python:3.12-slim` image with the `docker rmi` command.
+    ??? tip "Hint"
+        ```bash
+        docker pull python:3.12-slim
+        docker run -it --rm python:3.12-slim
+        ```
 
-Most modern libraries have a dedicated Docker image maintained by the community. Do not hesitate to browse [the Docker Hub](https://hub.docker.com/) to test the latest systems.
+!!! note "Exercise - Restart a stopped container"
+    1. Run a container without `--rm`, and give it a name: `docker run -it --name test python:3.12-slim`. Exit it with `exit()`.
+    2. Predict: is `test` in `docker ps`? In `docker ps -a`? Check.
+    3. Restart it with `docker start test`, then reattach to its Python shell with `docker attach test`. Exit again.
+    4. Try to delete the image with `docker rmi python:3.12-slim`. Read the error: why does Docker refuse?
+    5. Delete the container with `docker rm test`. Delete the 3.11 image with `docker rmi python:3.11-slim`. Keep the 3.12 image: the next section uses it.
 
 What if you want to use a Python image but don't want to use its Python shell?
 
 !!! note "Exercise - Changing the CMD of the image"
-    - In Git Bash, run `uv run python -m http.server 9999`. In a browser, connect to <http://localhost:9999>. 
+    1. In Git Bash, run `uv run python -m http.server 9999`. In a browser, connect to <http://localhost:9999>. 
         - What is the `http.server` program in Python?
         - Close it with `CTRL + C`.
-    - Let's run this command in a Docker container! Run `docker run -it --rm -p 9999:9999 python:3.12-slim python -m http.server 9999`. connect to <http://localhost:9999> in your browser.
-    - What is the `-p 9999:9999` flag? 
-    - How do you connect to the http server if you run the command with `-p 7777:9999` instead?
+    2. Run the same command in a Docker container: `docker run -it --rm -p 9999:9999 python:3.12-slim python -m http.server 9999`. Connect to <http://localhost:9999> in your browser.
+    3. What is the `-p 9999:9999` flag? 
+    4. Predict: if you run the command with `-p 7777:9999` instead, which URL shows the server? Check.
 
-This way we now can download an image, run it with a custom command and expose some of the ports to us.
+You can now download an image, run it with a custom command, and expose its ports.
 
 !!! danger "Challenge"
     - In a folder with some Python notebooks you copied from some other projects you want to use, run the following command:
@@ -94,68 +84,68 @@ This way we now can download an image, run it with a custom command and expose s
 
         - This is the notebook that is used by Kaggle notebooks, with all the necessary Data Science packages to work on your projects! But it is very big, it might takes several minutes to download.
         - Carefully read each part of the command and prepare to be able to explain each part to me.
-        - The only flag you currently don't know is `-v`. It mounts one of your local folders to a folder inside the running container, so that you can see your local Jupyter notebooks from inside the containers. You can edit a file in the Jupyter notebook and see the changes locally (though I don't recommend doing it like this because of line separator risks).
+        - The new flags are `-v` and `-w`. `-v` mounts one of your local folders to a folder inside the running container, so that you can see your local Jupyter notebooks from inside the containers. You can edit a file in the Jupyter notebook and see the changes locally (though I don't recommend doing it like this because of line separator risks). `-w` sets the working folder inside the container.
 
 ### b. Your first Dockerfile
 
 Our goal is to create our own Docker image, using a `Dockerfile`.
 
 !!! note "Exercise - Folder architecture"
-    - Put yourself in a brand new folder, like `mlops-td`. 
-    - In this `mlops-td` folder, create a new uv project. Name it however you like, for example `td`: `uv init td --app --no-package --vcs none`.
+    1. Put yourself in a brand new folder, like `mlops-td`. 
+    2. In this `mlops-td` folder, create a new uv project. Name it however you like, for example `td`: `uv init td --app --no-package --vcs none`.
         - `--vcs none` tells uv not to create a Git repository inside `td`, because you may want to version the whole `mlops-td` folder later.
-    - Browse into `td`, then run `uv lock` to create the `uv.lock` file.
-    - Create the empty `Dockerfile` and `.dockerignore` files, so that you get:
+    3. Browse into `td`, then run `uv lock` to create the `uv.lock` file.
+    4. Create the empty `Dockerfile` and `.dockerignore` files, so that you get:
 
-    ```
-    td
-     ├── main.py            <- A python script
-     ├── pyproject.toml     <- Python packages (feel free to `uv add` packages you like)
-     ├── uv.lock            <- Exact versions of the Python packages
-     ├── .python-version    <- Python version of the project
-     ├── README.md          <- Describes the project
-     ├── .dockerignore      <- Files Docker must not copy into the image
-     └── Dockerfile         <- Has the Docker commands to build our custom image
-    ```
+        ```
+        td
+         ├── main.py            <- A python script
+         ├── pyproject.toml     <- Python packages (feel free to `uv add` packages you like)
+         ├── uv.lock            <- Exact versions of the Python packages
+         ├── .python-version    <- Python version of the project
+         ├── README.md          <- Describes the project
+         ├── .dockerignore      <- Files Docker must not copy into the image
+         └── Dockerfile         <- Has the Docker commands to build our custom image
+        ```
 
-    - Write some Python code in `main.py`. Printing `Hello World` is good enough. Check it works with `uv run main.py`.
-    - Write `.venv` in `.dockerignore`. Your local `.venv` is built for your operating system. The image builds its own.
+    5. Write some Python code in `main.py`. Printing `Hello World` is good enough. Check it works with `uv run main.py`.
+    6. Write `.venv` in `.dockerignore`. Your local `.venv` is built for your operating system. The image builds its own.
 
 !!! note "Exercise - Dockerfile"
-    - Open the `Dockerfile` file with your favorite editor (I would recommend opening the `mlops-td` folder with [VSCode](https://code.visualstudio.com/)).
-    - Write down the following lines into `Dockerfile`:
+    1. Open the `Dockerfile` file with your favorite editor (I would recommend opening the `mlops-td` folder with [VSCode](https://code.visualstudio.com/)).
+    2. Write down the following lines into `Dockerfile`:
 
-    ```Dockerfile
-    FROM python:3.12-slim
-    COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
+        ```Dockerfile
+        FROM python:3.12-slim
+        COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
 
-    WORKDIR /app 
-    COPY pyproject.toml uv.lock /app/
-    RUN uv sync --locked --no-install-project
+        WORKDIR /app 
+        COPY pyproject.toml uv.lock /app/
+        RUN uv sync --locked --no-install-project
 
-    COPY main.py main.py
+        COPY main.py main.py
 
-    CMD ["uv", "run", "main.py"]
-    ```
+        CMD ["uv", "run", "main.py"]
+        ```
 
-    ??? abstract "Explaining the Dockerfile commands"
-        - `FROM` specifies the parent image [link](https://docs.docker.com/engine/reference/builder/#from)
-        - `COPY` copies files or directories from the folder you ran docker from, into the image (at the current selected `WORKDIR`). [link](https://docs.docker.com/engine/reference/builder/#copy)
-            - `COPY --from=<image>` copies files from another image instead. Here, we copy the `uv` and `uvx` programs from the official uv image.
-        - `WORKDIR` puts the image location to the desired folder. In this example, all future commands will be run inside the `/app` folder, like if you did a `cd /app`. [link](https://docs.docker.com/engine/reference/builder/#workdir)
-        - `RUN` runs a classic UNIX command. Use them to install stuff. [link](https://docs.docker.com/engine/reference/builder/#run)
-            - `uv sync --locked` installs the exact versions from `uv.lock`. It fails if `uv.lock` is out of date with `pyproject.toml`. 
-            - `--no-install-project` installs only the dependencies, not your code, which isn't copied yet.
-        - `CMD` defines the command the Docker image will run by default. [link](https://docs.docker.com/engine/reference/builder/#cmd)
+        ??? abstract "Explaining the Dockerfile commands"
+            - `FROM` specifies the parent image [link](https://docs.docker.com/engine/reference/builder/#from)
+            - `COPY` copies files or directories from the folder you ran docker from, into the image (at the current selected `WORKDIR`). [link](https://docs.docker.com/engine/reference/builder/#copy)
+                - `COPY --from=<image>` copies files from another image instead. Here, we copy the `uv` and `uvx` programs from the official uv image.
+            - `WORKDIR` puts the image location to the desired folder. In this example, all future commands will be run inside the `/app` folder, like if you did a `cd /app`. [link](https://docs.docker.com/engine/reference/builder/#workdir)
+            - `RUN` runs a classic UNIX command. Use them to install stuff. [link](https://docs.docker.com/engine/reference/builder/#run)
+                - `uv sync --locked` installs the exact versions from `uv.lock`. It fails if `uv.lock` is out of date with `pyproject.toml`. 
+                - `--no-install-project` installs only the dependencies, not your code, which isn't copied yet.
+            - `CMD` defines the command the Docker image will run by default. [link](https://docs.docker.com/engine/reference/builder/#cmd)
 
-    - To run the building of the image, run `docker build -t td:0.1 ./`
+    3. To run the building of the image, run `docker build -t td:0.1 ./`
         - the `-t` is the name (`td`) and tag (`0.1`) of the image.
         - the `./` specifies the current folder which contains the `Dockerfile` to build. If you're not in the folder, point to the path accordingly.
-    - Make sure the new `td:0.1` image was created. What is the size of the image?
-    - Run your new image and verify the code from your `app.py` script runs correctly.
-    - Change only the code in `main.py`, then rerun the same `build` command. Do you notice something in the print output? 
+    4. Make sure the new `td:0.1` image was created. What is the size of the image?
+    5. Run your new image. You should see the output of your `main.py` script.
+    6. Change only the code in `main.py`, then rerun the same `build` command. Do you notice something in the print output? 
         - `CACHED` appears next to some steps. Docker reused those steps, so it didn't reinstall the dependencies.
-    - Now add a dependency with `uv add requests`, and rebuild. Which steps are not `CACHED` anymore? Why do we copy `pyproject.toml` and `uv.lock` before `main.py`?
+    7. Predict: if you add a dependency with `uv add requests` and rebuild, which steps will not be `CACHED` anymore? Rebuild to check.
 
 !!! danger "Challenge"
     - Create a Docker image which contains a copy of any of your Jupyter notebooks and installs the `jupyterlab` dependency (`uv add jupyterlab`). When the container runs, a Jupyter lab server should run. I should be able to access every notebook at the root.
@@ -163,16 +153,24 @@ Our goal is to create our own Docker image, using a `Dockerfile`.
         - Replace `<current directory>` with `"$(pwd)"` in Git Bash, WSL, macOS, and Linux, and with `${PWD}` in PowerShell.
         - In Git Bash, prefix the command with `MSYS_NO_PATHCONV=1`, like in the previous challenge.
 
+!!! question
+    - Why does the `Dockerfile` copy `pyproject.toml` and `uv.lock` before `main.py`?
+    - Why does `.dockerignore` exclude `.venv`? What could go wrong if the image used your local `.venv`?
+    - What is the difference between `-p 9999:9999` and `-p 7777:9999`?
+
+---
+
 ## 2. Running multiple microservices together with docker compose
 
-With `docker-compose`, you are able to run a group of containers altogether. In this tutorial, we will setup a 3-tier architecture with Docker compose, by running a Docker container for each tier.
+With `docker compose`, you are able to run a group of containers altogether. In this tutorial, we will setup a 3-tier architecture with Docker compose, by running a Docker container for each tier.
 
 ![](./images/mlops-three-tier-architecture.png)
 
 ### a. Developing the FastAPI API locally
 
 !!! note "Exercise - Architecture"
-    - In the `mlops-td` folder, build the following folder architecture
+    In the `mlops-td` folder, build the following folder architecture:
+
     ```
     mlops-td
     ├── client
@@ -197,16 +195,17 @@ With `docker-compose`, you are able to run a group of containers altogether. In 
 !!! abstract "Prerequisites - One uv project per service"
     Each service has its own dependencies and its own Docker image, so each folder is its own uv project.
 
-    - In the `server` folder, run `uv init --app --no-package --vcs none`, then `uv add fastapi uvicorn pymongo`.
-    - In the `client` folder, run `uv init --app --no-package --vcs none`, then `uv add streamlit requests`.
-    - Delete the `main.py` files that `uv init` created. We write our code in `app.py`.
-    - Check that both `docker version` and `uv --version` work from your command line.
-    - In VS Code, select the interpreter of the service you're working on (`server/.venv` or `client/.venv`) with the `Python: Select Interpreter` command.
+    1. In the `server` folder, run `uv init --app --no-package --vcs none`, then `uv add fastapi uvicorn pymongo`.
+    2. In the `client` folder, run `uv init --app --no-package --vcs none`, then `uv add streamlit requests`.
+    3. Delete the `main.py` files that `uv init` created. We write our code in `app.py`.
+    4. Check that both `docker version` and `uv --version` work from your command line.
+    5. In VS Code, select the interpreter of the service you're working on (`server/.venv` or `client/.venv`) with the `Python: Select Interpreter` command.
 
 !!! note "Exercise - Build a Python REST API with FastAPI (a Flask alternative)"
-    - In `server/app.py`, create a REST API with [FastAPI](https://fastapi.tiangolo.com/tutorial/first-steps/) so that:
-        - when you run `uv run uvicorn --reload --host 0.0.0.0 app:app` locally, from the `server` folder, you can connect to <http://localhost:8000> and get back `{"message": "Hello World"}`. 
-        - when you connect to <http://localhost:8000/docs>, you can access the documentation page of your API like in the image below.
+    In `server/app.py`, create a REST API with [FastAPI](https://fastapi.tiangolo.com/tutorial/first-steps/) so that:
+
+    1. When you run `uv run uvicorn --reload --host 0.0.0.0 app:app` locally, from the `server` folder, you can connect to <http://localhost:8000> and get back `{"message": "Hello World"}`. 
+    2. When you connect to <http://localhost:8000/docs>, you can access the documentation page of your API like in the image below.
     
     Refer to the [Quick Start](https://fastapi.tiangolo.com/#example) to discover how to implement the API.
 
@@ -233,10 +232,10 @@ You can test any part of the API by clicking on the `Try it out button` on the t
 ### b. Building the FastAPI Docker image
 
 !!! note "Exercise - Run the FastAPI API in a Docker container"
-    - In `server/Dockerfile`, install the dependencies locked in `server/uv.lock`. Don't forget `server/.dockerignore`.
-    - In `server/Dockerfile`, run the command that runs the Uvicorn server through `CMD`. Use the `Dockerfile` from the previous part as template.
+    1. In `server/Dockerfile`, install the dependencies locked in `server/uv.lock`. Don't forget `server/.dockerignore`.
+    2. In `server/Dockerfile`, run the command that runs the Uvicorn server through `CMD`. Use the `Dockerfile` from the previous part as template.
         - Do note that `"cmd --reload -h 127.0.0.1 app"` and [`"cmd"`, `"--reload"`, `"-h"`, `"127.0.0.1"`, `"app"`] are the same.
-    - Build your image. Give it a label like `mlops-server`. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser on <http://localhost:8000> and get your `Hello world`.
+    3. Build your image. Give it a label like `mlops-server`. Make sure if you run the container with the correct port exposed, you can connect to the API from the browser on <http://localhost:8000> and get your `Hello world`.
 
     ??? abstract "Solution ONLY if you feel stuck"
         ??? abstract "Are you really stuck :thinking: ?? Give it one last try :muscle:"
@@ -265,30 +264,30 @@ We are going to add a MongoDB database next to our API, which is used to store J
 ![](./images/mlops-mongo-fastapi.png)
 
 !!! note "Exercise - Run Mongodb in Docker, FastAPI locally"
-    - Run a [MongoDB](https://hub.docker.com/_/mongo) container using the `docker run` command.
-    - Let's add some code into `server/app.py` to push data into MongoDB. Here's code to push and retrieve a Python Dict into a running local MongoDB.
+    1. Run a [MongoDB](https://hub.docker.com/_/mongo) container using the `docker run` command. Expose its port 27017.
+    2. Let's add some code into `server/app.py` to push data into MongoDB. Here's code to push and retrieve a Python Dict into a running local MongoDB.
     
-    ```python
-    from pymongo import MongoClient
+        ```python
+        from pymongo import MongoClient
 
-    client = MongoClient('localhost', 27017)
-    db = client.test_database
-    collection = db.test_collection
+        client = MongoClient('localhost', 27017)
+        db = client.test_database
+        collection = db.test_collection
 
-    def add_list_fruits(fruit):
-        id = collection.insert_one({"fruit": fruit}).inserted_id
-        return list(collection.find({}, {"_id": False}))
-    ```
+        def add_list_fruits(fruit):
+            id = collection.insert_one({"fruit": fruit}).inserted_id
+            return list(collection.find({}, {"_id": False}))
+        ```
 
-    - Create a new `GET` method so that if you connect to `/add/mango` it adds `{fruit: mango}` to mongodb, and another `GET` method `/list` that returns all fruits in MongoDB.
+    3. Create a new `GET` method so that if you connect to `/add/mango` it adds `{fruit: mango}` to mongodb, and another `GET` method `/list` that returns all fruits in MongoDB.
         - Use [the Path params doc](https://fastapi.tiangolo.com/tutorial/path-params/) to get started
-    - Run your FastAPI server locally. From <http://localhost:8000/docs>, you can try out the API examples and check that data is returned correctly.
+    4. Run your FastAPI server locally. From <http://localhost:8000/docs>, you can try out the API examples and check that data is returned correctly.
 
     ![](./images/mlops-mongo-fastapi-local.png)
 
     ??? abstract "Solution ONLY if you feel stuck"
         ??? abstract "Are you really stuck :thinking: ?? Give it one last try :muscle:"
-            Run MongoDB with `docker run -it --rm --name some-mongo -p 27017:27017 mongo:4`.
+            Run MongoDB with `docker run -it --rm --name some-mongo -p 27017:27017 mongo`.
 
             My `server/app.py` content:
             ```python
@@ -315,32 +314,31 @@ We are going to add a MongoDB database next to our API, which is used to store J
             ```
 
 !!! note "Exercise - Run Mongodb and FastAPI in separate Docker containers"
-    - Add the following code in `docker-compose.yml`. This will start a Mongodb next to your server image:
+    1. Stop the MongoDB container of the previous exercise.
+    2. Add the following code in `docker-compose.yml`. This will start a Mongodb next to your server image:
     
-    ```yaml
-    version: '3'
+        ```yaml
+        services:
+            mongo:
+                image: mongo
 
-    services:
-        mongo:
-            image: mongo
+            server:
+                image: mlops-server
+                build:
+                    context: ./server
+                    dockerfile: Dockerfile
+                ports:
+                - 8000:8000
+        ```
 
-        server:
-            image: mlops-server
-            build:
-                context: ./server
-                dockerfile: Dockerfile
-            ports:
-            - 8000:8000
-    ```
-
-    - Run the cluster with `docker-compose up`, from the root folder (where `docker-compose.yml` is).
-        - **BEWARE**! only works if your `mlops-server` image has already been built
+    3. Run the cluster with `docker compose up`, from the root folder (where `docker-compose.yml` is). If the `mlops-server` image doesn't exist yet, Compose builds it from the `build` section.
         - Check that you have indeed 2 containers running.
-    - Close the cluster with `CTRL+C`, and destroy it with `docker-compose down`. A `docker ps -a` should show no containers remaining.
-    - In `server/app.py`, change `client = MongoClient('localhost', 27017)` into `client = MongoClient('mongo', 27017)`. 
-        - It is docker-compose that redirects the `mongo` URL/service into the `mongo` container.
-    - Because the image building info is in `docker-compose.yml`, you can rebuild the images immediately with `docker-compose up --build` instead. Try it out.
-    - Connect to your API with <http://localhost:8000/docs> running in a container. Make sure you can still add and get objects from MongoDB through the API.
+    4. Close the cluster with `CTRL+C`, and destroy it with `docker compose down`. A `docker ps -a` should show no containers remaining.
+    5. In `server/app.py`, change `client = MongoClient('localhost', 27017)` into `client = MongoClient('mongo', 27017)`. 
+        - It is docker compose that redirects the `mongo` URL/service into the `mongo` container.
+    6. Predict: if you run `docker compose up` again, does the server use your edited `app.py`? Try it. Then rebuild the images with `docker compose up --build`.
+    7. Connect to your API with <http://localhost:8000/docs> running in a container. Make sure you can still add and get objects from MongoDB through the API.
+    8. Predict: after `docker compose down` and `docker compose up`, are your fruits still in MongoDB? Check with <http://localhost:8000/list>.
 
     ![](./images/mlops-mongo-fastapi-docker.png)
 
@@ -350,38 +348,43 @@ Instead of connecting to the FastAPI documentation page to interact with it, let
 
 ![](./images/mlops-three-tier-simple.png)
 
-!!! note "Building a Streamlit UI connected to the API"
-    - Make sure your docker-compose FastAPI + MongoDB cluster from the previous section is running.
-    - Build a local [Streamlit](https://docs.streamlit.io/) _(or Gradio or Dash or Shiny or whatever)_ app in `client/app.py` with a text input to write down a fruit and a button to request the `http://server:8000/add/<fruit>`. 
+!!! note "Exercise - Building a Streamlit UI connected to the API"
+    1. Make sure your docker compose FastAPI + MongoDB cluster from the previous section is running.
+    2. Build a local [Streamlit](https://docs.streamlit.io/) _(or Gradio or Dash or Shiny or whatever)_ app in `client/app.py` with a text input to write down a fruit and a button to request `http://localhost:8000/add/<fruit>`. 
         - The command to run a Streamlit app from the `client` folder is `uv run streamlit run app.py`
         - Here is some code to put in `client/app.py` to react to a button click:
 
-    ```python
-    import streamlit as st
+            ```python
+            import streamlit as st
 
-    st.title("My beautiful App")
-    button_clicked = st.button("Click me")
-    
-    if button_clicked:
-        st.write("It worked")
-        st.balloons()
-    ```
+            st.title("My beautiful App")
+            button_clicked = st.button("Click me")
+            
+            if button_clicked:
+                st.write("It worked")
+                st.balloons()
+            ```
 
-    - Get back the list of all fruits currently in Mongo from the API by hitting <http://localhost:8000/list> on clicking from another button.
+    3. Get back the list of all fruits currently in Mongo from the API by hitting <http://localhost:8000/list> on clicking from another button.
 
 !!! warning "Challenge - Building our first Dockerized Fullstack web service"
     - Implement `client/Dockerfile`, build it as `mlops-client`. Make sure you can properly run it without `docker compose`
     - Add the Streamlit UI container run to `docker-compose.yml`.
-        - Don't forget to change the URL of your `MongoClient`
-    - Restart your `docker-compose` cluster.
+        - Don't forget to change the API URL in `client/app.py` to `http://server:8000`: inside docker compose, `localhost` is the client container itself.
+    - Restart your `docker compose` cluster.
         - If all is well, in your 3-tier architecture, Streamlit is only hitting FastAPI and only FastAPI is hitting MongoDB. 
         - That way you can add authentication or security measures at FastAPI level, which would be harder to do if the client immediately hit MongoDB.
+
+!!! question
+    - Your local Streamlit app calls `http://localhost:8000`, but the Dockerized one calls `http://server:8000`. Why?
+    - Why should Streamlit call FastAPI, instead of calling MongoDB directly?
+    - What does `docker compose up --build` do that `docker compose up` doesn't?
 
 ![](./images/mlops-three-tier-architecture.png)
 
 ## 3. A full-stack Dockerized ML project
 
-Pick up a classification training dataset, like Iris or Penguins. The goal is to build a fully functional `docker-compose` app that provides an UI to do predictions on a pretrained ML model.
+Pick up a classification training dataset, like Iris or Penguins. The goal is to build a fully functional docker compose app that provides an UI to do predictions on a pretrained ML model.
 
 ![](./images/mlops-architecture.png)
 
@@ -413,6 +416,13 @@ Pick up a classification training dataset, like Iris or Penguins. The goal is to
     - Add a `README.md` to your project to describe how to clone & run the project. 
         - Normally, I should just need a `docker compose up --build` to build and run the Docker image.
 
+    Check your project at each milestone:
+
+    1. From the `server` folder, `uv run train.py` creates `model.pkl`.
+    2. On <http://localhost:8000/docs>, **Try it out** on `POST /predict` returns a class, for example `setosa`, not the features you sent.
+    3. In the Streamlit app, the predict button displays the class.
+    4. After `docker compose down`, `docker compose up --build` builds and starts the whole project with no other command.
+
 Good Luck, Have Fun :tada:!
 
 ---
@@ -428,11 +438,20 @@ Good Luck, Have Fun :tada:!
 
 ---
 
+## 💯 Send me your work
+
+Your grade covers every section above. The bonus challenges below are not graded.
+
+1. Check that your project starts from scratch: from `mlops-td`, run `docker compose down`, then `docker compose up --build`.
+2. Delete the `.venv` folders in `client`, `server` and `td`. `uv sync` recreates them, and they make the zip file very large. Keep `model.pkl`: the server image needs it.
+3. Compress the `mlops-td` folder into `mlops-<lastname>-<firstname>.zip`. On Windows, right-click the folder, then select **Compress to ZIP file**. On macOS, right-click the folder, then select **Compress**.
+4. Send the zip file to your teacher by email.
+
+---
+
 ## Bonus challenges
 
-The following exercises are optional bonuses if you want to go the full MLOps route. 
-
-You can do them in any order.
+The following sections are optional and not graded. Do them if you want to go the full MLOps route, in any order.
 
 ## 4. Github & CI/CD
 
@@ -451,7 +470,7 @@ We can push the MLOps images to a Github project so anyone can download them.
 
     ![](./images/mlops-gh-get-started.png)
 
-    - Can you find the pricing for the Containers service?
+    - Can you find the storage limits of the Containers service?
 
 ### b. Authenticating to Github using a personal access token
 
@@ -491,13 +510,8 @@ The following exercise uses the `git` command, so run it in Git Bash.
     mongo          latest    021b676f1558   3 weeks ago   757MB
     ```
 
-    !!! warning "Github Packages free tier"
-        If you remember from the [pricing page](https://github.com/settings/billing/summary) you are limited to a monthly:
-
-        - 500Mb of Packages storage
-        - 1 Gb of transfer out
-
-        Our docker images are 500Mb, way too large for the current free tier. There are ways to [reduce the image size](https://pythonspeed.com/articles/smaller-docker-images/), but honestly we won't be  able to squeeze our Streamlit/FastAPI images to 500Mb, even if the price for hosting is actally [pretty low](https://github.com/pricing/calculator?feature=packages). Let's use a very small image to train for now.
+    !!! warning "Github Packages storage"
+        Check the storage and transfer limits of your account on the [GitHub pricing page](https://github.com/pricing). Our Streamlit and FastAPI images take about 500 MB each. There are ways to [reduce the image size](https://pythonspeed.com/articles/smaller-docker-images/), but let's use a very small image to train for now.
 
     - Pull the docker `hello-world` image, check out its size is around 10Kb.
 
@@ -577,7 +591,7 @@ In our MLOps tutorial, CI/CD refers to the continuous integration and delivery o
 
 !!! warning "Challenge - Rebuild the `hello-world` image at every commit"
     - Create a new Dockerfile in the `mlops` project. This Dockerfile should use the `hello-world` base image but change the `CMD` to print something (like an environment variable)
-    - Edit the `.github/workgflows/github-actions-demo.yml` (or however you named it) to build the new image and push it to the project's container registry automatically at every commit push. 
+    - Edit the `.github/workflows/github-actions-demo.yml` (or however you named it) to build the new image and push it to the project's container registry automatically at every commit push. 
         - [This link should teach you how to push](https://docs.github.com/en/actions/publishing-packages/publishing-docker-images#publishing-images-to-github-packages) 
         - and [this one will help you configure Docker login to your Github project](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository).
     - Push a new commit, wait for the image build, then redownload the Docker image locally an try running it.
@@ -586,7 +600,7 @@ You are now able to host up-to-date images on Github.
 
 ## 5. Deploying to Huggingface Spaces
 
-The Hugging Face Hub is a platform with over 350k models, 75k datasets, and 150k demo apps (Spaces), all open source and publicly available, in an online platform where people can easily collaborate and build ML together. The Hub works as a central place where anyone can explore, experiment, collaborate, and build technology with Machine Learning.
+The Hugging Face Hub is a platform with a very large number of models, datasets, and demo apps (Spaces), all open source and publicly available, in an online platform where people can easily collaborate and build ML together. The Hub works as a central place where anyone can explore, experiment, collaborate, and build technology with Machine Learning.
 
 Hugging Face Spaces offer a simple way to host ML demo apps directly on your profile or your organization’s profile. It's the perfect platform to deploy small ML apps in Streamlit, Gradio or Docker. All CI/CD is preconfigured on Huggingface Spaces, any code change you push will automatically rebuild and redeploy the app online.
 
@@ -611,7 +625,7 @@ Popular platforms are [MLFlow](https://mlflow.org/), [Neptune](https://neptune.a
 
 Using the `ghcr.io/mlflow/mlflow` Docker image, you can start a MLFlow Model Registry, and send Scikit-Learn models there with associated metrics.
 
-For example if you start a MLFlow Server with `docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite`, you can use the following code to train a model and push it to the MLFlow Server with its evaluation metrics:
+For example if you start a MLFlow Server with `docker run -it --rm -p 5000:5000 ghcr.io/mlflow/mlflow mlflow server -h 0.0.0.0 --backend-store-uri sqlite:///mydb.sqlite`, you can use the following code to train a model and push it to the MLFlow Server with its evaluation metrics. It is a partial example: you need to load your own data into `train_x`, `train_y`, `test_x` and `test_y`, import `ElasticNet` from `sklearn.linear_model`, and choose `alpha` and `l1_ratio`.
 
 ```python
 import numpy as np
@@ -646,7 +660,7 @@ with mlflow.start_run():
 You should be able to visualize you model on the dashboard <http://localhost:5000>.
 
 !!! danger "Challenge"
-    - Use the previous challenge as template to create the above architecture, adding a MLFlow service in `docker-compose`. You now have a `client` Streamlit, `FastAPI` server and `MLFlow` backend.
+    - Use the previous challenge as template to create the above architecture, adding a MLFlow service in `docker-compose.yml`. You now have a `client` Streamlit, `FastAPI` server and `MLFlow` backend.
     - Locally, in the `train.py` that trains your ML Model, log your model into MLFlow.
     - In your `FastAPI` server, load the model from MLFlow 
     ```python
