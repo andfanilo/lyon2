@@ -22,7 +22,9 @@ For this tutorial, you will be installing and configuring tools used in the foll
 - [ ] Ask an AI coding assistant to explain, edit and use a project
 - [ ] Git clone the Spark tutorial
 
-All the projects of these tutorials go into a single `C:\workspace` folder. Short paths without spaces avoid many problems with Python, Docker and Java tools.
+Put all the projects of these tutorials in a single workspace folder. The tutorials use `C:\workspace` on Windows and `~/workspace` on macOS and Linux. You can choose another folder: then replace `C:\workspace` with your folder in the commands.
+
+Choose a short path without spaces, because spaces in paths cause many problems with Python, Docker and Java tools.
 
 ---
 
@@ -32,7 +34,8 @@ All the projects of these tutorials go into a single `C:\workspace` folder. Shor
     Those are skills you will want ingrained in your brain for the rest of your developer career :smile:
 
 !!! note "Exercise - Getting used to the Windows Prompt"
-    1. Open your Command Prompt Terminal from the Start Menu.
+    1. Open Command Prompt from the Start Menu. On Windows 11, it opens in Windows Terminal: you can also open Windows Terminal and select **Command Prompt** from the tab dropdown.
+        - On macOS or Linux, open your Terminal app instead.
     2. Open your Explorer.
     3. Select a random folder that has files in your Explorer, and browse to this folder from the Command Prompt
         - You can either use multiple `cd` commands, by pressing `tab` to autocomplete the folder to browse into. You can also copy-paste the full link from the Explorer into the command line.
@@ -40,7 +43,7 @@ All the projects of these tutorials go into a single `C:\workspace` folder. Shor
 
 The Windows and Unix command line terminals have different commands. 
 
-Most of the following exercises use **Git Bash**, a Unix terminal for Windows that comes with Git. PowerShell, WSL, macOS, and Linux work too. When a command differs between terminals, each terminal gets its own tab.
+Most of the following exercises use **Git Bash**, a Unix terminal for Windows that comes with Git. PowerShell, WSL, macOS, and Linux work too. When a command differs between terminals, the exercise shows it in tabs, such as `Git Bash`, `PowerShell` and `WSL / macOS / Linux`. Select the tab that matches your terminal.
 
 !!! note "Exercise - Install Git and Git Bash"
     1. Install [Git for Windows](https://git-scm.com/downloads/win). Keep the default options. They also install Git Bash.
@@ -134,15 +137,21 @@ Most of the following exercises use **Git Bash**, a Unix terminal for Windows th
         git log --oneline
         ```
 
-    5. Undo the commit with `git revert --no-edit HEAD`. 
+    5. You will undo the commit with `git revert --no-edit HEAD`. Before you run it, predict: after the revert, will your `Say Bonjour` commit still be in `git log --oneline`? What will `td/app.py` contain?
         - `HEAD` is the latest commit. `--no-edit` keeps the default commit message, `Revert "Say Bonjour"`, instead of opening an editor.
-    6. Run `git log --oneline` again. Is your `Say Bonjour` commit still in the history?
+    6. Run the revert, then `git log --oneline` and open `td/app.py`. Was your prediction right?
 
 !!! question
     - When should you use `git restore`, and when should you use `git revert`?
     - Why does `git revert` add a new commit, instead of deleting the old one?
 
 You can't `git push` your commits to this project: it belongs to someone else. You will push to your own GitHub repositories in later tutorials.
+
+??? tip "Going further"
+    - Run `git log -p`. It shows the diff of each commit. Press `q` to quit.
+    - Run `git show HEAD~1`. Which commit is `HEAD~1`?
+    - Create a branch with `git switch -c my-test`, commit an edit on it, then go back with `git switch -`. Is your edit still in `td/app.py`? Run `git log --oneline --all --graph` to see both branches.
+        - Older tutorials use `git checkout -b my-test` and `git checkout -`. They do the same thing: `git switch` and `git restore` replace the two jobs of `git checkout`.
 
 ---
 
@@ -155,7 +164,7 @@ Each project needs its own Python version and its own packages. If all your proj
 ### a. Install uv and Python
 
 !!! note "Exercise - Installing uv"
-    1. Install uv:
+    1. [Install uv](https://docs.astral.sh/uv/getting-started/installation/):
 
         === "Git Bash / PowerShell"
 
@@ -186,16 +195,16 @@ A **uv project** records its dependencies in a `pyproject.toml` file, and the ex
         - What new files and folders appeared? Open `uv.lock` and search for `streamlit`.
     4. Run commands inside the project environment with `uv run`. You don't need to activate the environment:
 
-        a. `uv run python --version`. Compare with `python --version`, if Python is installed on your machine.
+        a. `uv run python --version`. Before you run it, predict which version it prints, and why. Compare with `python --version`, if Python is installed on your machine.
 
-        b. `uv run main.py`
+        b. `uv run main.py`. You should see `Hello from uv-project-td!`
 
         c. `uv run streamlit version`
 
         d. `uv run python -m http.server`, then open <http://localhost:8000>. Stop the server with `Ctrl+C`.
 
-    5. Delete the `.venv` folder, then run `uv sync`. What happened? A classmate runs `uv sync` after cloning your project.
-    6. Remove a dependency with `uv remove fastapi`, then check `pyproject.toml` again.
+    5. Delete the `.venv` folder, then run `uv sync`. What happened? What does `uv sync` do when a classmate clones your project?
+    6. Remove a dependency with `uv remove fastapi`, then check `pyproject.toml` again. Add it back with `uv add fastapi`.
 
 !!! question
     - You send the `uv-project-td` folder to a classmate without its `.venv`. Which command recreates your environment?
@@ -206,7 +215,9 @@ A **uv project** records its dependencies in a `pyproject.toml` file, and the ex
 Each of the `td`, `client` and `server` folders of `lyon2-docker-demo` is its own uv project, with its own `pyproject.toml` and `uv.lock`. You don't install anything by hand: `uv run` creates the `.venv` and installs the locked packages the first time.
 
 !!! note "Exercise - Run the 3 applications locally"
-    1. Browse into `C:\workspace\lyon2-docker-demo\td`. Open `pyproject.toml`: which package does the script need? Run the script with `uv run app.py`. 
+    1. Browse into `C:\workspace\lyon2-docker-demo\td`. Open `pyproject.toml`: which package does the script need?
+        - Run the script with your own Python first: `python app.py`. Read the error. Why does it fail?
+        - Now run it with `uv run app.py`. Why does it work this time?
     2. Browse into `../server`. Start the FastAPI server: `uv run uvicorn --reload app:app`. 
         - Open <http://localhost:8000> and <http://localhost:8000/docs>. 
         - With `--reload`, the server restarts when you save a file. Edit the `Hello World` message in `server/app.py`, save, then refresh the page.
@@ -225,13 +236,47 @@ Some Python packages are **tools** you run from the command line, like Jupyter o
 
 !!! note "Exercise - Tools with uvx and uv tool"
     1. Run `uvx ruff --version`. `uvx` downloads Ruff into a temporary, isolated environment and runs it.
-    2. From the `uv-project-td` folder, check the code of `main.py` with `uvx ruff check`. Did `pyproject.toml` change?
-    3. Run `uvx jupyter lab`. JupyterLab opens in your browser, and your project stays unchanged. Stop the server with `Ctrl+C`.
-    4. Install Ruff permanently with `uv tool install ruff`. Now run `ruff --version` from any folder. List the installed tools with `uv tool list`.
+    2. From the `uv-project-td` folder, check the code of `main.py` with `uvx ruff check`. You should see `All checks passed!`. Did `pyproject.toml` change?
+        - Ruff is a **linter**: it reads your code without running it, and reports bugs and bad practices.
+    3. Break the code. Replace the content of `main.py` with:
+
+        ```python
+        import os
+
+
+        def main():
+            message = "Hello from uv-project-td!"
+            print(mesage)
+
+
+        if __name__ == "__main__":
+            main()
+        ```
+
+        - Run `uv run main.py`. Which error do you get?
+        - Run `uvx ruff check`. Ruff finds the same bug without running the code. You made one typo: why does Ruff report two errors about it?
+        - Run `uvx ruff check --fix`. Which error does Ruff fix by itself? Fix the other errors yourself, then run `uvx ruff check` until you see `All checks passed!`.
+    4. Ruff is also a **formatter**: it rewrites the layout of your code, without changing what it does. Add these badly formatted lines to `main.py`, just before `if __name__ == "__main__":`:
+
+        ```python
+        def add(a,b) : return a+b
+        numbers=[1,2 ,3]
+        ```
+
+        - Run `uvx ruff check`. Does the linter complain?
+        - Preview the changes with `uvx ruff format --diff`, then apply them with `uvx ruff format`. Open `main.py`: what changed?
+    5. Run `uvx jupyter lab`. JupyterLab opens in your browser, and your project stays unchanged. Stop the server with `Ctrl+C`.
+    6. Install Ruff permanently with `uv tool install ruff`. Now run `ruff --version` from any folder. List the installed tools with `uv tool list`.
 
 !!! question
     - When should you use `uv add`, `uvx` and `uv tool install`? Give an example package for each.
     - Why would you rather `uvx` a tool than `uv add` it to your project?
+    - What is the difference between a linter and a formatter? Which one caught your `mesage` typo?
+
+??? tip "Going further"
+    - In `uv-project-td`, add Ruff as a development dependency with `uv add --dev ruff`. Where does it appear in `pyproject.toml`? Run it with `uv run ruff check`.
+    - Print the dependency tree with `uv tree`. Which packages did `streamlit` bring in?
+    - Run a one-off command with an extra package, without adding it to the project. First run `uv run python -c "import cowsay"`: why does it fail? Then run `uv run --with cowsay python -c "import cowsay; cowsay.cow('Bonjour')"`. Did `pyproject.toml` change?
 
 ---
 
@@ -262,7 +307,7 @@ Depending on how Docker was installed, it may be that `docker compose` does not 
 !!! note "Exercise - Hello World"
     1. Download the `hello-world` image with `docker pull hello-world`, then list your images with `docker images`.
     2. Run it with `docker run hello-world`. Read the output: it explains what Docker just did.
-    3. List the running containers with `docker ps`, then all containers with `docker ps -a`. Why is the `hello-world` container in the second list only?
+    3. `docker ps` lists the running containers, and `docker ps -a` lists all containers. Before you run them, predict: is the `hello-world` container in the first list, the second, or both? Run them and explain the result.
     4. Delete the stopped container with `docker rm <container id>`. You only need to type the first characters of the ID.
 
 !!! note "Exercise - Run Python code in a container"
@@ -270,7 +315,7 @@ Depending on how Docker was installed, it may be that `docker compose` does not 
 
     1. Download the image: `docker pull python:3.12-slim`. 
         - `python` is the image name, `3.12-slim` is the **tag**: a version of the image. Browse the other tags on Docker Hub.
-    2. Run one Python command in a new container: 
+    2. Run one Python command in a new container. You should see `5`:
 
         ```bash
         docker run --rm python:3.12-slim python -c "print(2 + 3)"
@@ -280,7 +325,9 @@ Depending on how Docker was installed, it may be that `docker compose` does not 
     3. Open an interactive Python shell in a container: `docker run -it --rm python:3.12-slim python`. 
         - `-it` connects your keyboard and terminal to the container. 
         - Run `import platform; platform.platform()`. Which operating system runs your code? Quit with `exit()`.
-    4. Start a container in the background, and run commands inside it with `docker exec`:
+
+!!! note "Exercise - Run commands in a background container"
+    1. Start a container in the background, and run commands inside it with `docker exec`:
 
         ```bash
         docker run -d --name py-demo python:3.12-slim sleep infinity
@@ -292,7 +339,7 @@ Depending on how Docker was installed, it may be that `docker compose` does not 
         - `-d` runs the container in the background, `--name` gives it a name instead of an ID.
         - `sleep infinity` keeps the container running, so you can `exec` into it.
         - `docker exec -it py-demo bash` opens a shell inside the container. Run `ls /` and `pwd`, then `exit`.
-    5. Stop and delete the container: `docker rm -f py-demo`.
+    2. Stop and delete the container: `docker rm -f py-demo`.
 
 !!! question
     - What is the difference between `docker run` and `docker exec`?
@@ -317,14 +364,21 @@ Depending on how Docker was installed, it may be that `docker compose` does not 
         ```
 
         - The image starts from `python:3.12-slim`, copies the `uv` program in, installs the packages of `uv.lock`, copies the code, and runs it with `uv run`. You write such Dockerfiles yourself in the [MLOps tutorial](mlops.md).
-    2. From the `td` folder, build the image with `docker build -t td-lyon2 .`
-        - `-t` names the image. `.` is the folder that contains the `Dockerfile`.
-    3. Run it with `docker run --rm td-lyon2`. Compare with the output of `uv run app.py`.
+    2. From the `td` folder, build an image named `td-lyon2` with `docker build`. Search `docker build --help` for the option that names an image.
+    3. Run your image in a container that is deleted when it stops. Compare its output with `uv run app.py`.
+
+    ??? tip "Hint"
+        ```bash
+        docker build -t td-lyon2 .
+        docker run --rm td-lyon2
+        ```
+
+        `-t` names the image. `.` is the folder that contains the `Dockerfile`.
 
 !!! note "Exercise - Run the full application with docker compose"
     1. Open `docker-compose.yml`. Which 3 services does it start? Which ports does it expose?
     2. From the `lyon2-docker-demo` folder, build and start everything: `docker compose up --build`. 
-    3. Open <http://localhost:8501>, move some sliders and press `Predict flower`. This time, the client reaches the server: docker compose gives each service a network name, like `server`.
+    3. Open <http://localhost:8501>, move some sliders and press `Predict flower`. This time, the client reaches the server and displays an answer: docker compose gives each service a network name, like `server`.
     4. Open <http://localhost:8000/add/banana>, then <http://localhost:8000/list>. The server stored your fruit in the MongoDB container.
     5. From a second terminal, run a command inside the running `server` container:
 
@@ -333,10 +387,31 @@ Depending on how Docker was installed, it may be that `docker compose` does not 
         ```
 
     6. Stop everything with `Ctrl+C` in the first terminal, then delete the containers with `docker compose down`.
+    7. Predict: if you start the application again and open <http://localhost:8000/list>, is your `banana` still there? Check with `docker compose up -d`, then stop with `docker compose down`.
 
 !!! question
     - Your local Python and the container's Python may have different versions. Why does the application still work the same?
     - Why don't you need to install MongoDB on your machine?
+    - Where did MongoDB store your `banana`? Why did `docker compose down` lose it?
+
+??? tip "Going further"
+    - Follow the logs of one service while you use the app: `docker compose logs -f server`.
+    - Keep MongoDB data across `docker compose down` with a **named volume**. In `docker-compose.yml`:
+
+        ```yaml
+        services:
+          mongo:
+            image: mongo
+            volumes:
+              - mongo-data:/data/db
+        # ... client and server unchanged ...
+
+        volumes:
+          mongo-data:
+        ```
+
+        Add a fruit, run `docker compose down` then `docker compose up -d`. Is it still there? `docker compose down -v` deletes the volume too. Throw the edit away with Git afterwards.
+    - How much disk space do your images and containers use? Run `docker system df`.
 
 ---
 
@@ -409,7 +484,8 @@ Pick one assistant. [GitHub Copilot](https://github.com/education/students) and 
 
         Accept or refuse each edit and command it asks for. Which commands did it run?
 
-    3. Review its work like a colleague's work, from a second terminal: `git status` and `git diff`. Keep the edit with a commit, or throw it away with `git restore .`
+    3. Don't trust the assistant's summary: test its work yourself. If the server stopped, start it from the `server` folder with `uv run uvicorn app:app`. Open <http://localhost:8000/health>: you should see `{"status":"ok"}`.
+    4. Review its work like a colleague's work, from a second terminal: `git status` and `git diff`. Keep the edit with a commit, or throw it away with `git restore .`
 
 ### Let the assistant use the Streamlit app
 
@@ -451,13 +527,19 @@ Streamlit has an **agent API**: when you turn it on, the app also serves an [MCP
         Use the iris-app MCP server: set sepal length 5, sepal width 3, petal length 1, petal width 0, press Predict flower and tell me what the app displays
         ```
 
-        Run `docker compose logs server`. Can you find the request the app sent to the server when the assistant pressed the button?
+        The assistant should tell you what the app writes under the form after the button press. Compare with what you saw in your browser in the previous section.
+
+        Run `docker compose logs server`. Can you find the request the app sent to the server when the assistant pressed the button? Look for a line with `POST /predict`.
 
     5. Stop the application with `docker compose down`.
 
 !!! question
     - The app answers with the numbers you sent, not with a flower name. Why? Read `server/app.py` and `server/train.py`.
     - An assistant connected to an app over MCP can do anything a user of the app can do. Which apps would you not connect an assistant to?
+
+??? tip "Going further"
+    - Ask the assistant to write a test for the `/health` endpoint with `pytest`, add `pytest` as a development dependency with uv, and run the test. Read the test: does it check what you expect?
+    - Ask the assistant to add a named volume to MongoDB, as in the Docker **Going further** block. Check its edit with `git diff` before you accept it.
 
 ---
 
