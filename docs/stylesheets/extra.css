@@ -3,3 +3,17 @@
     --md-accent-fg-color:         #174C4f;
     --md-accent-fg-color--transparent: #174C4f1a;
   }
+
+/* Every `!!! note` in the TDs is an exercise. Most of a page is exercises,
+   so they render as plain white cards; the coloured admonitions
+   (question, warning, tip, danger) stay the ones that stand out. */
+.md-typeset .admonition.note,
+.md-typeset details.note {
+    background-color: var(--md-default-bg-color);
+    border: 2px solid var(--md-default-fg-color--lighter);
+  }
+
+.md-typeset .note > .admonition-title::before,
+.md-typeset .note > summary::before {
+    background-color: var(--md-primary-fg-color);
+  }
