@@ -1,4 +1,4 @@
-# Generative AI
+# TD 4 - Generative AI
 
 In this tutorial, we will cover as much Text GenAI practices as we can.
 
@@ -6,10 +6,19 @@ In this tutorial, we will cover as much Text GenAI practices as we can.
 
 ## Objectives
 
-- [ ] Basic Prompt Engineering Techniques
-- [ ] Python Programming over locally hosted LLMs
-- [ ] Retrieval Augmented Generation
-- [ ] Advanced Techniques
+- [ ] Write prompts that classify, generate code and summarize text in a chat UI
+- [ ] Run LLMs locally with LMStudio and Ollama, and call them from Python
+- [ ] Build a chatbot UI with Chainlit
+- [ ] Build a RAG chatbot over your own documents with llama-index
+- [ ] Dockerize your chatbot with docker compose
+
+## Prerequisites
+
+- uv and Docker, from [TD 0](prerequisites.md)
+- The docker compose project from [TD 1 - MLOps](mlops.md#3-a-full-stack-dockerized-ml-project), as a template for the final Dockerization
+- Free disk space for the LLMs: each model takes several GB
+
+---
 
 ## 1. Text Generation in ChatGPT / HuggingChat
 
@@ -511,7 +520,20 @@ RAG pipelines are currently the preferred way to get a chatbot to behave your wa
 
 ---
 
-## ===== Bonus Challenges =====
+## Recap
+
+!!! success "Check that you can explain your neighbor each point of the checklist below"
+    - [x] Write prompts that classify, generate code and summarize text in a chat UI
+    - [x] Run LLMs locally with LMStudio and Ollama, and call them from Python
+    - [x] Build a chatbot UI with Chainlit
+    - [x] Build a RAG chatbot over your own documents with llama-index
+    - [x] Dockerize your chatbot with docker compose
+
+---
+
+## Bonus challenges
+
+The following sections are optional. You can do them in any order.
 
 ## 5. Advanced Techniques
 

@@ -1,6 +1,6 @@
-# TD3 - Introduction to Spark
+# TD 2 - Introduction to Spark
 
-Link to tutorial: <https://github.com/andfanilo/pyspark-tutorial>
+This page sets up your machine for the graded Spark lab, a series of Jupyter notebooks in the [pyspark-tutorial](https://github.com/andfanilo/pyspark-tutorial) repository.
 
 ![](./images/spark-cover.jpg)
 
@@ -9,6 +9,11 @@ Link to tutorial: <https://github.com/andfanilo/pyspark-tutorial>
 - [ ] Install Java and the Spark tutorial environment with uv
 - [ ] Configure the environment variables Spark needs
 - [ ] Run a Spark notebook from JupyterLab or VS Code
+- [ ] Start the graded lab
+
+## Prerequisites
+
+- Git and uv, from [TD 0](prerequisites.md)
 
 ---
 
@@ -132,12 +137,18 @@ Use **either** JupyterLab or VS Code.
         - The second line must be your JDK folder. If it is `None`, go back to the **Install Java** exercise, and close **all** VS Code windows before you reopen VS Code.
         - The last line must be `45`. While Spark runs, open <http://localhost:4040> to see the Spark UI.
 
-    3. Delete your cell, then start the tutorial with `1-beginner/1-Initiation.ipynb`.
+    3. Delete your cell.
 
 !!! warning "Common errors"
     - `JAVA_HOME is not set` or `Java gateway process exited before sending its port number`: Spark can't find Java. Check `JAVA_HOME`, then restart your terminal or VS Code.
     - `Python worker failed to connect back` or `Python worker exited unexpectedly`: Spark started the wrong Python. Restart the kernel, then run the Spark setup cell first.
     - `HADOOP_HOME and hadoop.home.dir are unset` on Windows: this is a warning, not an error. You can ignore it.
+
+---
+
+## 5. Start the graded lab
+
+The graded lab is the series of notebooks in [pyspark-tutorial](https://github.com/andfanilo/pyspark-tutorial). Do them in order, starting with `1-beginner/1-Initiation.ipynb`. Run the Spark setup cell first in each notebook.
 
 ---
 
@@ -147,3 +158,4 @@ Use **either** JupyterLab or VS Code.
     - [x] Install Java and the Spark tutorial environment with uv
     - [x] Configure the environment variables Spark needs
     - [x] Run a Spark notebook from JupyterLab or VS Code
+    - [x] Start the graded lab

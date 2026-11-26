@@ -1,4 +1,4 @@
-# Advanced Deployment with Kubernetes
+# TD 5 - Advanced Deployment with Kubernetes
 
 In this tutorial, we will cover as much Kubernetes practices as we can.
 
@@ -10,9 +10,22 @@ You can play with a sandboxed Kubernetes (often abbreviated k8s):
 
 The last option being already available to you, we will go with that.
 
+## Objectives
+
+- [ ] Start a local Kubernetes cluster and inspect it with `kubectl`
+- [ ] Deploy Pods, Deployments and Services from YAML manifests
+- [ ] Move the MLOps Iris project from docker compose to Kubernetes
+- [ ] Run rolling update, blue/green and canary deployments
+- [ ] Externalize configuration, persist data and schedule jobs
+- [ ] Deploy the GenAI MCP server and agent
+
 ## Prerequisites
 
 * Docker Desktop
+* The Iris project from [TD 1 - MLOps](mlops.md#3-a-full-stack-dockerized-ml-project), for sections 2 and 3
+* The MCP server and agent from [TD 4 - Generative AI](genai.md#6-the-modern-ai-stack-agents-tools), for section 5
+
+---
 
 ## 1. Kubernetes Quick Start
 
@@ -822,3 +835,14 @@ The Agent needs to know where the MCP server is. In Kubernetes, we use the Servi
     - Does your FastMCP server handle the concurrent connections?
     - If not, scale the MCP server and ensure the Service balances the load.
 
+---
+
+## Recap
+
+!!! success "Check that you can explain your neighbor each point of the checklist below"
+    - [x] Start a local Kubernetes cluster and inspect it with `kubectl`
+    - [x] Deploy Pods, Deployments and Services from YAML manifests
+    - [x] Move the MLOps Iris project from docker compose to Kubernetes
+    - [x] Run rolling update, blue/green and canary deployments
+    - [x] Externalize configuration, persist data and schedule jobs
+    - [x] Deploy the GenAI MCP server and agent

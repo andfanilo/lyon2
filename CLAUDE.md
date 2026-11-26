@@ -99,6 +99,10 @@ The tutorials teach [uv](https://docs.astral.sh/uv/). Do not reintroduce conda, 
 
 To review a whole TD against these rules, use the `lab-tutorial-review` skill.
 
+*   **Page structure:** `# TD N - Title`, a short intro, `## Objectives` (a checklist of actions), `## Prerequisites` (tools, and links to TD 0 or earlier TDs), the numbered sections, then `## Recap`. The Recap repeats the Objectives in a `!!! success` block. In graded TDs, the Recap comes before `## Bonus challenges`.
+*   **Setup pages for external labs:** Spark and NoSQL set up a graded lab that lives in another repository (`pyspark-tutorial`, `lyon2-nosql`). They end with a `## N. Start the graded lab` section after "Check your setup", not with a link at the top.
+*   **lyon2-nosql:** a uv project with a `docker-compose.yml` that starts Redis, MongoDB and OrientDB. `pyorient` is old and prints `SyntaxWarning` on first import, and it needs `orientdb:2.2`. Keep `nosql.md` in sync with that repository's README.
+
 *   **Admonitions:** `!!! note "Exercise - <task>"` is only for exercises. `extra.css` renders notes as white cards. Keep explanations as plain prose between exercises, outside any admonition.
 *   **Section endings:** a `!!! question` block with 2 or 3 "why" questions, then optional extra tasks:
     *   `??? tip "Going further"`: collapsed, optional tasks for fast students. Use it in ungraded TDs, such as TD0.

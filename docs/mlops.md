@@ -1,12 +1,22 @@
 # TD 1 - MLOps
 
+## Objectives
+
+- [ ] Run, inspect and delete Docker containers from the command line
+- [ ] Write a Dockerfile for a uv project and build its image
+- [ ] Build a FastAPI REST API and run it in a Docker container
+- [ ] Connect FastAPI, MongoDB and Streamlit containers with docker compose
+- [ ] Build a full-stack Dockerized ML prediction app
+
 ## Prerequisites
 
-Make sure you have the following commands working on your workstation:
+Make sure you have the following commands working on your workstation, from [TD 0](prerequisites.md):
 
 - uv
 - docker 
 - docker compose
+
+---
 
 ## 1. Docker quick start
 
@@ -405,7 +415,20 @@ Pick up a classification training dataset, like Iris or Penguins. The goal is to
 
 Good Luck, Have Fun :tada:!
 
-## ===== Bonus Challenges =====
+---
+
+## Recap
+
+!!! success "Check that you can explain your neighbor each point of the checklist below"
+    - [x] Run, inspect and delete Docker containers from the command line
+    - [x] Write a Dockerfile for a uv project and build its image
+    - [x] Build a FastAPI REST API and run it in a Docker container
+    - [x] Connect FastAPI, MongoDB and Streamlit containers with docker compose
+    - [x] Build a full-stack Dockerized ML prediction app
+
+---
+
+## Bonus challenges
 
 The following exercises are optional bonuses if you want to go the full MLOps route. 
 

@@ -1,12 +1,23 @@
 # TD 6 - Analytics Engineering with dbt
 
+## Objectives
+
+- [ ] Create a dbt project on DuckDB with uv
+- [ ] Load seeds and declare a raw log file as a source
+- [ ] Parse raw logs into staging models
+- [ ] Build a daily revenue mart
+- [ ] Test and document your models
+
 ## Prerequisites
 
 Make sure you have the following installed:
 
-- [uv](https://docs.astral.sh/uv/), see [TD0](prerequisites.md)
+- [uv](https://docs.astral.sh/uv/), see [TD 0](prerequisites.md)
 - [Visual Studio Code](https://code.visualstudio.com/) (highly recommended with the "dbt Power User" extension)
 - A terminal
+- A clone of this tutorials repository, <https://github.com/andfanilo/lyon2>: the TD uses its `gen_logs` script to generate data
+
+---
 
 ## 1. Setup & Installation
 
@@ -323,7 +334,16 @@ A huge advantage of dbt is that documentation and testing are code, living right
         ```
     - A browser tab will open. Explore the **Lineage Graph** (bottom right icon). You will see the full flow of your data from `access.log` to `mart_daily_revenue`.
 
-## Summary
+---
+
+## Recap
+
+!!! success "Check that you can explain your neighbor each point of the checklist below"
+    - [x] Create a dbt project on DuckDB with uv
+    - [x] Load seeds and declare a raw log file as a source
+    - [x] Parse raw logs into staging models
+    - [x] Build a daily revenue mart
+    - [x] Test and document your models
 
 You have built a complete ELT pipeline locally!
 

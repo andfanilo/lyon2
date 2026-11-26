@@ -1,4 +1,4 @@
-# TD0 - Tooling
+# TD 0 - Tooling
 
 For this tutorial, you will be installing and configuring tools used in the following tutorials:
 
